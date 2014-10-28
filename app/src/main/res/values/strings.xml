@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name" translatable="false">Urban Observert</string>
+    <string name="action_settings" translatable="false">Settings</string>
+    <string name="hello_world" translatable="false">Hello world!</string>
+
+    <string name="regTitle" translatable="false">Регистрация</string>
+    <string name="regSubmit" translatable="false">Отправить</string>
+    <string name="usr_login" translatable="false">Логин:</string>
+    <string name="usr_password" translatable="false">Пароль:</string>
+    <string name="usr_mail" translatable="false">E-mail:</string>
+    <string name="usr_name" translatable="false">Имя:</string>
+    <string name="usr_surname" translatable="false">Фамилия:</string>
+    <string name="usr_second_name" translatable="false">Отчество:</string>
+    <string name="usr_birthday" translatable="false">Дата рождения:</string>
+    <string name="usr_phone" translatable="false">Телефон:</string>
+
+</resources>

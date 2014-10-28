@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menu_frame"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#999"
+    >
+
+    <TextView
+        android:id="@+id/fooText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Side menu"
+        />
+
+    <fragment
+        android:id="@+id/menu_list"
+        android:name="com.urban.fragments.MenuListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <fragment
+        android:id="@+id/other_actions"
+        android:name="com.urban.fragments.OtherActionsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

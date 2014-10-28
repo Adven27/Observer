@@ -1,0 +1,127 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+         >
+
+        <TextView
+            android:id="@+id/regLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/regTitle" />
+
+        <TextView
+            android:id="@+id/loginLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/usr_login"
+            />
+        <EditText
+            android:id="@+id/anket_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            />
+
+        <TextView
+            android:id="@+id/passwordLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/usr_password"
+            />
+        <EditText
+            android:id="@+id/anket_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            />
+
+        <TextView
+            android:id="@+id/emailLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/usr_mail"
+            />
+        <EditText
+            android:id="@+id/anket_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            />
+
+        <TextView
+            android:id="@+id/surnameLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/usr_surname"
+            />
+        <EditText
+            android:id="@+id/anket_surname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            />
+
+        <TextView
+            android:id="@+id/nameLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/usr_name"
+            />
+        <EditText
+            android:id="@+id/anket_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            />
+
+        <TextView
+            android:id="@+id/secondNameLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/usr_second_name"
+            />
+        <EditText
+            android:id="@+id/anket_second_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName" />
+
+        <TextView
+            android:id="@+id/birthdayLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/usr_birthday"
+            />
+        <DatePicker
+            android:id="@+id/anket_birthday"
+            android:layout_width="match_parent"
+            android:layout_height="100dip"
+            />
+
+        <TextView
+            android:id="@+id/phoneLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/usr_phone"
+            />
+        <EditText
+            android:id="@+id/anket_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            />
+
+        <Button android:id="@+id/anket_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/regSubmit"
+            />
+    </LinearLayout>
+</ScrollView>

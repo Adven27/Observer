@@ -1,0 +1,43 @@
+<com.urban.activity.dashboard.layout.DashboardLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_weight="1"
+    android:background="#f8f9fe" >
+    <!--  News Feed Button -->
+    <Button
+        android:id="@+id/btn_news_feed"
+        style="@style/DashboardButton"
+        />
+
+    <!--  Friends Button -->
+    <Button
+        android:id="@+id/btn_friends"
+        style="@style/DashboardButton"
+        />
+
+    <!--  Messages Button -->
+    <Button
+        android:id="@+id/btn_messages"
+        style="@style/DashboardButton"
+        />
+
+    <!--  Places Button -->
+    <Button
+        android:id="@+id/btn_places"
+        style="@style/DashboardButton"
+        />
+
+    <!--  Events Button -->
+    <Button
+        android:id="@+id/dashboardPlate4"
+        style="@style/DashboardButton"
+        />
+
+    <!--  Photos Button -->
+    <Button
+        android:id="@+id/btn_photos"
+        style="@style/DashboardButton"
+        />
+
+</com.urban.activity.dashboard.layout.DashboardLayout>

@@ -1,0 +1,38 @@
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dip" >
+
+
+            <com.jeremyfeinstein.slidingmenu.lib.SlidingMenu
+                xmlns:sliding="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/slidingmenulayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                sliding:viewAbove="@layout/main_content"
+                sliding:viewBehind="@layout/menu_frame"
+                sliding:touchModeAbove="margin"
+                sliding:behindOffset="@dimen/slidingmenu_offset"
+                sliding:shadowDrawable="@drawable/shadow"
+                sliding:fadeEnabled="false"
+                sliding:fadeDegree="0.35"
+                sliding:selectorEnabled="false"
+                />
+
+        </RelativeLayout>
+
+        <fragment
+            android:id="@+id/footer"
+            android:name="com.urban.fragments.FooterFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>

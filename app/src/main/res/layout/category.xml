@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cathegoryLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/category_header"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#97ce68"
+        android:text="Еда"
+        android:textColor="#ffffff"
+        android:layout_gravity="center_vertical"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:paddingLeft="7dp"
+        />
+
+    <FrameLayout
+        android:id="@+id/banner_container"
+        android:layout_width="match_parent"
+        android:layout_height="60dp" />
+
+    <ListView
+        android:id="@+id/position_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/CategoryListView"/>
+
+
+</LinearLayout>
