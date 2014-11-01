@@ -1,40 +1,5 @@
 package com.urban.dao;
 
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import src.com.urban.data.sqlite.SQLiteUrbanCriterion;
-import src.com.urban.data.sqlite.pojo.ActionPagePojo;
-import src.com.urban.data.sqlite.pojo.ActionPojo;
-import src.com.urban.data.sqlite.pojo.AddressPojo;
-import src.com.urban.data.sqlite.pojo.AdvertisingPojo;
-import src.com.urban.data.sqlite.pojo.ApplicationPropertiesPojo;
-import src.com.urban.data.sqlite.pojo.CartPojo;
-import src.com.urban.data.sqlite.pojo.CategoryPojo;
-import src.com.urban.data.sqlite.pojo.ContactPojo;
-import src.com.urban.data.sqlite.pojo.ContactTypePojo;
-import src.com.urban.data.sqlite.pojo.EventPojo;
-import src.com.urban.data.sqlite.pojo.ImagePojo;
-import src.com.urban.data.sqlite.pojo.InfoPagePojo;
-import src.com.urban.data.sqlite.pojo.NewsCategoryPojo;
-import src.com.urban.data.sqlite.pojo.NewsPojo;
-import src.com.urban.data.sqlite.pojo.OrganizationPhonePojo;
-import src.com.urban.data.sqlite.pojo.OrganizationPojo;
-import src.com.urban.data.sqlite.pojo.PagePojo;
-import src.com.urban.data.sqlite.pojo.PersonPojo;
-import src.com.urban.data.sqlite.pojo.PhotoGallaryPojo;
-import src.com.urban.data.sqlite.pojo.PhotoPojo;
-import src.com.urban.data.sqlite.pojo.PlacePojo;
-import src.com.urban.data.sqlite.pojo.PositionPojo;
-import src.com.urban.data.sqlite.pojo.StuffCategoryPojo;
-import src.com.urban.data.sqlite.pojo.StuffPojo;
-import src.com.urban.data.sqlite.pojo.UserPojo;
-import src.com.urban.data.sqlite.pojo.UserPropertiesPojo;
-import src.com.urban.data.sqlite.pojo.VotingItemPojo;
-import src.com.urban.data.sqlite.pojo.VotingPojo;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -74,6 +39,42 @@ import com.urban.data.Voting;
 import com.urban.data.VotingItem;
 import com.urban.data.dao.IDAO;
 import com.urban.data.dao.UrbanCriterion;
+
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import src.com.urban.data.sqlite.SQLiteUrbanCriterion;
+import src.com.urban.data.sqlite.pojo.ActionPagePojo;
+import src.com.urban.data.sqlite.pojo.ActionPojo;
+import src.com.urban.data.sqlite.pojo.AddressPojo;
+import src.com.urban.data.sqlite.pojo.AdvertisingPojo;
+import src.com.urban.data.sqlite.pojo.ApplicationPropertiesPojo;
+import src.com.urban.data.sqlite.pojo.CartPojo;
+import src.com.urban.data.sqlite.pojo.CategoryPojo;
+import src.com.urban.data.sqlite.pojo.ContactPojo;
+import src.com.urban.data.sqlite.pojo.ContactTypePojo;
+import src.com.urban.data.sqlite.pojo.EventPojo;
+import src.com.urban.data.sqlite.pojo.ImagePojo;
+import src.com.urban.data.sqlite.pojo.InfoPagePojo;
+import src.com.urban.data.sqlite.pojo.NewsCategoryPojo;
+import src.com.urban.data.sqlite.pojo.NewsPojo;
+import src.com.urban.data.sqlite.pojo.OrganizationPhonePojo;
+import src.com.urban.data.sqlite.pojo.OrganizationPojo;
+import src.com.urban.data.sqlite.pojo.PagePojo;
+import src.com.urban.data.sqlite.pojo.PersonPojo;
+import src.com.urban.data.sqlite.pojo.PhotoGallaryPojo;
+import src.com.urban.data.sqlite.pojo.PhotoPojo;
+import src.com.urban.data.sqlite.pojo.PlacePojo;
+import src.com.urban.data.sqlite.pojo.PositionPojo;
+import src.com.urban.data.sqlite.pojo.StuffCategoryPojo;
+import src.com.urban.data.sqlite.pojo.StuffPojo;
+import src.com.urban.data.sqlite.pojo.UserPojo;
+import src.com.urban.data.sqlite.pojo.UserPropertiesPojo;
+import src.com.urban.data.sqlite.pojo.VotingItemPojo;
+import src.com.urban.data.sqlite.pojo.VotingPojo;
 
 /**
  * Database helper class used to manage the creation and upgrading of your database. This class also usually provides

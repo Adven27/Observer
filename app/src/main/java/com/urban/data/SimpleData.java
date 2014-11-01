@@ -1,9 +1,9 @@
 package com.urban.data;
 
+import com.j256.ormlite.field.DatabaseField;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import com.j256.ormlite.field.DatabaseField;
 
 /**
  * A simple demonstration object we are creating and persisting to the database.

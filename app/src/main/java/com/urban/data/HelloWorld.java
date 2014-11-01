@@ -1,15 +1,5 @@
 package com.urban.data;
 
-import java.util.List;
-import java.util.Random;
-
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.TextView;
-
-import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
-import com.j256.ormlite.dao.RuntimeExceptionDao;
-
 /**
  * Sample Android UI activity which displays a text window when it is run.
  */

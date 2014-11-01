@@ -1,7 +1,5 @@
 package com.urban.activity.dashboard;
 
-import java.util.ArrayList;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -17,6 +15,8 @@ import com.tools.ViewServer;
 import com.urban.activity.main.MainActivity;
 import com.urban.data.Category;
 import com.urban.data.dao.DAO;
+
+import java.util.ArrayList;
 
 public class DashboardActivity extends FragmentActivity {
 
@@ -37,15 +37,15 @@ public class DashboardActivity extends FragmentActivity {
             return;
         }
 
-        Button button = (Button)findViewById(R.id.btn_friends);
+        Button button = (Button)findViewById(R.id.dashboardPlate1);
         button.setText(categories.get(0).getName());
         button.setOnClickListener(onCathegodyClickListener);
-        button = (Button)findViewById(R.id.btn_messages);
+        button = (Button)findViewById(R.id.dashboardPlate2);
         button.setText(categories.get(1).getName());
         button.setOnClickListener(onCathegodyClickListener);
-        /*button = (Button)findViewById(R.id.dashboardPlate3);
+        button = (Button)findViewById(R.id.dashboardPlate3);
         button.setText(categories.get(2).getName());
-        button.setOnClickListener(onCathegodyClickListener);*/
+        button.setOnClickListener(onCathegodyClickListener);
         /*button = (Button)findViewById(R.id.dashboardPlate4);
         button.setText(categories.get(3).getName());
         button.setOnClickListener(onCathegodyClickListener);*/
@@ -80,7 +80,7 @@ public class DashboardActivity extends FragmentActivity {
     private final OnClickListener onCathegodyClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            /*if (v.getId() == R.id.dashboardPlate1){
+            if (v.getId() == R.id.dashboardPlate1){
                 redirectToCathegory(categories.get(0));
             } else if (v.getId() == R.id.dashboardPlate2){
                 redirectToCathegory(categories.get(1));
@@ -88,7 +88,7 @@ public class DashboardActivity extends FragmentActivity {
                 redirectToCathegory(categories.get(2));
             } else if (v.getId() == R.id.dashboardPlate4){
                 redirectToCathegory(categories.get(3));
-            }*/
+            }
 
         }
     };

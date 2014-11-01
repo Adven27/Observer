@@ -12,19 +12,19 @@
 
     <!--  Friends Button -->
     <Button
-        android:id="@+id/btn_friends"
+        android:id="@+id/dashboardPlate1"
         style="@style/DashboardButton"
         />
 
     <!--  Messages Button -->
     <Button
-        android:id="@+id/btn_messages"
+        android:id="@+id/dashboardPlate2"
         style="@style/DashboardButton"
         />
 
     <!--  Places Button -->
     <Button
-        android:id="@+id/btn_places"
+        android:id="@+id/dashboardPlate3"
         style="@style/DashboardButton"
         />
 
@@ -36,7 +36,7 @@
 
     <!--  Photos Button -->
     <Button
-        android:id="@+id/btn_photos"
+        android:id="@+id/dashboardPlate5"
         style="@style/DashboardButton"
         />
 
