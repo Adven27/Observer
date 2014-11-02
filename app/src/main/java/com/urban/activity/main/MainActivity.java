@@ -28,7 +28,7 @@ public class MainActivity extends FragmentActivity {
 
         SlidingContentFragment fragment = new SlidingContentFragment();
         Intent intent = this.getIntent();
-        long categoryId = intent.getLongExtra(DashboardActivity.CATEGORY_ID_ACRGUMENT, 0l);
+        long categoryId = intent.getLongExtra(DashboardActivity.CATEGORY_ID_ARGUMENT, 0l);
 
         Category category = null;
         try {

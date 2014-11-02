@@ -23,8 +23,8 @@ import com.urban.data.Image;
 import com.urban.data.InfoPage;
 import com.urban.data.News;
 import com.urban.data.NewsCategory;
+import com.urban.data.NotificationSubscribe;
 import com.urban.data.Organization;
-import com.urban.data.OrganizationPhone;
 import com.urban.data.Page;
 import com.urban.data.Person;
 import com.urban.data.Photo;
@@ -36,7 +36,6 @@ import com.urban.data.StuffCategory;
 import com.urban.data.User;
 import com.urban.data.UserProperties;
 import com.urban.data.Voting;
-import com.urban.data.VotingItem;
 import com.urban.data.dao.IDAO;
 import com.urban.data.dao.UrbanCriterion;
 
@@ -61,7 +60,7 @@ import src.com.urban.data.sqlite.pojo.ImagePojo;
 import src.com.urban.data.sqlite.pojo.InfoPagePojo;
 import src.com.urban.data.sqlite.pojo.NewsCategoryPojo;
 import src.com.urban.data.sqlite.pojo.NewsPojo;
-import src.com.urban.data.sqlite.pojo.OrganizationPhonePojo;
+import src.com.urban.data.sqlite.pojo.NotificationSubscribePojo;
 import src.com.urban.data.sqlite.pojo.OrganizationPojo;
 import src.com.urban.data.sqlite.pojo.PagePojo;
 import src.com.urban.data.sqlite.pojo.PersonPojo;
@@ -73,7 +72,6 @@ import src.com.urban.data.sqlite.pojo.StuffCategoryPojo;
 import src.com.urban.data.sqlite.pojo.StuffPojo;
 import src.com.urban.data.sqlite.pojo.UserPojo;
 import src.com.urban.data.sqlite.pojo.UserPropertiesPojo;
-import src.com.urban.data.sqlite.pojo.VotingItemPojo;
 import src.com.urban.data.sqlite.pojo.VotingPojo;
 
 /**
@@ -101,7 +99,7 @@ public class OrmligthSQLLightDAO extends OrmLiteSqliteOpenHelper implements IDAO
         classes.put(News.class, NewsPojo.class);
         classes.put(NewsCategory.class, NewsCategoryPojo.class);
         classes.put(Organization.class, OrganizationPojo.class);
-        classes.put(OrganizationPhone.class, OrganizationPhonePojo.class);
+        //classes.put(OrganizationPhone.class, OrganizationPhonePojo.class);
         classes.put(Page.class, PagePojo.class);
         classes.put(Person.class, PersonPojo.class);
         classes.put(Photo.class, PhotoPojo.class);
@@ -113,7 +111,8 @@ public class OrmligthSQLLightDAO extends OrmLiteSqliteOpenHelper implements IDAO
         classes.put(User.class, UserPojo.class);
         classes.put(UserProperties.class, UserPropertiesPojo.class);
         classes.put(Voting.class, VotingPojo.class);
-        classes.put(VotingItem.class, VotingItemPojo.class);
+        //classes.put(VotingItem.class, VotingItemPojo.class);
+        classes.put(NotificationSubscribe.class, NotificationSubscribePojo.class);
     }
 
 

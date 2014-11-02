@@ -1,11 +1,5 @@
 package com.urban.activity.registration.task;
 
-import java.lang.ref.WeakReference;
-import java.util.Date;
-
-import src.com.urban.data.sqlite.pojo.PersonPojo;
-import src.com.urban.data.sqlite.pojo.UserPojo;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.urban.activity.registration.RegistrationActivity;
@@ -13,6 +7,12 @@ import com.urban.data.Person;
 import com.urban.data.ResponseError;
 import com.urban.data.User;
 import com.urban.task.HttpTask;
+
+import java.lang.ref.WeakReference;
+import java.util.Date;
+
+import src.com.urban.data.sqlite.pojo.PersonPojo;
+import src.com.urban.data.sqlite.pojo.UserPojo;
 
 public class RegistrationTask implements HttpTask {
 
@@ -58,14 +58,6 @@ public class RegistrationTask implements HttpTask {
 
     @Override
     public void handleResponse(String response) {
-        /*Object responseObj = new Gson().fromJson(response, Object.class);
-        if (responseObj instanceof User) {
-            loggedUser = new Gson().fromJson(response, User.class);
-        } else {
-            ResponseError error = new Gson().fromJson(response, ResponseError.class);
-            registerError(error.getErrorText());
-        }*/
-
         try {
             loggedUser = new Gson().fromJson(response, UserPojo.class);
         } catch (JsonSyntaxException e){
@@ -92,7 +84,7 @@ public class RegistrationTask implements HttpTask {
 
     @Override
     public String getURL() {
-        return "ServicesTomcatWAR/Registration";
+        return "ServicesTomcatWAR/register";
     }
 
     @Override

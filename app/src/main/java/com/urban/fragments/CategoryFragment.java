@@ -1,7 +1,5 @@
 package com.urban.fragments;
 
-import java.util.Collection;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,6 +19,8 @@ import com.tools.PositionAdapter;
 import com.urban.activity.position.PositionActivity;
 import com.urban.data.Category;
 import com.urban.data.Position;
+
+import java.util.Collection;
 //import com.example.prototype.dao.DAO;
 
 public class CategoryFragment extends Fragment {
@@ -56,12 +56,11 @@ public class CategoryFragment extends Fragment {
                 Log.e("", "Error during db access", e);
             }
 
+            positionList.setAdapter(
+                    new PositionAdapter(getActivity(), R.layout.category_item, positions));
 
-        positionList.setAdapter(
-                new PositionAdapter(getActivity(), R.layout.category_item, positions));
-
-        positionList.setOnItemClickListener(
-                new MyOnItemClickListener(getActivity().getSupportFragmentManager()));
+            positionList.setOnItemClickListener(
+                    new MyOnItemClickListener(getActivity().getSupportFragmentManager()));
 
         }
 
@@ -79,8 +78,7 @@ public class CategoryFragment extends Fragment {
         }
 
         @Override
-        public void onItemClick(AdapterView<?> adapter, View arg1, int position,
-                long arg3) {
+        public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
 
             PositionAdapter posAdapter = null;
             if (adapter.getAdapter() instanceof PositionAdapter) {

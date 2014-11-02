@@ -85,7 +85,6 @@
     <orderEntry type="library" exported="" name="gson-2.2.4" level="project" />
     <orderEntry type="library" exported="" name="ormlite-core-4.46" level="project" />
     <orderEntry type="library" exported="" name="flexjson-2.1" level="project" />
-    <orderEntry type="library" exported="" name="DataAccess" level="project" />
     <orderEntry type="library" exported="" name="DataSQLite" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-20.0.0" level="project" />
     <orderEntry type="library" exported="" name="support-v4-20.0.0" level="project" />

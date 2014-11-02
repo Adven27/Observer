@@ -1,6 +1,8 @@
 package com.urban.activity.login;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -16,6 +18,7 @@ import com.tools.ViewServer;
 import com.urban.activity.dashboard.DashboardActivity;
 import com.urban.activity.login.task.SignInTask;
 import com.urban.activity.registration.RegistrationActivity;
+import com.urban.appl.Settings;
 import com.urban.data.User;
 import com.urban.task.HttpRequestTask;
 
@@ -27,10 +30,15 @@ public class LoginActivity extends FragmentActivity {
     private Button dismiss;
     private Button register;
 
+    private SharedPreferences prefs;
+    private Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        context = getApplicationContext();
 
         login = (EditText)findViewById(R.id.login);
         password = (EditText)findViewById(R.id.password);
@@ -69,6 +77,7 @@ public class LoginActivity extends FragmentActivity {
     }
 
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add("Menu").setIcon(R.drawable.side_menu_button).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
@@ -94,7 +103,8 @@ public class LoginActivity extends FragmentActivity {
     }
 
     public void logIn(User user) {
-        notify("You was entered!");
+        Settings.setLoggedUser(user);
+        notify("You were entered!");
         redirect();
     }
 

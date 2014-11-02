@@ -1,24 +1,27 @@
 package com.urban.activity.login.task;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.urban.activity.login.LoginActivity;
+import com.urban.data.ResponseError;
+import com.urban.data.User;
+import com.urban.task.HttpTask;
+
 import java.lang.ref.WeakReference;
 
 import src.com.urban.data.sqlite.pojo.UserPojo;
 
-import com.google.gson.Gson;
-import com.urban.activity.login.LoginActivity;
-import com.urban.data.User;
-import com.urban.task.HttpTask;
-
 public class SignInTask implements HttpTask {
 
-    WeakReference<LoginActivity> parent;
+    private WeakReference<LoginActivity> parent;
+
+    private User loggedUser;
+    private String errorMsg;
 
     public SignInTask(LoginActivity parent) {
         super();
         this.parent = new WeakReference<LoginActivity>(parent);
     }
-
-    private User loggedUser;
 
     @Override
     public Object prepareRequestData(String... params) {
@@ -37,19 +40,26 @@ public class SignInTask implements HttpTask {
 
     @Override
     public void handleResponse(String response) {
-        Gson gson = new Gson();
-        User user = gson.fromJson(response, UserPojo.class);
-        loggedUser = user;
+        try {
+            loggedUser = new Gson().fromJson(response, UserPojo.class);
+        } catch (JsonSyntaxException e){
+            ResponseError error = new Gson().fromJson(response, ResponseError.class);
+            registerError(error.getErrorText());
+        }
     }
 
     @Override
     public void onPostExecute() {
         LoginActivity activity = parent.get();
         if (activity != null) {
-            if (loggedUser != null) {
-                activity.logIn(loggedUser);
+            if (errorMsg != null) {
+                activity.notify(errorMsg);
             } else {
-                activity.notify("ololo!");
+                if (loggedUser != null) {
+                    activity.logIn(loggedUser);
+                } else {
+                    activity.notify("ololo!");
+                }
             }
         }
     }
@@ -61,11 +71,7 @@ public class SignInTask implements HttpTask {
 
     @Override
     public void registerError(String error) {
-        LoginActivity activity = parent.get();
-        if (activity != null) {
-            activity.notify("Server is offline!");
-        }
-
+        this.errorMsg = error;
     }
 
 }

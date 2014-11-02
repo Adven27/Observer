@@ -17,6 +17,7 @@ import com.example.test.R;
 import com.tools.ViewServer;
 import com.urban.activity.dashboard.DashboardActivity;
 import com.urban.activity.registration.task.RegistrationTask;
+import com.urban.appl.Settings;
 import com.urban.data.User;
 import com.urban.task.HttpRequestTask;
 
@@ -110,7 +111,8 @@ public class RegistrationActivity extends FragmentActivity {
     }
 
     public void logIn(User user) {
-        notify("You was entered!");
+        Settings.setLoggedUser(user);
+        notify("You were entered!");
         redirect();
     }
 
