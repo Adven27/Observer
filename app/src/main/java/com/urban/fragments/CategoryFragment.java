@@ -39,7 +39,7 @@ public class CategoryFragment extends Fragment {
 
         View category = inflater.inflate(R.layout.category, container, false);
 
-        if (currentCategory != null){
+        if (currentCategory != null) {
             TextView categoryHeader = (TextView)category.findViewById(R.id.category_header);
             categoryHeader.setText(currentCategory.getName());
 

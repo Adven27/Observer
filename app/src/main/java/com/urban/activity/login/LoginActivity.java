@@ -46,6 +46,9 @@ public class LoginActivity extends FragmentActivity {
         dismiss = (Button)findViewById(R.id.dismiss);
         register = (Button)findViewById(R.id.register);
 
+        //Dummy data for test.
+        setDummy();
+
         signIn.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -120,6 +123,11 @@ public class LoginActivity extends FragmentActivity {
     private void redirectToRegistration() {
         Intent intent = new Intent(this, RegistrationActivity.class);
         startActivity(intent);
+    }
+
+    private void setDummy() {
+        login.setText("admin");
+        password.setText("admin");
     }
 
 }

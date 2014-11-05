@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
+import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.support.ConnectionSource;
@@ -78,7 +79,7 @@ import src.com.urban.data.sqlite.pojo.VotingPojo;
  * Database helper class used to manage the creation and upgrading of your database. This class also usually provides
  * the DAOs used by the other classes.
  */
-public class OrmligthSQLLightDAO extends OrmLiteSqliteOpenHelper implements IDAO {
+public class OrmligthSQLLightDAO<T> extends OrmLiteSqliteOpenHelper implements IDAO {
 
     private Map<Class, RuntimeExceptionDao> cashedDao = new HashMap<Class, RuntimeExceptionDao>();
 
@@ -111,7 +112,6 @@ public class OrmligthSQLLightDAO extends OrmLiteSqliteOpenHelper implements IDAO
         classes.put(User.class, UserPojo.class);
         classes.put(UserProperties.class, UserPropertiesPojo.class);
         classes.put(Voting.class, VotingPojo.class);
-        //classes.put(VotingItem.class, VotingItemPojo.class);
         classes.put(NotificationSubscribe.class, NotificationSubscribePojo.class);
     }
 
@@ -164,8 +164,13 @@ public class OrmligthSQLLightDAO extends OrmLiteSqliteOpenHelper implements IDAO
     }
 
     @Override
-    public UrbanCriterion createCriteria() {
-        return new SQLiteUrbanCriterion();
+    public <T> UrbanCriterion createCriteria(Class<T> type) {
+        try {
+            return new SQLiteUrbanCriterion(type, getDao(type));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @SuppressWarnings("unchecked")
@@ -186,7 +191,7 @@ public class OrmligthSQLLightDAO extends OrmLiteSqliteOpenHelper implements IDAO
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T getUnicByCriterion(Class<T> type, UrbanCriterion criterion) {
+    public <T> T getUniqByCriterion(Class<T> type, UrbanCriterion criterion) {
         try {
             Dao<T, String> dao = getDao(type);
             Where<T, String> where = ((SQLiteUrbanCriterion<T>) criterion).getWhere();
@@ -204,5 +209,17 @@ public class OrmligthSQLLightDAO extends OrmLiteSqliteOpenHelper implements IDAO
     @Override
     public <T> Class<T> getPojo(Class<T> intf) {
         return classes.get(intf);
+    }
+
+    @Override
+    public <T> void deleteAll(Class<T> type) {
+        try {
+            Dao<T, String> dao = getDao(type);
+            DeleteBuilder<T, String> dBuilder = dao.deleteBuilder();
+            dBuilder.delete();
+        } catch (SQLException e) {
+            // TODO implement exception handling
+            e.printStackTrace();
+        }
     }
 }

@@ -10,6 +10,8 @@ public class ResponseError {
         this.errorText = text;
     }
 
+    private ResponseError() {}
+
     public String getErrorText() {
         return errorText;
     }
@@ -26,4 +28,14 @@ public class ResponseError {
         this.errorCode = errorCode;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder("Service response error has occurred.");
+        builder.append(" ErrorCode: ")
+                .append(errorCode)
+                .append(", errorText: ")
+                .append(errorText);
+
+        return builder.toString();
+    }
 }

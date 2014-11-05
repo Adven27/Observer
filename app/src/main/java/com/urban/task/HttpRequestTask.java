@@ -1,9 +1,11 @@
 package com.urban.task;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import android.os.AsyncTask;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.urban.appl.Settings;
+import com.urban.data.ResponseError;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -11,15 +13,22 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.os.AsyncTask;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.HashMap;
 
-import com.urban.appl.Settings;
-
+import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
 public class HttpRequestTask extends AsyncTask<String, Void, Boolean> {
 
     private HttpTask task;
+
+    private static final String ATTR_ERROR_CODE = "errorCode";
+    private static final String ATTR_ERROR_TEXT = "errorText";
+    private static final String ATTR_ERROR_TYPE = "errorType";
 
     public HttpRequestTask(HttpTask task) {
         super();
@@ -33,8 +42,21 @@ public class HttpRequestTask extends AsyncTask<String, Void, Boolean> {
         String response = null;
         try {
             response = POST(json);
+
+            Gson gson = new Gson();
+            Type collectionType = new TypeToken<HashMap<String, Object>>(){}.getType();
+            HashMap<String, Object> map = gson.fromJson(response, collectionType);
+            if (map.containsKey(ATTR_ERROR_CODE)) {
+                ResponseError error = new JSONDeserializer<ResponseError>().deserialize(response, ResponseError.class);
+                throw new UrbanServiceException(error);
+            }
+
             task.handleResponse(response);
         } catch (UrbanServiceOfflineException e) {
+            task.registerError(e.getMessage());
+        } catch (UrbanServiceException e) {
+            task.registerError(e.getMessage());
+        } catch (Exception e) {
             task.registerError(e.getMessage());
         }
         return null;
@@ -93,5 +115,4 @@ public class HttpRequestTask extends AsyncTask<String, Void, Boolean> {
         }
         return builder.toString();
     }
-
 }

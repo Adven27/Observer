@@ -34,13 +34,13 @@ public class RegistrationActivity extends FragmentActivity {
     private Button register;
 
     private void addMock() {
-        login.setText("z");
-        password.setText("x");
-        email.setText("e@e.com");
-        surname.setText("c");
-        name.setText("v");
-        secondName.setText("b");
-        phone.setText("8");
+        login.setText("admin");
+        password.setText("admin");
+        email.setText("admin@admin.com");
+        surname.setText("x");
+        name.setText("x");
+        secondName.setText("x");
+        phone.setText("921");
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.urban.task;
 
+import com.urban.data.ResponseError;
+
 public class UrbanServiceException extends Exception {
 
     /**
@@ -11,6 +13,10 @@ public class UrbanServiceException extends Exception {
 
     public UrbanServiceException(String detailMessage) {
         super(detailMessage);
+    }
+
+    public  UrbanServiceException(ResponseError error) {
+        super(error.toString());
     }
 
 }

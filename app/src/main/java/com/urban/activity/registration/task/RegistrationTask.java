@@ -6,9 +6,11 @@ import com.urban.activity.registration.RegistrationActivity;
 import com.urban.data.Person;
 import com.urban.data.ResponseError;
 import com.urban.data.User;
+import com.urban.data.dao.DAO;
 import com.urban.task.HttpTask;
 
 import java.lang.ref.WeakReference;
+import java.sql.SQLException;
 import java.util.Date;
 
 import src.com.urban.data.sqlite.pojo.PersonPojo;
@@ -21,16 +23,12 @@ public class RegistrationTask implements HttpTask {
     private WeakReference<RegistrationActivity> parent;
 
     private String errorMsg;
+    private User loggedUser;
 
     public RegistrationTask(RegistrationActivity parent) {
         super();
         this.parent = new WeakReference<RegistrationActivity>(parent);
     }
-
-
-
-    private User loggedUser;
-
 
     @Override
     public Object prepareRequestData(String... params) {
@@ -74,7 +72,23 @@ public class RegistrationTask implements HttpTask {
                 activity.notify(errorMsg);
             } else {
                 if (loggedUser != null) {
-                    activity.logIn(loggedUser);
+                    //FIXME: надо что-то сделать с транзакциями единого DAO. Наверное, написать получение, закрытие и их стэк.
+                    //Transaction trn = null;
+                    try {
+                        //trn = DAO.beginTransaction();
+                        DAO.deleteAll(User.class);
+                        DAO.save(loggedUser);
+                        //trn.commit;
+                        activity.logIn(loggedUser);
+                    } catch (SQLException e) {
+                        activity.notify("Problem with saving to DAO!");
+                    } finally {
+                        /*
+                        if (trn != null) {
+                            trn.close();
+                        }
+                        */
+                    }
                 } else {
                     activity.notify("ololo!");
                 }

@@ -21,7 +21,9 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.tools.ViewServer;
 import com.urban.activity.main.MainActivity;
 import com.urban.activity.userproperties.task.UserPropertiesTask;
+import com.urban.appl.Settings;
 import com.urban.data.Category;
+import com.urban.data.User;
 import com.urban.data.dao.DAO;
 import com.urban.task.HttpRequestTask;
 
@@ -56,6 +58,11 @@ public class DashboardActivity extends FragmentActivity {
         setContentView(R.layout.dashboard);
 
         context = getApplicationContext();
+        //Remove this! Just for test.
+        Settings.setLoggedUser(
+                DAO.getUniqByCriterion(User.class, DAO.createCriterion(User.class).eq("login", "admin")));
+
+
 
         if (checkPlayServices()) {
             regid = getRegistrationId(context);
@@ -88,7 +95,7 @@ public class DashboardActivity extends FragmentActivity {
 
     }
 
-    public void redirectToCathegory(Category category){
+    public void redirectToCategory(Category category){
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(CATEGORY_ID_ARGUMENT, category.getId());
         startActivity(intent);
@@ -116,13 +123,13 @@ public class DashboardActivity extends FragmentActivity {
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.dashboardPlate1){
-                redirectToCathegory(categories.get(0));
+                redirectToCategory(categories.get(0));
             } else if (v.getId() == R.id.dashboardPlate2){
-                redirectToCathegory(categories.get(1));
+                redirectToCategory(categories.get(1));
             } else if (v.getId() == R.id.dashboardPlate3){
-                redirectToCathegory(categories.get(2));
+                redirectToCategory(categories.get(2));
             } else if (v.getId() == R.id.dashboardPlate4){
-                redirectToCathegory(categories.get(3));
+                redirectToCategory(categories.get(3));
             }
 
         }

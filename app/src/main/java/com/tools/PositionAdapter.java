@@ -1,8 +1,5 @@
 package com.tools;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +11,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.test.R;
+import com.urban.appl.Settings;
 import com.urban.data.Position;
+import com.urban.data.User;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Set;
 
 public class PositionAdapter extends ArrayAdapter<Position> {
     private final Context context;
@@ -42,10 +45,26 @@ public class PositionAdapter extends ArrayAdapter<Position> {
         holder.text = (TextView) convertView.findViewById(R.id.txt);
         holder.text.setText(values.get(position).getName());
 
-        holder.btn1View = (Button) convertView.findViewById(R.id.mapBtn);
-        holder.btn2View = (Button) convertView.findViewById(R.id.likeBtn);
+        holder.mapBtn = (Button) convertView.findViewById(R.id.mapBtn);
+        holder.likeBtn = (Button) convertView.findViewById(R.id.likeBtn);
 
-        holder.btn2View.setOnClickListener(new OnClickListener() {
+        //Change strategy of marking.
+        User loggedUser = Settings.getLoggedUser();
+        if (loggedUser != null) {
+            Set<Position> subscribes = loggedUser.getSubscribes();
+
+            if (subscribes != null && subscribes.contains(values.get(position))) {
+                holder.likeBtn.setActivated(false);
+                //just for test. remove this.
+                holder.mapBtn.setVisibility(View.INVISIBLE);
+            }
+
+        } else {
+            holder.mapBtn.setVisibility(View.INVISIBLE);
+            holder.likeBtn.setVisibility(View.INVISIBLE);
+        }
+
+        holder.likeBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast t = Toast.makeText(context, "are you really like me?",
@@ -62,7 +81,7 @@ public class PositionAdapter extends ArrayAdapter<Position> {
 
     private static class ViewHolder {
         TextView text;
-        Button btn1View;
-        Button btn2View;
+        Button mapBtn;
+        Button likeBtn;
    }
 }
