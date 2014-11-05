@@ -40,7 +40,7 @@
             android:value="AIzaSyA_cFgy_JUzyjx1Jn5JDFnmORXCksrizN8" />
 
         <receiver
-            android:name=".UrbanGcmBroadcastReceiver"
+            android:name="com.urban.receiver.UrbanGcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -49,7 +49,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".UrbanGcmIntentService" />
+        <service android:name="com.urban.service.UrbanGcmIntentService" />
 
         <activity
             android:name="com.urban.activity.login.LoginActivity"
