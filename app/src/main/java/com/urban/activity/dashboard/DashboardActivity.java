@@ -10,9 +10,9 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.Toast;
 
 import com.example.test.R;
@@ -28,28 +28,38 @@ import com.urban.data.dao.DAO;
 import com.urban.task.HttpRequestTask;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class DashboardActivity extends FragmentActivity {
-
     public static final String CATEGORY_ID_ARGUMENT = "category_id";
-
-    private ArrayList<Category> categories = null;
-
-    public static final String EXTRA_MESSAGE = "message";
     public static final String PROPERTY_REG_ID = "registration_id";
+
     private static final String PROPERTY_APP_VERSION = "appVersion";
-    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     /**
      * Tag used on log messages.
      */
     private static final String TAG = "DashBoardActivity";
 
+    private List<Category> categories = null;
     private SharedPreferences prefs;
     private Context context;
-
     private String regid;
 
+    /**
+     * @return Application's version code from the {@code PackageManager}.
+     */
+    private static int getAppVersion(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            // should never happen
+            throw new RuntimeException("Could not get package name: " + e);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,52 +68,22 @@ public class DashboardActivity extends FragmentActivity {
         setContentView(R.layout.dashboard);
 
         context = getApplicationContext();
-        //Remove this! Just for test.
-        Settings.setLoggedUser(
-                DAO.getUniqByCriterion(User.class, DAO.createCriterion(User.class).eq("login", "admin")));
 
+        //TODO: Stub. Remove this! Just for test.
+        Settings.setLoggedUser(DAO.getUniqByCriterion(
+                User.class, DAO.createCriterion(User.class).eq("login", "admin")));
 
+        registreInPlayServices();
+        categories = getCategories();
 
-        if (checkPlayServices()) {
-            regid = getRegistrationId(context);
-            if (regid == null) {
-                sendRegistrationIdToBackend();
+        GridView gridview = (GridView) findViewById(R.id.dashgridview);
+        gridview.setAdapter(new DashboardAdapter(this, categories));
+
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                redirectToCategory(categories.get(position));
             }
-        } else {
-            Log.i(TAG, "No valid Google Play Services APK found.");
-        }
-
-        try {
-            categories = (ArrayList<Category>)DAO.getAll(Category.class);
-        } catch (Exception e) {
-            Log.e("", "Can not load categories");
-            return;
-        }
-
-        Button button = (Button)findViewById(R.id.dashboardPlate1);
-        button.setText(categories.get(0).getName());
-        button.setOnClickListener(onCategoryClickListener);
-        button = (Button)findViewById(R.id.dashboardPlate2);
-        button.setText(categories.get(1).getName());
-        button.setOnClickListener(onCategoryClickListener);
-        button = (Button)findViewById(R.id.dashboardPlate3);
-        button.setText(categories.get(2).getName());
-        button.setOnClickListener(onCategoryClickListener);
-        /*button = (Button)findViewById(R.id.dashboardPlate4);
-        button.setText(categories.get(3).getName());
-        button.setOnClickListener(onCategoryClickListener);*/
-
-    }
-
-    public void redirectToCategory(Category category){
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(CATEGORY_ID_ARGUMENT, category.getId());
-        startActivity(intent);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return true;
+        });
     }
 
     @Override
@@ -119,21 +99,36 @@ public class DashboardActivity extends FragmentActivity {
         ViewServer.get(this).setFocusedWindow(this);
     }
 
-    private final OnClickListener onCategoryClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (v.getId() == R.id.dashboardPlate1){
-                redirectToCategory(categories.get(0));
-            } else if (v.getId() == R.id.dashboardPlate2){
-                redirectToCategory(categories.get(1));
-            } else if (v.getId() == R.id.dashboardPlate3){
-                redirectToCategory(categories.get(2));
-            } else if (v.getId() == R.id.dashboardPlate4){
-                redirectToCategory(categories.get(3));
-            }
-
+    private List<Category> getCategories() {
+        try {
+            return (ArrayList<Category>) DAO.getAll(Category.class);
+        } catch (Exception e) {
+            Log.e(TAG, "Can not load categories");
+            return Collections.<Category>emptyList();
         }
-    };
+    }
+
+    public void redirectToCategory(Category category) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(CATEGORY_ID_ARGUMENT, category.getId());
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
+
+    private void registreInPlayServices() {
+        if (checkPlayServices()) {
+            regid = getRegistrationId(context);
+            if (regid == null) {
+//                sendRegistrationIdToBackend();
+            }
+        } else {
+            Log.i(TAG, "No valid Google Play Services APK found.");
+        }
+    }
 
     /**
      * Check the device to make sure it has the Google Play Services APK. If
@@ -156,11 +151,11 @@ public class DashboardActivity extends FragmentActivity {
 
     /**
      * Gets the current registration ID for application on GCM service.
-     * <p>
+     * <p/>
      * If result is empty, the app needs to register.
      *
      * @return registration ID, or empty string if there is no existing
-     *         registration ID.
+     * registration ID.
      */
     private String getRegistrationId(Context context) {
         final SharedPreferences prefs = getGCMPreferences(context);
@@ -191,19 +186,6 @@ public class DashboardActivity extends FragmentActivity {
     }
 
     /**
-     * @return Application's version code from the {@code PackageManager}.
-     */
-    private static int getAppVersion(Context context) {
-        try {
-            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            return packageInfo.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            // should never happen
-            throw new RuntimeException("Could not get package name: " + e);
-        }
-    }
-
-    /**
      * Sends the registration ID to your server over HTTP, so it can use GCM/HTTP
      * or CCS to send messages to your app. Not needed for this demo since the
      * device sends upstream messages to a server that echoes back the message
@@ -221,7 +203,7 @@ public class DashboardActivity extends FragmentActivity {
      * {@code SharedPreferences}.
      *
      * @param context application's context.
-     * @param regId registration ID
+     * @param regId   registration ID
      */
     public void storeRegistrationId(Context context, String regId) {
         final SharedPreferences prefs = getGCMPreferences(context);
@@ -233,10 +215,8 @@ public class DashboardActivity extends FragmentActivity {
         editor.commit();
     }
 
-
     public void notify(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
-
 
 }

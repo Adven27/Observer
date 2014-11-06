@@ -47,11 +47,10 @@ public class MainActivity extends FragmentActivity {
         ViewServer.get(this).addWindow(this);
     }
 
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add("Menu").setIcon(R.drawable.side_menu_button).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        return true;
+    public void onDestroy() {
+        super.onDestroy();
+        ViewServer.get(this).removeWindow(this);
     }
 
     @Override
@@ -60,17 +59,16 @@ public class MainActivity extends FragmentActivity {
         return super.onMenuItemSelected(featureId, item);
     }
 
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        ViewServer.get(this).removeWindow(this);
-    }
-
     @Override
     public void onResume() {
         super.onResume();
         ViewServer.get(this).setFocusedWindow(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add("Menu").setIcon(R.drawable.side_menu_button).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return true;
     }
 
 }

@@ -15,5 +15,6 @@
     <string name="usr_second_name" translatable="false">Отчество:</string>
     <string name="usr_birthday" translatable="false">Дата рождения:</string>
     <string name="usr_phone" translatable="false">Телефон:</string>
+    <string name="icon">DASH CELL DESC</string>
 
 </resources>

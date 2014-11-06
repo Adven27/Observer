@@ -8,8 +8,6 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -26,9 +24,6 @@ public class LoginActivity extends FragmentActivity {
 
     private EditText login;
     private EditText password;
-    private Button signIn;
-    private Button dismiss;
-    private Button register;
 
     private SharedPreferences prefs;
     private Context context;
@@ -39,49 +34,16 @@ public class LoginActivity extends FragmentActivity {
         setContentView(R.layout.login);
 
         context = getApplicationContext();
-
         login = (EditText)findViewById(R.id.login);
         password = (EditText)findViewById(R.id.password);
-        signIn = (Button)findViewById(R.id.signIn);
-        dismiss = (Button)findViewById(R.id.dismiss);
-        register = (Button)findViewById(R.id.register);
 
-        //Dummy data for test.
+        //TODO: Stub
         setDummy();
-
-        signIn.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                SignInTask task = new SignInTask(LoginActivity.this);
-                HttpRequestTask httpTask = new HttpRequestTask(task);
-                httpTask.execute(login.getText().toString(), password.getText().toString());
-
-            }
-        });
-
-        dismiss.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                redirect();
-            }
-        });
-
-        register.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                redirectToRegistration();
-            }
-        });
 
         ViewServer.get(this).addWindow(this);
     }
 
-
-
-    @Override
+   @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add("Menu").setIcon(R.drawable.side_menu_button).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return true;
@@ -120,14 +82,35 @@ public class LoginActivity extends FragmentActivity {
         startActivity(intent);
     }
 
-    private void redirectToRegistration() {
-        Intent intent = new Intent(this, RegistrationActivity.class);
-        startActivity(intent);
-    }
-
     private void setDummy() {
         login.setText("admin");
         password.setText("admin");
     }
 
+    /**
+     * Register button click
+     * @param button
+     */
+    public void onRegister(View button) {
+        Intent intent = new Intent(this, RegistrationActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Dismiss button click
+     * @param button
+     */
+    public void onDismiss(View button) {
+        redirect();
+    }
+
+    /**
+     * SignIn button click
+     * @param button
+     */
+    public void onSignIn(View button) {
+        SignInTask task = new SignInTask(LoginActivity.this);
+        HttpRequestTask httpTask = new HttpRequestTask(task);
+        httpTask.execute(login.getText().toString(), password.getText().toString());
+    }
 }

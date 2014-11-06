@@ -1,43 +1,7 @@
-<com.urban.activity.dashboard.layout.DashboardLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_weight="1"
-    android:background="#f8f9fe" >
-    <!--  News Feed Button -->
-    <Button
-        android:id="@+id/btn_news_feed"
-        style="@style/DashboardButton"
-        />
-
-    <!--  Friends Button -->
-    <Button
-        android:id="@+id/dashboardPlate1"
-        style="@style/DashboardButton"
-        />
-
-    <!--  Messages Button -->
-    <Button
-        android:id="@+id/dashboardPlate2"
-        style="@style/DashboardButton"
-        />
-
-    <!--  Places Button -->
-    <Button
-        android:id="@+id/dashboardPlate3"
-        style="@style/DashboardButton"
-        />
-
-    <!--  Events Button -->
-    <Button
-        android:id="@+id/dashboardPlate4"
-        style="@style/DashboardButton"
-        />
-
-    <!--  Photos Button -->
-    <Button
-        android:id="@+id/dashboardPlate5"
-        style="@style/DashboardButton"
-        />
-
-</com.urban.activity.dashboard.layout.DashboardLayout>
+<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dashgridview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:numColumns="auto_fit"
+    android:stretchMode="columnWidth"
+    android:gravity="center"/>

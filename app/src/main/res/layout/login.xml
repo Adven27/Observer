@@ -42,16 +42,19 @@
         android:id="@+id/signIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Отправить" />
+        android:text="Отправить"
+        android:onClick="onSignIn"/>
     <Button
         android:id="@+id/dismiss"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Продолжить" />
+        android:text="Продолжить"
+        android:onClick="onDismiss"/>
     <Button
         android:id="@+id/register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Зарегистрироваться" />
+        android:text="Зарегистрироваться"
+        android:onClick="onRegister"/>
 
 </LinearLayout>
