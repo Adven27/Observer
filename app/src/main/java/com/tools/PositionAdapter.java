@@ -23,18 +23,18 @@ public class PositionAdapter extends ArrayAdapter<Position> {
     private final Context context;
     private ArrayList<Position> values;
 
-    public PositionAdapter(Context context, int textViewResourceId, Collection<Position> values) {
-        super(context, textViewResourceId, new ArrayList<Position>(values));
+    public PositionAdapter(Context context, Collection<Position> values) {
+        super(context, R.layout.category_item, new ArrayList<>(values));
         this.context = context;
-        this.values = new ArrayList<Position>(values);
+        this.values = new ArrayList<>(values);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context
-            .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater =
+                (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        ViewHolder holder = null;
+        ViewHolder holder;
 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.category_item, parent, false);
@@ -52,13 +52,12 @@ public class PositionAdapter extends ArrayAdapter<Position> {
         User loggedUser = Settings.getLoggedUser();
         if (loggedUser != null) {
             Set<Position> subscribes = loggedUser.getSubscribes();
-
             if (subscribes != null && subscribes.contains(values.get(position))) {
                 holder.likeBtn.setActivated(false);
-                //just for test. remove this.
+
+                //TODO: Stub. just for test. remove this.
                 holder.mapBtn.setVisibility(View.INVISIBLE);
             }
-
         } else {
             holder.mapBtn.setVisibility(View.INVISIBLE);
             holder.likeBtn.setVisibility(View.INVISIBLE);
@@ -67,10 +66,7 @@ public class PositionAdapter extends ArrayAdapter<Position> {
         holder.likeBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast t = Toast.makeText(context, "are you really like me?",
-                        Toast.LENGTH_LONG);
-
-                t.show();
+                Toast.makeText(context, "are you really like me?",Toast.LENGTH_LONG).show();
             }
         });
 
@@ -83,5 +79,5 @@ public class PositionAdapter extends ArrayAdapter<Position> {
         TextView text;
         Button mapBtn;
         Button likeBtn;
-   }
+    }
 }

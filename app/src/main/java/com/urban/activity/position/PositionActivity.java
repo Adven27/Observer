@@ -1,89 +1,91 @@
 package com.urban.activity.position;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import android.app.ActionBar;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 import com.example.test.R;
-import com.tools.PositionPagesFragmentsAdapter;
+import com.tools.LogHelper;
 import com.tools.PrototypeView;
 import com.urban.data.Position;
 import com.urban.data.dao.DAO;
-import com.urban.fragments.pages.ActionsFragment;
-import com.urban.fragments.pages.ContactsFragment;
-import com.urban.fragments.pages.InfoFragment;
-import com.urban.fragments.pages.PhotoFragment;
-import com.urban.fragments.pages.map.PositionMapFragment;
-import com.viewpagerindicator.TitlePageIndicator;
 
 public class PositionActivity extends FragmentActivity {
-
-
     public static final String EXTRA_POSITION_ID = "position_id";
-    private static final String TAG = "PositionActivity";
-
-
-    private Position position = null;
-
+    private TabsPagerAdapter tabsPagerAdapter;
+    private Position position;
     private ViewPager pager;
 
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
-        setContentView(R.layout.position);
 
+        setContentView(R.layout.position);
         PrototypeView.switchActivity(this);
 
         long positionId = getIntent().getIntExtra(EXTRA_POSITION_ID, -1);
+        position = getPosition(positionId);
 
-        try {
-            position = DAO.get(Position.class, positionId);
-        } catch (Exception e) {
-            Log.e(TAG, "Can't find the position by id: " + positionId);
-        }
+        pager = (ViewPager) findViewById(R.id.tabpager);
 
-        List<Fragment> fragments = new ArrayList<Fragment>();
-        pager = (ViewPager)findViewById(R.id.view_pager);
+        tabsPagerAdapter = new TabsPagerAdapter(getSupportFragmentManager(), position);
+        pager.setAdapter(tabsPagerAdapter);
 
-        InfoFragment info = new InfoFragment();
-        info.setPosition(position);
+        final ActionBar actionBar = getActionBar();
 
-        ContactsFragment contacts = new ContactsFragment();
-        contacts.setPosition(position);
+        // Specify that tabs should be displayed in the action bar.
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        PhotoFragment photo = new PhotoFragment();
-        photo.setPosition(position);
+        // Create a tab listener that is called when the user changes tabs.
+        ActionBar.TabListener tabListener = new ActionBar.TabListener() {
+            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+                // When the tab is selected, switch to the corresponding page in the ViewPager.
+                pager.setCurrentItem(tab.getPosition());
+            }
 
-        PositionMapFragment map = new PositionMapFragment();
-        map.setPosition(position);
+            @Override
+            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+            }
 
-        ActionsFragment actions = new ActionsFragment();
-        actions.setPosition(position);
+            @Override
+            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+            }
+        };
 
-        fragments.add(info);
-        fragments.add(contacts);
-        fragments.add(photo);
-        fragments.add(actions);
-        fragments.add(map);
+        pager.setOnPageChangeListener(
+                new ViewPager.SimpleOnPageChangeListener() {
+                    @Override
+                    public void onPageSelected(int position) {
+                        // When swiping between pages, select the corresponding tab.
+                        getActionBar().setSelectedNavigationItem(position);
+                    }
+                });
 
-        FragmentPagerAdapter adapter = new PositionPagesFragmentsAdapter(getSupportFragmentManager(), fragments);
-
-        /*PositionPagerAdapter pagerAdapter = new PositionPagerAdapter(pages);
-        pager.setAdapter(pagerAdapter);
-        */
-        pager.setAdapter(adapter);
-
-
-        /*PrototypeView.setCurrentContainerId(R.id.map_container);
-        PrototypeView.doInTransaction(new ShowMapAction(), false);*/
-
-        TitlePageIndicator titleIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
-        titleIndicator.setViewPager(pager);
+        // Add tabs, specifying the tab's text and TabListener
+        addTabs(actionBar, tabListener);
     }
+
+    private void addTabs(ActionBar actionBar, ActionBar.TabListener tabListener) {
+        for (int i = 0; i < tabsPagerAdapter.getCount(); i++) {
+            actionBar.addTab(
+                    actionBar.newTab()
+                            //.setText("Tab " + (i + 1))
+                            .setIcon(getResources().getDrawable(tabsPagerAdapter.getIcon(i)))
+                            .setTabListener(tabListener));
+        }
+    }
+
+    private Position getPosition(long positionId) {
+        try {
+            return DAO.get(Position.class, positionId);
+        } catch (Exception e) {
+            Log.e(LogHelper.TAG_DB_OPERATION, "Can't find the position by id: " + positionId, e);
+            return null;
+        }
+    }
+
 }
+

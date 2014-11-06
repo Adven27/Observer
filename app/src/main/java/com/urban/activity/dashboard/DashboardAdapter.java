@@ -33,6 +33,7 @@ public class DashboardAdapter extends ArrayAdapter {
         //ImageView icon = (ImageView) row.findViewById(R.id.icon);
         //icon.setImageResource(R.drawable.dash_rest);
 
+        //лабел проставляться автоматически методом Category.toString(), но toString возвращает не то что надо...
         TextView label = (TextView) row.findViewById(R.id.label);
         label.setText(((Category) getItem(position)).getName());
         return (row);

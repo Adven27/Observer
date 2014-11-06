@@ -9,10 +9,20 @@ import android.view.ViewGroup;
 import com.example.test.R;
 import com.urban.data.Position;
 
-public class ActionsFragment extends Fragment {
+public class ActionsFragment extends PositionTabFragment {
 
     private static final int LAYOUT_ID = R.layout.position_actions;
-    private Position position;
+
+    /**
+     * newInstance constructor for creating fragment with arguments
+     *
+     * @param position
+     */
+    public static ActionsFragment newInstance(Position position) {
+        ActionsFragment fragment = new ActionsFragment();
+        fragment.position = position;
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -21,10 +31,4 @@ public class ActionsFragment extends Fragment {
         View view = inflater.inflate(LAYOUT_ID, container, false);
         return view;
     }
-
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
-
 }

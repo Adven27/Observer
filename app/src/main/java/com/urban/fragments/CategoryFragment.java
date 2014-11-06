@@ -15,13 +15,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.test.R;
+import com.tools.LogHelper;
 import com.tools.PositionAdapter;
 import com.urban.activity.position.PositionActivity;
 import com.urban.data.Category;
 import com.urban.data.Position;
 
 import java.util.Collection;
-//import com.example.prototype.dao.DAO;
+import java.util.Collections;
+import java.util.Set;
+
 
 public class CategoryFragment extends Fragment {
 
@@ -29,57 +32,56 @@ public class CategoryFragment extends Fragment {
     private Category currentCategory = null;
 
 
-    public void setCurrentCategory(Category category){
+    public void setCurrentCategory(Category category) {
         this.currentCategory = category;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         View category = inflater.inflate(R.layout.category, container, false);
 
         if (currentCategory != null) {
-            TextView categoryHeader = (TextView)category.findViewById(R.id.category_header);
+            TextView categoryHeader = (TextView) category.findViewById(R.id.category_header);
             categoryHeader.setText(currentCategory.getName());
 
-            ListView positionList = (ListView)category.findViewById(R.id.position_list);
-
             FragmentTransaction t = getActivity().getSupportFragmentManager().beginTransaction();
-
             t.add(R.id.banner_container, BannerFragment.getInstance());
             t.commit();
 
-            try {
-                positions = currentCategory.getPositions();
-            } catch (Exception e) {
-                Log.e("", "Error during db access", e);
-            }
+            positions = getCategoryPositions();
 
-            positionList.setAdapter(
-                    new PositionAdapter(getActivity(), R.layout.category_item, positions));
-
+            ListView positionList = (ListView) category.findViewById(R.id.position_list);
+            positionList.setAdapter(new PositionAdapter(getActivity(), positions));
             positionList.setOnItemClickListener(
-                    new MyOnItemClickListener(getActivity().getSupportFragmentManager()));
-
+                    new OnPositionClickListener(getActivity().getSupportFragmentManager()));
         }
 
         return category;
     }
 
+    private Set<Position> getCategoryPositions() {
+        try {
+            return currentCategory.getPositions();
+        } catch (Exception e) {
+            Log.e(LogHelper.TAG_DB_OPERATION, "Error during db access", e);
+            return Collections.<Position>emptySet();
+        }
+    }
 
-    private class MyOnItemClickListener implements OnItemClickListener {
+
+    private class OnPositionClickListener implements OnItemClickListener {
 
         private FragmentManager mgr;
 
-        public MyOnItemClickListener(FragmentManager manager){
+        public OnPositionClickListener(FragmentManager manager) {
             super();
             this.mgr = manager;
         }
 
         @Override
         public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
-
             PositionAdapter posAdapter = null;
             if (adapter.getAdapter() instanceof PositionAdapter) {
                 posAdapter = (PositionAdapter) adapter.getAdapter();
@@ -89,7 +91,6 @@ public class CategoryFragment extends Fragment {
             Intent intent = new Intent(getActivity(), PositionActivity.class);
             intent.putExtra(PositionActivity.EXTRA_POSITION_ID, pos.getId());
             startActivity(intent);
-
         }
     }
 }

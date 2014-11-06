@@ -15,11 +15,8 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
 
     ArrayList<Category> categories = null;
 
-    public CategoryAdapter(Context context, int resource,
-            List<Category> objects) {
-
+    public CategoryAdapter(Context context, int resource, List<Category> objects) {
         super(context, resource, objects);
-
         this.categories = (ArrayList<Category>)objects;
     }
 

@@ -19,13 +19,10 @@ public class FooterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.footer, container, true);
         Button button = (Button)v.findViewById(R.id.like);
-
         button.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
-                Toast t = Toast.makeText(getActivity(), "Plus one, dude! =)", Toast.LENGTH_SHORT);
-                t.show();
+                Toast.makeText(getActivity(), "Plus one, dude! =)", Toast.LENGTH_SHORT).show();
             }
         });
         return v;

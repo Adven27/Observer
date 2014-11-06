@@ -1,11 +1,9 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    style="@style/CategoryListView"
-    >
+    style="@style/CategoryListView">
 
     <TextView
         android:id="@+id/txt"
@@ -17,8 +15,7 @@
         android:textAlignment="gravity"
         style="@style/CategoryItem"
         android:focusable="false"
-        android:focusableInTouchMode="false"
-    />
+        android:focusableInTouchMode="false"/>
 
     <Button
         android:id="@+id/mapBtn"
@@ -28,8 +25,7 @@
         android:layout_marginLeft="10dp"
         android:background="@drawable/shop"
         android:focusable="false"
-        android:focusableInTouchMode="false"
-    />
+        android:focusableInTouchMode="false"/>
 
     <Button
         android:id="@+id/likeBtn"
@@ -40,7 +36,6 @@
         android:layout_marginLeft="10dp"
         android:background="@drawable/shop"
         android:focusable="false"
-        android:focusableInTouchMode="false"
-    />
+        android:focusableInTouchMode="false"/>
 
 </LinearLayout>

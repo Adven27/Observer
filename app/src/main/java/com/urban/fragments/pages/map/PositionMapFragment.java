@@ -14,13 +14,21 @@ import com.tools.PrototypeView.ShowMapAction;
 import com.urban.data.Organization;
 import com.urban.data.Place;
 import com.urban.data.Position;
+import com.urban.fragments.pages.PositionTabFragment;
 
-public class PositionMapFragment extends Fragment {
-
-
+public class PositionMapFragment extends PositionTabFragment {
     private static final int LAYOUT_ID = R.layout.position_map;
 
-    private Position position;
+    /**
+     * newInstance constructor for creating fragment with arguments
+     *
+     * @param position
+     */
+    public static PositionMapFragment newInstance(Position position) {
+        PositionMapFragment fragment = new PositionMapFragment();
+        fragment.position = position;
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,9 +44,5 @@ public class PositionMapFragment extends Fragment {
         PrototypeView.doInTransaction(new ShowMapAction(), false);
 
         return view;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
     }
 }

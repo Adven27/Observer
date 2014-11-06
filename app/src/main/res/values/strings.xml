@@ -16,5 +16,6 @@
     <string name="usr_birthday" translatable="false">Дата рождения:</string>
     <string name="usr_phone" translatable="false">Телефон:</string>
     <string name="icon">DASH CELL DESC</string>
+    <string name="category_name">Category Name</string>
 
 </resources>

@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.test.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.tools.LogHelper;
 import com.tools.ViewServer;
 import com.urban.activity.main.MainActivity;
 import com.urban.activity.userproperties.task.UserPropertiesTask;
@@ -37,11 +38,6 @@ public class DashboardActivity extends FragmentActivity {
 
     private static final String PROPERTY_APP_VERSION = "appVersion";
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-
-    /**
-     * Tag used on log messages.
-     */
-    private static final String TAG = "DashBoardActivity";
 
     private List<Category> categories = null;
     private SharedPreferences prefs;
@@ -103,7 +99,7 @@ public class DashboardActivity extends FragmentActivity {
         try {
             return (ArrayList<Category>) DAO.getAll(Category.class);
         } catch (Exception e) {
-            Log.e(TAG, "Can not load categories");
+            Log.e(LogHelper.TAG_DB_OPERATION, "Can not load categories", e);
             return Collections.<Category>emptyList();
         }
     }
@@ -126,7 +122,7 @@ public class DashboardActivity extends FragmentActivity {
 //                sendRegistrationIdToBackend();
             }
         } else {
-            Log.i(TAG, "No valid Google Play Services APK found.");
+            Log.i(LogHelper.TAG_PLAY_SERVICES, "No valid Google Play Services APK found.");
         }
     }
 
@@ -141,7 +137,7 @@ public class DashboardActivity extends FragmentActivity {
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
                 GooglePlayServicesUtil.getErrorDialog(resultCode, this, PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
-                Log.i(TAG, "This device is not supported.");
+                Log.w(LogHelper.TAG_PLAY_SERVICES, "This device is not supported.");
                 finish();
             }
             return false;
@@ -161,7 +157,7 @@ public class DashboardActivity extends FragmentActivity {
         final SharedPreferences prefs = getGCMPreferences(context);
         String registrationId = prefs.getString(PROPERTY_REG_ID, null);
         if (registrationId == null) {
-            Log.i(TAG, "Registration not found.");
+            Log.i(LogHelper.TAG_PLAY_SERVICES, "Registration not found.");
             return null;
         }
         // Check if app was updated; if so, it must clear the registration ID
@@ -170,7 +166,7 @@ public class DashboardActivity extends FragmentActivity {
         int registeredVersion = prefs.getInt(PROPERTY_APP_VERSION, Integer.MIN_VALUE);
         int currentVersion = getAppVersion(context);
         if (registeredVersion != currentVersion) {
-            Log.i(TAG, "App version changed.");
+            Log.i(LogHelper.TAG_PLAY_SERVICES, "App version changed.");
             return null;
         }
         return registrationId;
@@ -208,7 +204,7 @@ public class DashboardActivity extends FragmentActivity {
     public void storeRegistrationId(Context context, String regId) {
         final SharedPreferences prefs = getGCMPreferences(context);
         int appVersion = getAppVersion(context);
-        Log.i(TAG, "Saving regId on app version " + appVersion);
+        Log.i(LogHelper.TAG_PLAY_SERVICES, "Saving regId on app version " + appVersion);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(PROPERTY_REG_ID, regId);
         editor.putInt(PROPERTY_APP_VERSION, appVersion);
