@@ -1,4 +1,4 @@
-package com.urban.task;
+package com.urban.service.urban.exception;
 
 import com.urban.data.ResponseError;
 

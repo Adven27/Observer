@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -18,23 +20,32 @@ import android.widget.Toast;
 import com.example.test.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.tools.LogHelper;
 import com.tools.ViewServer;
 import com.urban.activity.main.MainActivity;
-import com.urban.activity.userproperties.task.UserPropertiesTask;
+import com.urban.activity.task.UpdateUserTask;
 import com.urban.appl.Settings;
 import com.urban.data.Category;
 import com.urban.data.User;
 import com.urban.data.dao.DAO;
-import com.urban.task.HttpRequestTask;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import src.com.urban.data.sqlite.pojo.UserPojo;
+
 public class DashboardActivity extends FragmentActivity {
     public static final String CATEGORY_ID_ARGUMENT = "category_id";
     public static final String PROPERTY_REG_ID = "registration_id";
+
+    /**
+     * Substitute you own sender ID here. This is the project number you got
+     * from the API Console, as described in "Getting Started."
+     */
+    private static final String SENDER_ID = "724387067630";
 
     private static final String PROPERTY_APP_VERSION = "appVersion";
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
@@ -42,7 +53,11 @@ public class DashboardActivity extends FragmentActivity {
     private List<Category> categories = null;
     private SharedPreferences prefs;
     private Context context;
-    private String regid;
+
+    private String regId;
+    private GoogleCloudMessaging gcm;
+
+
 
     /**
      * @return Application's version code from the {@code PackageManager}.
@@ -69,7 +84,7 @@ public class DashboardActivity extends FragmentActivity {
         Settings.setLoggedUser(DAO.getUniqByCriterion(
                 User.class, DAO.createCriterion(User.class).eq("login", "admin")));
 
-        registreInPlayServices();
+        registerInPlayServices();
         categories = getCategories();
 
         GridView gridview = (GridView) findViewById(R.id.dashgridview);
@@ -115,11 +130,20 @@ public class DashboardActivity extends FragmentActivity {
         return true;
     }
 
-    private void registreInPlayServices() {
+    private void registerInPlayServices() {
         if (checkPlayServices()) {
-            regid = getRegistrationId(context);
-            if (regid == null) {
-//                sendRegistrationIdToBackend();
+            regId = getRegistrationId(context);
+            if (regId == null) {
+                if (gcm == null) {
+                    gcm = GoogleCloudMessaging.getInstance(context);
+                }
+                try {
+                    regId = gcm.register(SENDER_ID);
+                    sendRegistrationIdToBackend(regId);
+                } catch (IOException e) {
+                    //TODO: log this!
+                }
+
             }
         } else {
             Log.i(LogHelper.TAG_PLAY_SERVICES, "No valid Google Play Services APK found.");
@@ -187,21 +211,25 @@ public class DashboardActivity extends FragmentActivity {
      * device sends upstream messages to a server that echoes back the message
      * using the 'from' address in the message.
      */
-    private void sendRegistrationIdToBackend() {
-        UserPropertiesTask upTask = new UserPropertiesTask(this);
-        HttpRequestTask task = new HttpRequestTask(upTask);
+    private void sendRegistrationIdToBackend(String regId) {
+        User user = Settings.getLoggedUser();
+        ((UserPojo)user).setRegId(regId); //TODO: Should not write direct to the logged user there.
+        UpdateUserTask task = new UpdateUserTask(DashboardActivity.this);
 
-        task.execute();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, user);
+        } else {
+            task.execute(user);
+        }
     }
 
     /**
      * Stores the registration ID and app versionCode in the application's
      * {@code SharedPreferences}.
      *
-     * @param context application's context.
      * @param regId   registration ID
      */
-    public void storeRegistrationId(Context context, String regId) {
+    public void storeRegistrationId(String regId) {
         final SharedPreferences prefs = getGCMPreferences(context);
         int appVersion = getAppVersion(context);
         Log.i(LogHelper.TAG_PLAY_SERVICES, "Saving regId on app version " + appVersion);

@@ -3,6 +3,8 @@ package com.urban.activity.login;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -14,11 +16,11 @@ import android.widget.Toast;
 import com.example.test.R;
 import com.tools.ViewServer;
 import com.urban.activity.dashboard.DashboardActivity;
-import com.urban.activity.login.task.SignInTask;
 import com.urban.activity.registration.RegistrationActivity;
+import com.urban.activity.task.SignInTask;
 import com.urban.appl.Settings;
 import com.urban.data.User;
-import com.urban.task.HttpRequestTask;
+import com.urban.validation.ValidationHelper;
 
 public class LoginActivity extends FragmentActivity {
 
@@ -109,8 +111,21 @@ public class LoginActivity extends FragmentActivity {
      * @param button
      */
     public void onSignIn(View button) {
-        SignInTask task = new SignInTask(LoginActivity.this);
-        HttpRequestTask httpTask = new HttpRequestTask(task);
-        httpTask.execute(login.getText().toString(), password.getText().toString());
+        if (validateInput()) {
+            SignInTask task = new SignInTask(LoginActivity.this);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, login.getText().toString(), password.getText().toString());
+            } else {
+                task.execute(login.getText().toString(), password.getText().toString());
+            }
+        } else {
+            Toast.makeText(LoginActivity.this, "Not all fields were filled", Toast.LENGTH_LONG).show();
+        }
     }
+
+    private boolean validateInput() {
+        return !(ValidationHelper.isEmpty(login) && ValidationHelper.isEmpty(password));
+    }
+
 }

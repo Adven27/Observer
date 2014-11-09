@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
-import com.urban.service.UrbanGcmIntentService;
+import com.urban.service.gcm.UrbanGcmIntentService;
 
 /**
  * Created by MetallFoX on 01.11.2014.

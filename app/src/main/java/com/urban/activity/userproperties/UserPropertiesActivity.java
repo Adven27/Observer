@@ -1,11 +1,12 @@
 package com.urban.activity.userproperties;
 
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -15,9 +16,9 @@ import android.widget.Toast;
 import com.example.test.R;
 import com.tools.ViewServer;
 import com.urban.activity.dashboard.DashboardActivity;
-import com.urban.activity.userproperties.task.UserPropertiesTask;
+import com.urban.activity.task.UpdateUserTask;
+import com.urban.appl.Settings;
 import com.urban.data.User;
-import com.urban.task.HttpRequestTask;
 
 public class UserPropertiesActivity extends FragmentActivity {
 
@@ -45,28 +46,6 @@ public class UserPropertiesActivity extends FragmentActivity {
         birthday = (DatePicker)findViewById(R.id.anket_birthday);
         phone = (EditText)findViewById(R.id.anket_phone);
         register = (Button)findViewById(R.id.anket_register);
-
-        register.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (validateClient()) {
-                    UserPropertiesTask task = new UserPropertiesTask(null);
-                    HttpRequestTask httpTask = new HttpRequestTask(task);
-                    httpTask.execute(
-                            login.getText().toString(),
-                            password.getText().toString(),
-                            email.getText().toString(),
-                            surname.getText().toString(),
-                            name.getText().toString(),
-                            secondName.getText().toString(),
-                            null,
-                            phone.getText().toString());
-                } else {
-                    Toast.makeText(UserPropertiesActivity.this, "Not all fields were filled", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
 
         ViewServer.get(this).addWindow(this);
     }
@@ -116,4 +95,35 @@ public class UserPropertiesActivity extends FragmentActivity {
         return false;
     }
 
+    /**
+     * Register button click
+     * @param button
+     */
+    public void onSave(View button) {
+        if (validateInput()) {
+            //TODO: fix this null! Write parent class or interface for all Activities!
+            UpdateUserTask task = new UpdateUserTask(null);
+            //TODO: Implement updating of user fields!
+            User user = Settings.getLoggedUser();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, user);
+            } else {
+                task.execute(user);
+            }
+
+            task.execute(Settings.getLoggedUser());
+
+        } else {
+            Toast.makeText(UserPropertiesActivity.this, "Not all fields were filled", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private boolean validateInput() {
+        /*return !(ValidationHelper.isEmpty(login) && ValidationHelper.isEmpty(password)
+                && ValidationHelper.isEmpty(surname) && ValidationHelper.isEmpty(name)
+                && ValidationHelper.isEmpty(secondName) && ValidationHelper.isEmpty(email)
+                && ValidationHelper.isEmpty(phone) && ValidationHelper.isEmpty(birthday));*/
+
+        return true;
+    }
 }

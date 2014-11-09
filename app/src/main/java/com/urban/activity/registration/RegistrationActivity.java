@@ -1,25 +1,31 @@
 package com.urban.activity.registration;
 
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.test.R;
 import com.tools.ViewServer;
 import com.urban.activity.dashboard.DashboardActivity;
-import com.urban.activity.registration.task.RegistrationTask;
+import com.urban.activity.task.RegistrationTask;
 import com.urban.appl.Settings;
+import com.urban.data.Person;
 import com.urban.data.User;
-import com.urban.task.HttpRequestTask;
+import com.urban.validation.ValidationHelper;
+
+import java.util.Date;
+
+import src.com.urban.data.sqlite.pojo.PersonPojo;
+import src.com.urban.data.sqlite.pojo.UserPojo;
 
 public class RegistrationActivity extends FragmentActivity {
 
@@ -60,28 +66,6 @@ public class RegistrationActivity extends FragmentActivity {
 
         addMock();//REMOVE THIS!!! JUST FOR TEST!!
 
-        register.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (validateClient()) {
-                    RegistrationTask task = new RegistrationTask(RegistrationActivity.this);
-                    HttpRequestTask httpTask = new HttpRequestTask(task);
-                    httpTask.execute(
-                            login.getText().toString(),
-                            password.getText().toString(),
-                            email.getText().toString(),
-                            surname.getText().toString(),
-                            name.getText().toString(),
-                            secondName.getText().toString(),
-                            null,
-                            phone.getText().toString());
-                } else {
-                    Toast.makeText(RegistrationActivity.this, "Not all fields were filled", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
         ViewServer.get(this).addWindow(this);
     }
 
@@ -96,7 +80,6 @@ public class RegistrationActivity extends FragmentActivity {
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         return super.onMenuItemSelected(featureId, item);
     }
-
 
     @Override
     public void onDestroy() {
@@ -125,17 +108,58 @@ public class RegistrationActivity extends FragmentActivity {
         startActivity(intent);
     }
 
-    private boolean validateClient() {
-        return !(isEmpty(login) && isEmpty(password) && isEmpty(surname) && isEmpty(name)
-                && isEmpty(secondName) && isEmpty(email) && isEmpty(phone) && isEmpty(birthday));
+    private boolean validateInput() {
+        return !(ValidationHelper.isEmpty(login) && ValidationHelper.isEmpty(password)
+                && ValidationHelper.isEmpty(surname) && ValidationHelper.isEmpty(name)
+                && ValidationHelper.isEmpty(secondName) && ValidationHelper.isEmpty(email)
+                && ValidationHelper.isEmpty(phone) && ValidationHelper.isEmpty(birthday));
     }
 
-    private boolean isEmpty(TextView view) {
-        return "".equals(view.getText().toString());
+    private User createUser(String login, String password, String email, String surname, String name, String secondName, Date birthday, String phone) {
+        Person person = new PersonPojo();
+        person.setSurname(surname);
+        person.setFirstName(name);
+        person.setSecondName(secondName);
+        person.setAge(25); //TODO: Remove this!!! And remove property from the Pojo! To write calculating method!
+        person.setPhone(phone);
+        person.setBirthday(birthday);
+
+        User user = new UserPojo();
+        user.setLogin(login);
+        user.setPassword(password);
+        user.setPerson(person);
+
+        return user;
     }
 
-    private boolean isEmpty(DatePicker view) {
-        return false;
+    /**
+     * Register button click
+     * @param button
+     */
+    public void onRegister(View button) {
+        if (validateInput()) {
+            RegistrationTask task = new RegistrationTask(RegistrationActivity.this);
+
+            User user = createUser(
+                    login.getText().toString(),
+                    password.getText().toString(),
+                    email.getText().toString(),
+                    surname.getText().toString(),
+                    name.getText().toString(),
+                    secondName.getText().toString(),
+                    null,
+                    phone.getText().toString()
+            );
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, user);
+            } else {
+                task.execute(user);
+            }
+
+        } else {
+            Toast.makeText(RegistrationActivity.this, "Not all fields were filled", Toast.LENGTH_LONG).show();
+        }
     }
 
 }

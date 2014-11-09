@@ -133,8 +133,12 @@ public class OrmligthSQLLightDAO<T> extends OrmLiteSqliteOpenHelper implements I
     }
 
     public <T> void save(T objToSave) {
-        ((RuntimeExceptionDao<T, Long>)getRuntimeDAO(
-                objToSave.getClass())).createOrUpdate(objToSave);
+        RuntimeExceptionDao<T, Long>dao = (RuntimeExceptionDao<T, Long>) getRuntimeDAO(objToSave.getClass());
+        try {
+            dao.createOrUpdate(objToSave);
+        } catch (RuntimeException e) {
+            //TODO: This DAO throws RuntimeException. Do something with exception handling.
+        }
         // TODO Auto-generated method stub
     }
 

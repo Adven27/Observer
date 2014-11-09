@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.urban.dao.DBInitializer;
+import com.urban.service.urban.UrbanServiceSettings;
 
 public class ObserverApplication extends Application {
 	
@@ -59,6 +60,7 @@ public class ObserverApplication extends Application {
         try {
 			DBInitializer.initDB(this);
 	        DBInitializer.initDAO(this);
+            UrbanServiceSettings.setServiceType(UrbanServiceSettings.UrbanServiceType.STUB);
 		} catch (Exception e) {
 			//if we have error here it means we can't work.
 			//TODO: show something sad to user and terminate

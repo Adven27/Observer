@@ -1,4 +1,4 @@
-package com.urban.service;
+package com.urban.service.gcm;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
