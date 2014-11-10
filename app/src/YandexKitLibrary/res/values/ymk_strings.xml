@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<resources>
-    <string name="ymk_lang" translatable="false">ru</string>
-    <!-- parameter to send to the server -->
-    <string name="ymk_findme_not_found" translatable="false">Не удалось определить местоположение</string>
-    <string name="ymk_my_place" translatable="false">Мое местоположение</string>
-    <string name="ymk_meters_short" translatable="false">м</string>
-    <string name="ymk_kilometers_short" translatable="false">км</string>
-</resources>
