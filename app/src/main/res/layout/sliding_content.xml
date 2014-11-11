@@ -18,7 +18,7 @@
                 sliding:viewAbove="@layout/main_content"
                 sliding:viewBehind="@layout/menu_frame"
                 sliding:touchModeAbove="margin"
-                sliding:behindOffset="@dimen/slidingmenu_offset"
+                sliding:behindWidth="@dimen/slidingmenu_width"
                 sliding:shadowDrawable="@drawable/shadow"
                 sliding:fadeEnabled="false"
                 sliding:fadeDegree="0.35"

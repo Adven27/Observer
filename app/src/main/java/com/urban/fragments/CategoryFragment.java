@@ -39,26 +39,46 @@ public class CategoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View categoryLayout = inflater.inflate(R.layout.category, container, false);
 
-        View category = inflater.inflate(R.layout.category, container, false);
+        setUpCategoryHeader(categoryLayout);
+        setUpPositionListView(categoryLayout);
+        addBannerFragmentIfNotAdded();
 
-        if (currentCategory != null) {
-            TextView categoryHeader = (TextView) category.findViewById(R.id.category_header);
-            categoryHeader.setText(currentCategory.getName());
+        return categoryLayout;
+    }
 
-            FragmentTransaction t = getActivity().getSupportFragmentManager().beginTransaction();
-            t.add(R.id.banner_container, BannerFragment.getInstance());
-            t.commit();
+    private void setUpCategoryHeader(View categoryLayout) {
+        TextView categoryHeader = (TextView) categoryLayout.findViewById(R.id.category_header);
+        categoryHeader.setText(currentCategory.getName());
+    }
 
-            positions = getCategoryPositions();
+    private void setUpPositionListView(View categoryLayout) {
+        positions = getCategoryPositions();
 
-            ListView positionList = (ListView) category.findViewById(R.id.position_list);
-            positionList.setAdapter(new PositionAdapter(getActivity(), positions));
-            positionList.setOnItemClickListener(
-                    new OnPositionClickListener(getActivity().getSupportFragmentManager()));
+        ListView positionList = (ListView) categoryLayout.findViewById(R.id.position_list);
+        positionList.setAdapter(new PositionAdapter(getActivity(), positions));
+        positionList.setOnItemClickListener(
+                new OnPositionClickListener(getActivity().getSupportFragmentManager()));
+    }
+
+    private void addBannerFragmentIfNotAdded() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        int bannerContainerID = R.id.banner_container;
+
+        if (isFragmentNotAdded(fragmentManager, bannerContainerID)) {
+            addFragment(fragmentManager, bannerContainerID);
         }
+    }
 
-        return category;
+    private void addFragment(FragmentManager fragmentManager, int bannerContainer) {
+        FragmentTransaction t = fragmentManager.beginTransaction();
+        t.add(bannerContainer, BannerFragment.getInstance());
+        t.commit();
+    }
+
+    private boolean isFragmentNotAdded(FragmentManager fragmentManager, int bannerContainerId) {
+        return fragmentManager.findFragmentById(bannerContainerId) == null;
     }
 
     private Set<Position> getCategoryPositions() {

@@ -3,5 +3,4 @@
     android:id="@+id/bannerImg"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:contentDescription="Картинка"
-     />
+    android:contentDescription="Картинка"/>

@@ -1,6 +1,5 @@
 package com.urban.activity.main;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -9,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.test.R;
+import com.tools.LogHelper;
 import com.tools.PrototypeView;
 import com.tools.ViewServer;
 import com.urban.activity.dashboard.DashboardActivity;
@@ -22,29 +22,46 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         PrototypeView.createInstance(this, R.id.fragment_container);
-        PrototypeView.switchActivity(this);
-
-        SlidingContentFragment fragment = new SlidingContentFragment();
-        Intent intent = this.getIntent();
-        int categoryId = intent.getIntExtra(DashboardActivity.CATEGORY_ID_ARGUMENT, 0);
-
-        Category category = null;
-        try {
-            category = DAO.get(Category.class, categoryId);
-        } catch (Exception e) {
-            Log.e("", "Can't find the category by id: " + categoryId);
-        }
-
-        fragment.setCurrentCategory(category);
-
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.fragment_container, fragment);
-        transaction.commit();
+        addSlidingMenuFragment();
 
         ViewServer.get(this).addWindow(this);
+    }
+
+    private void addSlidingMenuFragment() {
+        Category currentCategory = getCategory();
+        SlidingContentFragment slidingMenuFragment = createSlidingMenuFragment(currentCategory);
+        addFragment(slidingMenuFragment);
+    }
+
+    private void addFragment(SlidingContentFragment slidingMenuFragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.fragment_container, slidingMenuFragment);
+        transaction.commit();
+    }
+
+    private Category getCategory() {
+        int categoryId = getCategoryIdFromIntent();
+        return getCategoryFromDB(categoryId);
+    }
+
+    private SlidingContentFragment createSlidingMenuFragment(Category currentCategory) {
+        SlidingContentFragment slidingMenuFragment = new SlidingContentFragment();
+        slidingMenuFragment.setCurrentCategory(currentCategory);
+        return slidingMenuFragment;
+    }
+
+    private int getCategoryIdFromIntent() {
+        return this.getIntent().getIntExtra(DashboardActivity.CATEGORY_ID_ARGUMENT, 0);
+    }
+
+    private Category getCategoryFromDB(int categoryId) {
+        try {
+            return DAO.get(Category.class, categoryId);
+        } catch (Exception e) {
+            Log.e(LogHelper.TAG_DB_OPERATION, "Can't find the category by id: " + categoryId);
+            return null;
+        }
     }
 
     @Override
@@ -55,7 +72,6 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
-
         return super.onMenuItemSelected(featureId, item);
     }
 
