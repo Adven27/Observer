@@ -35,9 +35,9 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void addFragment(SlidingContentFragment slidingMenuFragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.fragment_container, slidingMenuFragment);
-        transaction.commit();
+        FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+        t.add(R.id.fragment_container, slidingMenuFragment);
+        t.commit();
     }
 
     private Category getCategory() {

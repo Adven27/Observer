@@ -19,7 +19,7 @@ public class AboutActivity extends FragmentActivity {
         PrototypeView.switchActivity(this);
 
         PrototypeView.setCurrentContainerId(R.id.about_frame);
-        PrototypeView.doInTransaction(new PrototypeView.ShowAboutAction(), false);
+        PrototypeView.doInTransaction(new PrototypeView.ShowAboutAction());
 
         ViewServer.get(this).addWindow(this);
     }

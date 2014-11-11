@@ -24,7 +24,7 @@ public class SlidingContentFragment extends Fragment {
         menu.setTouchmodeMarginThreshold(120);
 
         PrototypeView.setCurrentContainerId(R.id.main_container);
-        PrototypeView.doInTransaction(new PrototypeView.ShowCategoryAction(currentCategory), false);
+        PrototypeView.doInTransaction(new PrototypeView.ShowCategoryAction(currentCategory));
 
         return layout;
     }

@@ -1,7 +1,5 @@
 package com.urban.fragments;
 
-import java.util.ArrayList;
-
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -15,9 +13,11 @@ import com.tools.PrototypeView.ShowCategoryAction;
 import com.urban.data.Category;
 import com.urban.data.dao.DAO;
 
+import java.util.ArrayList;
+
 public class MenuListFragment extends ListFragment {
 
-    ArrayList<Category> categories = new ArrayList<Category>();
+    ArrayList<Category> categories = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,9 +36,7 @@ public class MenuListFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-
         PrototypeView.setCurrentContainerId(R.id.main_container);
-        PrototypeView.doInTransaction(new ShowCategoryAction(categories.get(position)), true);
-
+        PrototypeView.doInTransaction(new ShowCategoryAction(categories.get(position)));
     }
 }

@@ -1,6 +1,5 @@
 package com.urban.fragments;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -12,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageSwitcher;
-import android.widget.ImageView;
 import android.widget.ViewSwitcher.ViewFactory;
 
 import com.example.test.R;
@@ -28,17 +26,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class BannerFragment extends Fragment {
-
-    private static final BannerFragment bannerFragment = new BannerFragment();
     private static ImageSwitcher switcher;
     private static Timer timer = new Timer();
 
-    ArrayList<Advertising> advertisings = null;
+    private ArrayList<Advertising> advertisements = null;
     private int advertIndexInArray;
-
-    public static BannerFragment getInstance() {
-        return bannerFragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,8 +39,9 @@ public class BannerFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        advertisings = getAdvertisingFromDB();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        advertisements = getAdvertisingFromDB();
         setUpSwitcher(inflater, container);
 
         return switcher;
@@ -60,11 +53,9 @@ public class BannerFragment extends Fragment {
             if (parent != null)
                 parent.removeView(switcher);
         }
-        //try {
-            switcher = (ImageSwitcher) inflater.inflate(R.layout.banner_fragment, container, false);
-            switcher.setFactory(new MyImageSwitcherFactory());
-            switcher.setImageResource(R.drawable.shop);
-        //} catch (InflateException e) {}
+        switcher = (ImageSwitcher) inflater.inflate(R.layout.banner_fragment, container, false);
+        switcher.setFactory(new MyImageSwitcherFactory());
+        switcher.setImageResource(R.drawable.shop);
     }
 
     private ArrayList<Advertising> getAdvertisingFromDB() {
@@ -90,15 +81,11 @@ public class BannerFragment extends Fragment {
         }
     }
 
-    /**
-     * Method for getting Drawable object by Image.
-     *
-     * @param image - src Image for Drawable.
-     * @return Drawable or null if can not create Drawable by src.
-     */
     private Drawable getDrawableFromImage(Image image) {
+        if (image == null) {
+            return null;
+        }
         Drawable drawable = null;
-
         InputStream is = image.getAsStream();
 
         try {
@@ -115,11 +102,7 @@ public class BannerFragment extends Fragment {
         return drawable;
     }
 
-    private Bitmap loadImageFromNetwork(String url) {
-        return null;
-    }
-
-    public void callAsynchronousTask() {
+    void callAsynchronousTask() {
         if (timer == null) {
             timer = new Timer();
         }
@@ -132,52 +115,49 @@ public class BannerFragment extends Fragment {
                         try {
                             DownloadImageTask downloadImageBackgroundTask = new DownloadImageTask();
                             downloadImageBackgroundTask.execute();
-                        } catch (Exception e) {}
+                        } catch (Exception e) {
+                            Log.w(LogHelper.TAG_ASYNC_TASK_OPERATION,
+                                    "Error on download Image Background Task", e);
+                        }
                     }
                 });
             }
         };
-        timer.schedule(doAsynchronousTask, 0, 5000); //execute in every 50000 ms
+        timer.schedule(doAsynchronousTask, 0, 5000);
     }
 
     private class MyImageSwitcherFactory implements ViewFactory {
         public View makeView() {
-            ViewGroup mQuestionImage = null;
-            ImageView imageView = (ImageView) LayoutInflater.from(
-                    getActivity().getApplicationContext()).inflate(
-                    R.layout.banner_img, mQuestionImage, false);
-            return imageView;
+            return LayoutInflater.from(getActivity().getApplicationContext())
+                    .inflate(R.layout.banner_img, null, false);
         }
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-        }
 
-        /**
-         * The system calls this to perform work in a worker thread and
-         * delivers it the parameters given to AsyncTask.execute()
-         */
         protected Bitmap doInBackground(String... urls) {
-            return loadImageFromNetwork("qqq");
+            //TOD: load Image From Network?
+            return null;
         }
 
-        /**
-         * The system calls this to perform work in the UI thread and delivers
-         * the result from doInBackground()
-         */
         protected void onPostExecute(Bitmap result) {
-            if (advertisings != null && !advertisings.isEmpty()) {
-                Image img = advertisings.get(advertIndexInArray).getImage();
-                if (img != null) {
-                    Drawable drawable = getDrawableFromImage(img);
-                    if (drawable != null) {
-                        switcher.setImageDrawable(drawable);
-                    }
-                }
-                advertIndexInArray = ++advertIndexInArray % advertisings.size();
+            if (haveAdvertisements()) {
+                setAdvertImgToSwitcher();
+                //TODO: WTF?...
+                advertIndexInArray = ++advertIndexInArray % advertisements.size();
+            }
+        }
+
+        private boolean haveAdvertisements() {
+            return advertisements != null && !advertisements.isEmpty();
+        }
+
+        private void setAdvertImgToSwitcher() {
+            Image img = advertisements.get(advertIndexInArray).getImage();
+            Drawable drawable = getDrawableFromImage(img);
+
+            if (drawable != null) {
+                switcher.setImageDrawable(drawable);
             }
         }
     }

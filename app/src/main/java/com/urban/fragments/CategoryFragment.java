@@ -28,9 +28,7 @@ import java.util.Set;
 
 public class CategoryFragment extends Fragment {
 
-    private Collection<Position> positions = null;
     private Category currentCategory = null;
-
 
     public void setCurrentCategory(Category category) {
         this.currentCategory = category;
@@ -43,7 +41,7 @@ public class CategoryFragment extends Fragment {
 
         setUpCategoryHeader(categoryLayout);
         setUpPositionListView(categoryLayout);
-        addBannerFragmentIfNotAdded();
+        addOrReplaceBannerFragment();
 
         return categoryLayout;
     }
@@ -54,31 +52,38 @@ public class CategoryFragment extends Fragment {
     }
 
     private void setUpPositionListView(View categoryLayout) {
-        positions = getCategoryPositions();
-
+        Collection<Position> positions = getCategoryPositions();
         ListView positionList = (ListView) categoryLayout.findViewById(R.id.position_list);
+
         positionList.setAdapter(new PositionAdapter(getActivity(), positions));
-        positionList.setOnItemClickListener(
-                new OnPositionClickListener(getActivity().getSupportFragmentManager()));
+        positionList.setOnItemClickListener(new OnPositionClickListener());
     }
 
-    private void addBannerFragmentIfNotAdded() {
+    private void addOrReplaceBannerFragment() {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         int bannerContainerID = R.id.banner_container;
 
-        if (isFragmentNotAdded(fragmentManager, bannerContainerID)) {
+        if (isFragmentAlreadyAdded(fragmentManager, bannerContainerID)) {
+            replaceFragment(fragmentManager, bannerContainerID);
+        } else {
             addFragment(fragmentManager, bannerContainerID);
         }
     }
 
-    private void addFragment(FragmentManager fragmentManager, int bannerContainer) {
+    private void replaceFragment(FragmentManager fragmentManager, int bannerContainerID) {
         FragmentTransaction t = fragmentManager.beginTransaction();
-        t.add(bannerContainer, BannerFragment.getInstance());
+        t.replace(bannerContainerID, new BannerFragment());
         t.commit();
     }
 
-    private boolean isFragmentNotAdded(FragmentManager fragmentManager, int bannerContainerId) {
-        return fragmentManager.findFragmentById(bannerContainerId) == null;
+    private void addFragment(FragmentManager fragmentManager, int bannerContainerID) {
+        FragmentTransaction t = fragmentManager.beginTransaction();
+        t.add(bannerContainerID, new BannerFragment());
+        t.commit();
+    }
+
+    private boolean isFragmentAlreadyAdded(FragmentManager fragmentManager, int bannerContainerId) {
+        return fragmentManager.findFragmentById(bannerContainerId) != null;
     }
 
     private Set<Position> getCategoryPositions() {
@@ -86,31 +91,28 @@ public class CategoryFragment extends Fragment {
             return currentCategory.getPositions();
         } catch (Exception e) {
             Log.e(LogHelper.TAG_DB_OPERATION, "Error during db access", e);
-            return Collections.<Position>emptySet();
+            return Collections.emptySet();
         }
     }
 
 
     private class OnPositionClickListener implements OnItemClickListener {
-
-        private FragmentManager mgr;
-
-        public OnPositionClickListener(FragmentManager manager) {
+        public OnPositionClickListener() {
             super();
-            this.mgr = manager;
         }
 
         @Override
         public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
-            PositionAdapter posAdapter = null;
-            if (adapter.getAdapter() instanceof PositionAdapter) {
-                posAdapter = (PositionAdapter) adapter.getAdapter();
-            }
-            Position pos = posAdapter.getItem(position);
+            Position pos = getSelectedPosition(adapter, position);
 
             Intent intent = new Intent(getActivity(), PositionActivity.class);
             intent.putExtra(PositionActivity.EXTRA_POSITION_ID, pos.getId());
             startActivity(intent);
+        }
+
+        private Position getSelectedPosition(AdapterView<?> adapter, int position) {
+            PositionAdapter posAdapter = (PositionAdapter) adapter.getAdapter();
+            return posAdapter.getItem(position);
         }
     }
 }

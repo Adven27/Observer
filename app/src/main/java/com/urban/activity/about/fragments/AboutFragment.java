@@ -1,7 +1,5 @@
 package com.urban.activity.about.fragments;
 
-import java.util.ArrayList;
-
 import android.gesture.Gesture;
 import android.gesture.GestureLibraries;
 import android.gesture.GestureLibrary;
@@ -16,6 +14,8 @@ import android.view.ViewGroup;
 
 import com.example.test.R;
 import com.tools.PrototypeView;
+
+import java.util.ArrayList;
 
 public class AboutFragment extends Fragment implements OnGesturePerformedListener {
 
@@ -54,6 +54,6 @@ public class AboutFragment extends Fragment implements OnGesturePerformedListene
 
     private static void showEasternEgg() {
         PrototypeView.setCurrentContainerId(R.id.about_frame);
-        PrototypeView.doInTransaction(new PrototypeView.ShowEggAction(), false);
+        PrototypeView.doInTransaction(new PrototypeView.ShowEggAction());
     }
 }

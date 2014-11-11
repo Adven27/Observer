@@ -87,13 +87,10 @@ public class PrototypeView {
         public void make(FragmentTransaction transaction);
     }
 
-    public static void doInTransaction(Action action, boolean putInStack){
-        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-        action.make(transaction);
-        if (putInStack) {
-            transaction.addToBackStack(null);
-        }
-        transaction.commit();
+    public static void doInTransaction(Action action){
+        FragmentTransaction t = activity.getSupportFragmentManager().beginTransaction();
+        action.make(t);
+        t.commit();
     }
 
     public static void setCurrentContainerId(int conteinerId){
