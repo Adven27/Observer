@@ -13,11 +13,6 @@ public class InfoFragment extends PositionTabFragment {
 
     private static final int LAYOUT_ID = R.layout.position_info;
 
-    /**
-     * newInstance constructor for creating fragment with arguments
-     *
-     * @param position
-     */
     public static InfoFragment newInstance(Position position) {
         InfoFragment fragment = new InfoFragment();
         fragment.position = position;
@@ -27,12 +22,15 @@ public class InfoFragment extends PositionTabFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(LAYOUT_ID, container, false);
+        fillPositionInfo(view);
+        return view;
+    }
+
+    private void fillPositionInfo(View view) {
         TextView text = (TextView) view.findViewById(R.id.info_name);
         text.setText(position.getName());
         text = (TextView) view.findViewById(R.id.info_text);
         text.setText(position.getOrganization().getDescription());
-        return view;
     }
 }

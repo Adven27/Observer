@@ -12,26 +12,22 @@ import com.urban.fragments.pages.PhotoFragment;
 import com.urban.fragments.pages.PositionTabFragment;
 import com.urban.fragments.pages.map.PositionMapFragment;
 
-/**
- * Created by adven on 06.11.14.
- */
 public class TabsPagerAdapter extends FragmentPagerAdapter {
     private final Position categoryPosition;
-    private final int[] ICON = {R.drawable.ic_launcher,
-            R.drawable.ic_launcher,
-            R.drawable.ic_launcher,
-            R.drawable.ic_launcher,
-            R.drawable.ic_launcher};
+    private final static int[] ICONS = {R.drawable.position_tab_desc,
+            R.drawable.position_tab_contacts,
+            R.drawable.position_tab_photo,
+            R.drawable.position_tab_actions,
+            R.drawable.position_tab_actions};
 
     public TabsPagerAdapter(FragmentManager fragmentManager, Position position) {
         super(fragmentManager);
         categoryPosition = position;
     }
 
-    // Returns total number of pages
     @Override
     public int getCount() {
-        return ICON.length;
+        return ICONS.length;
     }
 
     // Returns the fragment to display for that page
@@ -54,7 +50,6 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
     }
 
     public int getIcon(int pos) {
-        return ICON[pos];
+        return ICONS[pos];
     }
-
 }

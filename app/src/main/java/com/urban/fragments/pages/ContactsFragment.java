@@ -17,11 +17,6 @@ public class ContactsFragment extends PositionTabFragment {
 
     private static final int LAYOUT_ID = R.layout.position_contacts;
 
-    /**
-     * newInstance constructor for creating fragment with arguments
-     *
-     * @param position
-     */
     public static ContactsFragment newInstance(Position position) {
         ContactsFragment fragment = new ContactsFragment();
         fragment.position = position;
@@ -31,13 +26,18 @@ public class ContactsFragment extends PositionTabFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(LAYOUT_ID, container, false);
 
-        Collection<Contact> contacts = position.getOrganization().getContacts();
+        fillContacts(view);
 
+        return view;
+    }
+
+    private void fillContacts(View view) {
+        Collection<Contact> contacts = position.getOrganization().getContacts();
         Iterator<Contact> iterator = contacts.iterator();
         TextView text;
+
         if (iterator.hasNext()) {
             text = (TextView) view.findViewById(R.id.first);
             text.setText(iterator.next().getContact());
@@ -50,7 +50,5 @@ public class ContactsFragment extends PositionTabFragment {
             text = (TextView) view.findViewById(R.id.third);
             text.setText(iterator.next().getContact());
         }
-
-        return view;
     }
 }

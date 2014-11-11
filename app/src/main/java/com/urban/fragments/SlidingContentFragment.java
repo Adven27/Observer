@@ -18,15 +18,19 @@ public class SlidingContentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-
         View layout = inflater.inflate(R.layout.sliding_content, container, false);
-        SlidingMenu menu = (SlidingMenu)layout.findViewById(R.id.slidingmenulayout);
-        menu.setTouchmodeMarginThreshold(120);
+
+        setUpSlidingMenu(layout);
 
         PrototypeView.setCurrentContainerId(R.id.main_container);
         PrototypeView.doInTransaction(new PrototypeView.ShowCategoryAction(currentCategory));
 
         return layout;
+    }
+
+    private void setUpSlidingMenu(View layout) {
+        SlidingMenu menu = (SlidingMenu)layout.findViewById(R.id.slidingmenulayout);
+        menu.setTouchmodeMarginThreshold(120);
     }
 
     public void setCurrentCategory(Category category) {

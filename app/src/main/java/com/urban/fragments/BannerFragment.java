@@ -1,6 +1,5 @@
 package com.urban.fragments;
 
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,21 +29,29 @@ public class BannerFragment extends Fragment {
     private static Timer timer = new Timer();
 
     private ArrayList<Advertising> advertisements = null;
-    private int advertIndexInArray;
+    private int advertImgIndexForShow;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        callAsynchronousTask();
+        callDownloadImgAsyncTask();
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        advertisements = getAdvertisingFromDB();
+        initAdvertisementsFromDB();
         setUpSwitcher(inflater, container);
 
         return switcher;
+    }
+
+    private void initAdvertisementsFromDB() {
+        try {
+            advertisements = (ArrayList<Advertising>) DAO.getAll(Advertising.class);
+        } catch (Exception e) {
+            Log.e(LogHelper.TAG_DB_OPERATION, "Error during db access", e);
+        }
     }
 
     private void setUpSwitcher(LayoutInflater inflater, ViewGroup container) {
@@ -54,17 +61,7 @@ public class BannerFragment extends Fragment {
                 parent.removeView(switcher);
         }
         switcher = (ImageSwitcher) inflater.inflate(R.layout.banner_fragment, container, false);
-        switcher.setFactory(new MyImageSwitcherFactory());
-        switcher.setImageResource(R.drawable.shop);
-    }
-
-    private ArrayList<Advertising> getAdvertisingFromDB() {
-        try {
-            return (ArrayList<Advertising>) DAO.getAll(Advertising.class);
-        } catch (Exception e) {
-            Log.e(LogHelper.TAG_DB_OPERATION, "Error during db access", e);
-        }
-        return null;
+        switcher.setFactory(new ImageSwitcherFactory());
     }
 
     @Override
@@ -81,28 +78,7 @@ public class BannerFragment extends Fragment {
         }
     }
 
-    private Drawable getDrawableFromImage(Image image) {
-        if (image == null) {
-            return null;
-        }
-        Drawable drawable = null;
-        InputStream is = image.getAsStream();
-
-        try {
-            drawable = Drawable.createFromStream(is, "name");
-        } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    Log.e("BannerFragment", "An error during close() operation on InputStream");
-                }
-            }
-        }
-        return drawable;
-    }
-
-    void callAsynchronousTask() {
+    void callDownloadImgAsyncTask() {
         if (timer == null) {
             timer = new Timer();
         }
@@ -126,39 +102,65 @@ public class BannerFragment extends Fragment {
         timer.schedule(doAsynchronousTask, 0, 5000);
     }
 
-    private class MyImageSwitcherFactory implements ViewFactory {
+    private class ImageSwitcherFactory implements ViewFactory {
         public View makeView() {
             return LayoutInflater.from(getActivity().getApplicationContext())
                     .inflate(R.layout.banner_img, null, false);
         }
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+    private class DownloadImageTask extends AsyncTask<String, Void, Drawable> {
 
-        protected Bitmap doInBackground(String... urls) {
-            //TOD: load Image From Network?
-            return null;
-        }
-
-        protected void onPostExecute(Bitmap result) {
+        protected Drawable doInBackground(String... urls) {
             if (haveAdvertisements()) {
-                setAdvertImgToSwitcher();
-                //TODO: WTF?...
-                advertIndexInArray = ++advertIndexInArray % advertisements.size();
+                return getAdvertDrawable();
             }
+            return getDefaultDrawable();
         }
 
         private boolean haveAdvertisements() {
             return advertisements != null && !advertisements.isEmpty();
         }
 
-        private void setAdvertImgToSwitcher() {
-            Image img = advertisements.get(advertIndexInArray).getImage();
-            Drawable drawable = getDrawableFromImage(img);
+        private Drawable getDefaultDrawable() {
+            return getResources().getDrawable(R.drawable.banner_default);
+        }
 
-            if (drawable != null) {
-                switcher.setImageDrawable(drawable);
+        private Drawable getAdvertDrawable() {
+            int i = calcNextAdvertImgIndexForShow();
+            Image img = advertisements.get(i).getImage();
+            return getDrawableFromImage(img);
+        }
+
+        private int calcNextAdvertImgIndexForShow() {
+            return advertImgIndexForShow++ % advertisements.size();
+        }
+
+        private Drawable getDrawableFromImage(Image image) {
+            if (image == null) {
+                return null;
             }
+            InputStream is = image.getAsStream();
+
+            return getDrawableFromStream(is);
+        }
+
+        private Drawable getDrawableFromStream(InputStream is) {
+            try {
+                return Drawable.createFromStream(is, "name");
+            } finally {
+                if (is != null) {
+                    try {
+                        is.close();
+                    } catch (IOException e) {
+                        Log.e("BannerFragment", "An error during close() operation on InputStream");
+                    }
+                }
+            }
+        }
+
+        protected void onPostExecute(Drawable drawable) {
+            switcher.setImageDrawable(drawable);
         }
     }
 }
