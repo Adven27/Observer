@@ -18,7 +18,6 @@ import com.tools.ViewServer;
 import com.urban.activity.dashboard.DashboardActivity;
 import com.urban.activity.task.RegistrationTask;
 import com.urban.appl.Settings;
-import com.urban.data.Person;
 import com.urban.data.User;
 import com.urban.validation.ValidationHelper;
 
@@ -116,7 +115,7 @@ public class RegistrationActivity extends FragmentActivity {
     }
 
     private User createUser(String login, String password, String email, String surname, String name, String secondName, Date birthday, String phone) {
-        Person person = new PersonPojo();
+        PersonPojo person = new PersonPojo();
         person.setSurname(surname);
         person.setFirstName(name);
         person.setSecondName(secondName);
@@ -124,9 +123,10 @@ public class RegistrationActivity extends FragmentActivity {
         person.setPhone(phone);
         person.setBirthday(birthday);
 
-        User user = new UserPojo();
+        UserPojo user = new UserPojo();
         user.setLogin(login);
         user.setPassword(password);
+        user.setRegDate(new Date());
         user.setPerson(person);
 
         return user;

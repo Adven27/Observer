@@ -1,13 +1,5 @@
 package com.urban.fragments.pages.map;
 
-import java.util.Collection;
-
-import ru.yandex.yandexmapkit.MapController;
-import ru.yandex.yandexmapkit.MapView;
-import ru.yandex.yandexmapkit.OverlayManager;
-import ru.yandex.yandexmapkit.overlay.Overlay;
-import ru.yandex.yandexmapkit.overlay.OverlayItem;
-import ru.yandex.yandexmapkit.utils.GeoPoint;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,9 +11,18 @@ import com.example.test.R;
 import com.tools.PrototypeView;
 import com.urban.data.Place;
 
+import java.util.Collection;
+
+import ru.yandex.yandexmapkit.MapController;
+import ru.yandex.yandexmapkit.MapView;
+import ru.yandex.yandexmapkit.OverlayManager;
+import ru.yandex.yandexmapkit.overlay.Overlay;
+import ru.yandex.yandexmapkit.overlay.OverlayItem;
+import ru.yandex.yandexmapkit.utils.GeoPoint;
+
 public class YandexMapFragment extends Fragment {
 
-       private static final YandexMapFragment map = new YandexMapFragment();
+       private static final YandexMapFragment mapFragment = new YandexMapFragment();
 
         private MapController mMapController;
         private OverlayManager mOverlayManager;
@@ -77,12 +78,10 @@ public class YandexMapFragment extends Fragment {
             }
 
             mOverlayManager.addOverlay(overlay);
-
         }
 
-
         public static YandexMapFragment getInstance() {
-            return map;
+            return mapFragment;
         }
 
 }

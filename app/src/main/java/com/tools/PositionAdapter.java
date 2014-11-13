@@ -66,34 +66,36 @@ public class PositionAdapter extends ArrayAdapter<Position> {
         if (loggedUser != null) {
             Set<Position> subscribes = loggedUser.getSubscribes();
             holder.likeBtn.setActivated(subscribes != null && subscribes.contains(positionItem));
-        }
 
-        // Saving of position in view to get if when click will appear.
-        holder.likeBtn.setId(position);
-        holder.likeBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!v.isActivated()) {
-                    SubscribePositionTask task = new SubscribePositionTask(
-                            PositionAdapter.this, Settings.getLoggedUser(), holder.likeBtn, positionItem);
+            // Saving of position in view to get if when click will appear.
+            holder.likeBtn.setId(position);
+            holder.likeBtn.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!v.isActivated()) {
+                        SubscribePositionTask task = new SubscribePositionTask(
+                                PositionAdapter.this, Settings.getLoggedUser(), holder.likeBtn, positionItem);
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        } else {
+                            task.execute();
+                        }
                     } else {
-                        task.execute();
-                    }
-                } else {
-                    UnsubscribePositionTask task = new UnsubscribePositionTask(
-                            PositionAdapter.this, Settings.getLoggedUser(), holder.likeBtn, positionItem);
+                        UnsubscribePositionTask task = new UnsubscribePositionTask(
+                                PositionAdapter.this, Settings.getLoggedUser(), holder.likeBtn, positionItem);
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                    } else {
-                        task.execute();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        } else {
+                            task.execute();
+                        }
                     }
                 }
-            }
-        });
+            });
+        } else {
+            holder.likeBtn.setVisibility(View.GONE);
+        }
         return convertView;
     }
 

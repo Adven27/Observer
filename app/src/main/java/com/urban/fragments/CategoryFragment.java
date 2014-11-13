@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +16,7 @@ import android.widget.TextView;
 import com.example.test.R;
 import com.tools.LogHelper;
 import com.tools.PositionAdapter;
+import com.tools.PrototypeView;
 import com.urban.activity.position.PositionActivity;
 import com.urban.data.Category;
 import com.urban.data.Position;
@@ -41,7 +41,7 @@ public class CategoryFragment extends Fragment {
 
         setUpCategoryHeader(categoryLayout);
         setUpPositionListView(categoryLayout);
-        addOrReplaceBannerFragment();
+        setUpBannerFragment();
 
         return categoryLayout;
     }
@@ -59,31 +59,11 @@ public class CategoryFragment extends Fragment {
         positionList.setOnItemClickListener(new OnPositionClickListener());
     }
 
-    private void addOrReplaceBannerFragment() {
+    private void setUpBannerFragment() {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         int bannerContainerID = R.id.banner_container;
 
-        if (isFragmentAlreadyAdded(fragmentManager, bannerContainerID)) {
-            replaceFragment(fragmentManager, bannerContainerID);
-        } else {
-            addFragment(fragmentManager, bannerContainerID);
-        }
-    }
-
-    private void replaceFragment(FragmentManager fragmentManager, int bannerContainerID) {
-        FragmentTransaction t = fragmentManager.beginTransaction();
-        t.replace(bannerContainerID, new BannerFragment());
-        t.commit();
-    }
-
-    private void addFragment(FragmentManager fragmentManager, int bannerContainerID) {
-        FragmentTransaction t = fragmentManager.beginTransaction();
-        t.add(bannerContainerID, new BannerFragment());
-        t.commit();
-    }
-
-    private boolean isFragmentAlreadyAdded(FragmentManager fragmentManager, int bannerContainerId) {
-        return fragmentManager.findFragmentById(bannerContainerId) != null;
+        PrototypeView.setUpContainer(fragmentManager, new BannerFragment(), bannerContainerID);
     }
 
     private Set<Position> getCategoryPositions() {
@@ -94,7 +74,6 @@ public class CategoryFragment extends Fragment {
             return Collections.emptySet();
         }
     }
-
 
     private class OnPositionClickListener implements OnItemClickListener {
         public OnPositionClickListener() {

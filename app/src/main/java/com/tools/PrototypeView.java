@@ -1,6 +1,8 @@
 package com.tools;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.urban.activity.about.fragments.AboutFragment;
@@ -100,4 +102,31 @@ public class PrototypeView {
     public static FragmentActivity getActivity() {
         return activity;
     }
+
+
+    public static void setUpContainer(FragmentManager fragmentManager, Fragment fragment, int containerId) {
+        if (PrototypeView.isContainerEmpty(fragmentManager, containerId)) {
+            addFragment(fragmentManager, fragment, containerId);
+        } else {
+            replaceFragment(fragmentManager, fragment, containerId);
+        }
+    }
+
+    private static boolean isContainerEmpty(FragmentManager fragmentManager, int containerId) {
+        return fragmentManager.findFragmentById(containerId) == null;
+    }
+
+    private static void addFragment(FragmentManager fragmentManager, Fragment fragment, int containerId) {
+        FragmentTransaction t = fragmentManager.beginTransaction();
+        t.add(containerId, fragment);
+        t.commit();
+    }
+
+    private static void replaceFragment(FragmentManager fragmentManager, Fragment fragment, int containerId) {
+        FragmentTransaction t = fragmentManager.beginTransaction();
+        t.replace(containerId, fragment);
+        t.commit();
+    }
+
+
 }

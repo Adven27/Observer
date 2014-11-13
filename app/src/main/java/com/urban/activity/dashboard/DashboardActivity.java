@@ -80,11 +80,9 @@ public class DashboardActivity extends FragmentActivity {
 
         context = getApplicationContext();
 
-        //TODO: Stub. Remove this! Just for test.
-        Settings.setLoggedUser(DAO.getUniqByCriterion(
-                User.class, DAO.createCriterion(User.class).eq("login", "admin")));
-
-        registerInPlayServices();
+        if (Settings.getLoggedUser() != null) {
+            registerInPlayServices();
+        }
         categories = getCategories();
 
         GridView gridview = (GridView) findViewById(R.id.dashgridview);
