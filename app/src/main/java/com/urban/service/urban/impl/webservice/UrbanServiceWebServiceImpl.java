@@ -28,6 +28,9 @@ public class UrbanServiceWebServiceImpl implements UrbanService {
     public void subscribe(User user, Position position) {}
 
     @Override
+    public void unsubscribe(User user, Position position) {}
+
+    @Override
     public Collection<News> getNews() throws UrbanServiceException {
         return null;
     }

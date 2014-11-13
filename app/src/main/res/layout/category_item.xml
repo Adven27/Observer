@@ -34,7 +34,7 @@
         android:layout_height="35dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
-        android:background="@drawable/shop"
+        android:background="@drawable/button_like"
         android:focusable="false"
         android:focusableInTouchMode="false"/>
 

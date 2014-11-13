@@ -20,5 +20,7 @@ public interface UrbanService {
 
     public void subscribe(User user, Position position) throws UrbanServiceException;
 
+    public void unsubscribe(User user, Position position) throws UrbanServiceException;
+
     public Collection<News> getNews() throws UrbanServiceException;
 }

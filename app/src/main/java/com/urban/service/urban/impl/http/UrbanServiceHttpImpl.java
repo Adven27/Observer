@@ -44,8 +44,8 @@ public class UrbanServiceHttpImpl implements UrbanService {
         String request = JsonHelper.toJSON(user);
 
         String response = send(request, "signIn");
-
         User loggedUser = JsonHelper.fromJSON(User.class, response);
+
         return loggedUser;
     }
 
@@ -65,6 +65,12 @@ public class UrbanServiceHttpImpl implements UrbanService {
     public void subscribe(User user, Position position) throws UrbanServiceException {
         String request = JsonHelper.toJSON(user);
         send(request, "subscribe");
+    }
+
+    @Override
+    public void unsubscribe(User user, Position position) throws UrbanServiceException {
+        String request = JsonHelper.toJSON(user);
+        send(request, "unsubscribe");
     }
 
     @Override
@@ -95,8 +101,8 @@ public class UrbanServiceHttpImpl implements UrbanService {
         httpPost.setHeader("Accept", "application/json");
         httpPost.setHeader("Content-type", "application/json");
 
-        StringEntity se = null;
-        HttpResponse httpResponse = null;
+        StringEntity se;
+        HttpResponse httpResponse;
         try {
             se = new StringEntity(json);
             httpPost.setEntity(se);
@@ -117,7 +123,7 @@ public class UrbanServiceHttpImpl implements UrbanService {
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
-            String line = null;
+            String line;
             while((line = reader.readLine()) != null) {
                 builder.append(line);
             }

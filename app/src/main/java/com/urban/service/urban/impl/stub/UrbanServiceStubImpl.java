@@ -38,6 +38,11 @@ public class UrbanServiceStubImpl implements UrbanService {
     }
 
     @Override
+    public void unsubscribe(User user, Position position) {
+
+    }
+
+    @Override
     public Collection<News> getNews() throws UrbanServiceException {
         return null;
     }
