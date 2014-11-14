@@ -14,7 +14,9 @@ import java.io.OutputStream;
 public class DBInitializer {
 
     public static void initDB(Context context) throws Exception{
-        copyDataBase(context, Settings.getDBName());
+        if (!isDbFileExist(context)) {
+            copyDataBase(context, Settings.getDBName());
+        }
     }
 
     public static void initDAO(Context context){
@@ -28,9 +30,7 @@ public class DBInitializer {
      */
     public static void copyDataBase(Context context, String dbName) throws IOException
     {
-        String pathToDBDir = android.os.Build.VERSION.SDK_INT >= 4.2 ?
-             context.getApplicationInfo().dataDir + "/databases/"
-           : "/data/data/" + context.getPackageName() + "/databases/";
+        String pathToDBDir = getDBPath(context);
 
         InputStream mInput = null;
         OutputStream mOutput = null;
@@ -59,12 +59,16 @@ public class DBInitializer {
         }
     }
 
-    //Check that the database exists here: /data/data/your package/databases/Da Name
- /*private boolean isDbFileExist()
- {
-     File dbFile = new File(DB_PATH + DATABASE_NAME);
-     return dbFile.exists();
- }*/
+    private static boolean isDbFileExist(Context context) {
+        File dbFile = new File(getDBPath(context) + Settings.getDBName());
+        return dbFile.exists();
+    }
+
+    private static String getDBPath(Context context) {
+        return android.os.Build.VERSION.SDK_INT >= 4.2 ?
+                context.getApplicationInfo().dataDir + "/databases/"
+                : "/data/data/" + context.getPackageName() + "/databases/";
+    }
 
 
 }

@@ -102,7 +102,9 @@ public class PositionAdapter extends ArrayAdapter<Position> {
     public void subscribe(View view) {
         UserPojo user = (UserPojo)Settings.getLoggedUser();
 
-        user.getSubscribes().add(values.get(view.getId()));
+        Set<Position> subscribes = user.getSubscribes();
+        subscribes.add(values.get(view.getId()));
+        user.setSubscribes(subscribes);
         try {
             DAO.save(user);
             view.setActivated(true);
@@ -116,7 +118,9 @@ public class PositionAdapter extends ArrayAdapter<Position> {
     public void unsubscribe(View view) {
         UserPojo user = (UserPojo)Settings.getLoggedUser();
 
-        user.getSubscribes().remove(values.get(view.getId()));
+        Set<Position> subscribes = user.getSubscribes();
+        subscribes.remove(values.get(view.getId()));
+        user.setSubscribes(subscribes);
         try {
             DAO.save(user);
             view.setActivated(false);
@@ -132,6 +136,5 @@ public class PositionAdapter extends ArrayAdapter<Position> {
         TextView text;
         Button mapBtn;
         Button likeBtn;
-
     }
 }
