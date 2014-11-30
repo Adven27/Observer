@@ -73,7 +73,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Actionbar" />
         <activity
-            android:name="com.urban.activity.position.PositionActivity"
+            android:name="com.urban.activity.position.OrganizationActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Actionbar" />

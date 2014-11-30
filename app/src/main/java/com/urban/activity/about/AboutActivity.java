@@ -7,7 +7,6 @@ import android.view.MenuItem;
 
 import com.example.test.R;
 import com.tools.PrototypeView;
-import com.tools.ViewServer;
 
 public class AboutActivity extends FragmentActivity {
 
@@ -20,8 +19,6 @@ public class AboutActivity extends FragmentActivity {
 
         PrototypeView.setCurrentContainerId(R.id.about_frame);
         PrototypeView.doInTransaction(new PrototypeView.ShowAboutAction());
-
-        ViewServer.get(this).addWindow(this);
     }
 
     @Override
@@ -34,18 +31,4 @@ public class AboutActivity extends FragmentActivity {
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         return super.onMenuItemSelected(featureId, item);
     }
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        ViewServer.get(this).removeWindow(this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        ViewServer.get(this).setFocusedWindow(this);
-    }
-
 }

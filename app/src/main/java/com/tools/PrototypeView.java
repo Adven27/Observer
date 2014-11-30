@@ -8,9 +8,9 @@ import android.support.v4.app.FragmentTransaction;
 import com.urban.activity.about.fragments.AboutFragment;
 import com.urban.activity.about.fragments.EggFragment;
 import com.urban.data.Category;
-import com.urban.data.Position;
+import com.urban.data.Organization;
 import com.urban.fragments.CategoryFragment;
-import com.urban.fragments.PositionFragment;
+import com.urban.fragments.OrganizationFragment;
 import com.urban.fragments.pages.map.YandexMapFragment;
 
 public class PrototypeView {
@@ -46,17 +46,17 @@ public class PrototypeView {
         }
     }
 
-    public static class ShowPositionAction implements Action {
-        private Position position = null;
+    public static class ShowOrganizationAction implements Action {
+        private Organization organization = null;
 
-        public ShowPositionAction(Position position) {
-            this.position = position;
+        public ShowOrganizationAction(Organization organization) {
+            this.organization = organization;
         }
 
         public void make(FragmentTransaction transaction){
-            PositionFragment position = new PositionFragment();
-            position.setCurrentPosition(this.position);
-            transaction.replace(containerId, position);
+            OrganizationFragment organization = new OrganizationFragment();
+            organization.setCurrentOrganization(this.organization);
+            transaction.replace(containerId, organization);
         }
     }
 
@@ -95,8 +95,8 @@ public class PrototypeView {
         t.commit();
     }
 
-    public static void setCurrentContainerId(int conteinerId){
-        PrototypeView.containerId = conteinerId;
+    public static void setCurrentContainerId(int containerId){
+        PrototypeView.containerId = containerId;
     }
 
     public static FragmentActivity getActivity() {

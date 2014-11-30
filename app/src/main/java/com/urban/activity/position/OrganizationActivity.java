@@ -10,28 +10,28 @@ import android.util.Log;
 import com.example.test.R;
 import com.tools.LogHelper;
 import com.tools.PrototypeView;
-import com.urban.data.Position;
+import com.urban.data.Organization;
 import com.urban.data.dao.DAO;
 
-public class PositionActivity extends FragmentActivity {
-    public static final String EXTRA_POSITION_ID = "position_id";
-    private Position position;
+public class OrganizationActivity extends FragmentActivity {
+    public static final String EXTRA_POSITION_ID = "organization_id";
+    private Organization organization;
     private ViewPager tabsPager;
 
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
 
-        setContentView(R.layout.position);
+        setContentView(R.layout.organization);
         PrototypeView.switchActivity(this);
 
-        initCategoryPosition();
+        initCategoryOrganization();
         initTabs();
     }
 
-    private void initCategoryPosition() {
-        long positionId = getIntent().getIntExtra(EXTRA_POSITION_ID, -1);
-        position = getPosition(positionId);
+    private void initCategoryOrganization() {
+        long organizationId = getIntent().getIntExtra(EXTRA_POSITION_ID, -1);
+        organization = getOrganization(organizationId);
     }
 
     private void initTabs() {
@@ -41,7 +41,7 @@ public class PositionActivity extends FragmentActivity {
 
     private void initTabsPager() {
         tabsPager = (ViewPager) findViewById(R.id.tabpager);
-        tabsPager.setAdapter(new TabsPagerAdapter(getSupportFragmentManager(), position));
+        tabsPager.setAdapter(new TabsPagerAdapter(getSupportFragmentManager(), organization));
         tabsPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -81,11 +81,11 @@ public class PositionActivity extends FragmentActivity {
         };
     }
 
-    private Position getPosition(long positionId) {
+    private Organization getOrganization(long organizationId) {
         try {
-            return DAO.get(Position.class, positionId);
+            return DAO.get(Organization.class, organizationId);
         } catch (Exception e) {
-            Log.e(LogHelper.TAG_DB_OPERATION, "Can't find the position by id: " + positionId, e);
+            Log.e(LogHelper.TAG_DB_OPERATION, "Can't find the organization by id: " + organizationId, e);
             return null;
         }
     }

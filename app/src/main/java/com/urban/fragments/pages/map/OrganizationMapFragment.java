@@ -10,17 +10,16 @@ import com.tools.PrototypeView;
 import com.tools.PrototypeView.ShowMapAction;
 import com.urban.data.Organization;
 import com.urban.data.Place;
-import com.urban.data.Position;
-import com.urban.fragments.pages.PositionTabFragment;
+import com.urban.fragments.pages.OrganizationTabFragment;
 
 import java.util.Collection;
 
-public class PositionMapFragment extends PositionTabFragment {
-    private static final int LAYOUT_ID = R.layout.position_map;
+public class OrganizationMapFragment extends OrganizationTabFragment {
+    private static final int LAYOUT_ID = R.layout.organization_map;
 
-    public static PositionMapFragment newInstance(Position position) {
-        PositionMapFragment fragment = new PositionMapFragment();
-        fragment.position = position;
+    public static OrganizationMapFragment newInstance(Organization organization) {
+        OrganizationMapFragment fragment = new OrganizationMapFragment();
+        fragment.organization = organization;
         return fragment;
     }
 
@@ -30,7 +29,6 @@ public class PositionMapFragment extends PositionTabFragment {
 
         View view = inflater.inflate(LAYOUT_ID, container, false);
 
-        Organization organization = position.getOrganization();
         Collection<Place> places = organization.getPlaces();
         YandexMapFragment.getInstance().initPlaces(places);
 

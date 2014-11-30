@@ -3,35 +3,35 @@ package com.urban.activity.task;
 import android.os.AsyncTask;
 import android.view.View;
 
-import com.tools.PositionAdapter;
-import com.urban.data.Position;
+import com.tools.OrganizationAdapter;
+import com.urban.data.Organization;
 import com.urban.data.User;
 import com.urban.service.urban.UrbanServiceFactory;
 import com.urban.service.urban.exception.UrbanServiceException;
 
 import java.lang.ref.WeakReference;
 
-public class UnsubscribePositionTask extends AsyncTask<Object, Void, String> {
+public class SubscribeOrganizationTask extends AsyncTask<Object, Void, String> {
 
-    private WeakReference<PositionAdapter> ref;
+    private WeakReference<OrganizationAdapter> ref;
 
     private String errorMsg;
     private User user;
-    private Position position;
+    private Organization organization;
     private View view;
 
-    public UnsubscribePositionTask(PositionAdapter adapter, User user, View view, Position position) {
+    public SubscribeOrganizationTask(OrganizationAdapter adapter, User user, View view, Organization organization) {
         super();
-        this.ref = new WeakReference<PositionAdapter>(adapter);
+        this.ref = new WeakReference<OrganizationAdapter>(adapter);
         this.user = user;
-        this.position = position;
+        this.organization = organization;
         this.view = view;
     }
 
     @Override
     protected String doInBackground(Object... params) {
         try {
-            UrbanServiceFactory.getInstance().unsubscribe(user, position);
+            UrbanServiceFactory.getInstance().subscribe(user, organization);
         } catch (UrbanServiceException e) {
             registerError(e.getMessage());
         }
@@ -40,12 +40,12 @@ public class UnsubscribePositionTask extends AsyncTask<Object, Void, String> {
 
     @Override
     public void onPostExecute(String result) {
-        PositionAdapter adapter = ref.get();
+        OrganizationAdapter adapter = ref.get();
         if (adapter != null) {
             if (errorMsg != null) {
                 //TODO: Handle this situation!
             } else {
-                adapter.unsubscribe(view);
+                adapter.subscribe(view);
             }
         }
     }

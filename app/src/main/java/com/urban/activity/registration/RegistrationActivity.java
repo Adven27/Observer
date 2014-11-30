@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.test.R;
-import com.tools.ViewServer;
 import com.urban.activity.dashboard.DashboardActivity;
 import com.urban.activity.task.RegistrationTask;
 import com.urban.appl.Settings;
@@ -65,7 +64,6 @@ public class RegistrationActivity extends FragmentActivity {
 
         addMock();//REMOVE THIS!!! JUST FOR TEST!!
 
-        ViewServer.get(this).addWindow(this);
     }
 
 
@@ -78,18 +76,6 @@ public class RegistrationActivity extends FragmentActivity {
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         return super.onMenuItemSelected(featureId, item);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        ViewServer.get(this).removeWindow(this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        ViewServer.get(this).setFocusedWindow(this);
     }
 
     public void logIn(User user) {
@@ -119,7 +105,6 @@ public class RegistrationActivity extends FragmentActivity {
         person.setSurname(surname);
         person.setFirstName(name);
         person.setSecondName(secondName);
-        person.setAge(25); //TODO: Remove this!!! And remove property from the Pojo! To write calculating method!
         person.setPhone(phone);
         person.setBirthday(birthday);
 

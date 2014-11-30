@@ -1,7 +1,7 @@
 package com.urban.service.urban.impl.webservice;
 
 import com.urban.data.News;
-import com.urban.data.Position;
+import com.urban.data.Organization;
 import com.urban.data.User;
 import com.urban.service.urban.UrbanService;
 import com.urban.service.urban.exception.UrbanServiceException;
@@ -25,10 +25,10 @@ public class UrbanServiceWebServiceImpl implements UrbanService {
     public void updateUser(User user) {}
 
     @Override
-    public void subscribe(User user, Position position) {}
+    public void subscribe(User user, Organization organization) {}
 
     @Override
-    public void unsubscribe(User user, Position position) {}
+    public void unsubscribe(User user, Organization organization) {}
 
     @Override
     public Collection<News> getNews() throws UrbanServiceException {

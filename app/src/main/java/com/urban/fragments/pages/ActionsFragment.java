@@ -6,16 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.test.R;
-import com.urban.data.Position;
+import com.urban.data.Organization;
 
-public class ActionsFragment extends PositionTabFragment {
+public class ActionsFragment extends OrganizationTabFragment {
 
-    private static final int LAYOUT_ID = R.layout.position_actions;
+    private static final int LAYOUT_ID = R.layout.organization_actions;
 
 
-    public static ActionsFragment newInstance(Position position) {
+    public static ActionsFragment newInstance(Organization organization) {
         ActionsFragment fragment = new ActionsFragment();
-        fragment.position = position;
+        fragment.organization = organization;
         return fragment;
     }
 

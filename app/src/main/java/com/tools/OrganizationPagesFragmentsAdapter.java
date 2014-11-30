@@ -1,23 +1,23 @@
 package com.tools;
 
-import java.util.List;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import java.util.List;
 
 /**
  * The <code>PagerAdapter</code> serves the fragments when paging.
  * @author
  */
-public class PositionPagesFragmentsAdapter extends FragmentPagerAdapter {
+public class OrganizationPagesFragmentsAdapter extends FragmentPagerAdapter {
 
     private List<Fragment> fragments;
     /**
      * @param fm
      * @param fragments
      */
-    public PositionPagesFragmentsAdapter(FragmentManager fm, List<Fragment> fragments) {
+    public OrganizationPagesFragmentsAdapter(FragmentManager fm, List<Fragment> fragments) {
         super(fm);
         this.fragments = fragments;
     }

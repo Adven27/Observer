@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.test.R;
-import com.tools.ViewServer;
 import com.urban.activity.dashboard.DashboardActivity;
 import com.urban.activity.task.UpdateUserTask;
 import com.urban.appl.Settings;
@@ -46,26 +45,11 @@ public class UserPropertiesActivity extends FragmentActivity {
         birthday = (DatePicker)findViewById(R.id.anket_birthday);
         phone = (EditText)findViewById(R.id.anket_phone);
         register = (Button)findViewById(R.id.anket_register);
-
-        ViewServer.get(this).addWindow(this);
     }
 
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         return super.onMenuItemSelected(featureId, item);
-    }
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        ViewServer.get(this).removeWindow(this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        ViewServer.get(this).setFocusedWindow(this);
     }
 
     public void logIn(User user) {

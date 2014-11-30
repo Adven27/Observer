@@ -15,11 +15,11 @@ import android.widget.TextView;
 
 import com.example.test.R;
 import com.tools.LogHelper;
-import com.tools.PositionAdapter;
+import com.tools.OrganizationAdapter;
 import com.tools.PrototypeView;
-import com.urban.activity.position.PositionActivity;
+import com.urban.activity.position.OrganizationActivity;
 import com.urban.data.Category;
-import com.urban.data.Position;
+import com.urban.data.Organization;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -40,7 +40,7 @@ public class CategoryFragment extends Fragment {
         View categoryLayout = inflater.inflate(R.layout.category, container, false);
 
         setUpCategoryHeader(categoryLayout);
-        setUpPositionListView(categoryLayout);
+        setUpOrganizationListView(categoryLayout);
         setUpBannerFragment();
 
         return categoryLayout;
@@ -51,12 +51,12 @@ public class CategoryFragment extends Fragment {
         categoryHeader.setText(currentCategory.getName());
     }
 
-    private void setUpPositionListView(View categoryLayout) {
-        Collection<Position> positions = getCategoryPositions();
-        ListView positionList = (ListView) categoryLayout.findViewById(R.id.position_list);
+    private void setUpOrganizationListView(View categoryLayout) {
+        Collection<Organization> positions = getCategoryOrganizations();
+        ListView positionList = (ListView) categoryLayout.findViewById(R.id.organization_list);
 
-        positionList.setAdapter(new PositionAdapter(getActivity(), positions));
-        positionList.setOnItemClickListener(new OnPositionClickListener());
+        positionList.setAdapter(new OrganizationAdapter(getActivity(), positions));
+        positionList.setOnItemClickListener(new OnOrganizationClickListener());
     }
 
     private void setUpBannerFragment() {
@@ -66,31 +66,31 @@ public class CategoryFragment extends Fragment {
         PrototypeView.setUpContainer(fragmentManager, new BannerFragment(), bannerContainerID);
     }
 
-    private Set<Position> getCategoryPositions() {
+    private Set<Organization> getCategoryOrganizations() {
         try {
-            return currentCategory.getPositions();
+            return currentCategory.getOrganizations();
         } catch (Exception e) {
             Log.e(LogHelper.TAG_DB_OPERATION, "Error during db access", e);
             return Collections.emptySet();
         }
     }
 
-    private class OnPositionClickListener implements OnItemClickListener {
-        public OnPositionClickListener() {
+    private class OnOrganizationClickListener implements OnItemClickListener {
+        public OnOrganizationClickListener() {
             super();
         }
 
         @Override
         public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
-            Position pos = getSelectedPosition(adapter, position);
+            Organization organization = getSelectedOrganization(adapter, position);
 
-            Intent intent = new Intent(getActivity(), PositionActivity.class);
-            intent.putExtra(PositionActivity.EXTRA_POSITION_ID, pos.getId());
+            Intent intent = new Intent(getActivity(), OrganizationActivity.class);
+            intent.putExtra(OrganizationActivity.EXTRA_POSITION_ID, organization.getId());
             startActivity(intent);
         }
 
-        private Position getSelectedPosition(AdapterView<?> adapter, int position) {
-            PositionAdapter posAdapter = (PositionAdapter) adapter.getAdapter();
+        private Organization getSelectedOrganization(AdapterView<?> adapter, int position) {
+            OrganizationAdapter posAdapter = (OrganizationAdapter) adapter.getAdapter();
             return posAdapter.getItem(position);
         }
     }

@@ -8,18 +8,18 @@ import android.widget.TextView;
 
 import com.example.test.R;
 import com.urban.data.Contact;
-import com.urban.data.Position;
+import com.urban.data.Organization;
 
 import java.util.Collection;
 import java.util.Iterator;
 
-public class ContactsFragment extends PositionTabFragment {
+public class ContactsFragment extends OrganizationTabFragment {
 
-    private static final int LAYOUT_ID = R.layout.position_contacts;
+    private static final int LAYOUT_ID = R.layout.organization_contacts;
 
-    public static ContactsFragment newInstance(Position position) {
+    public static ContactsFragment newInstance(Organization organization) {
         ContactsFragment fragment = new ContactsFragment();
-        fragment.position = position;
+        fragment.organization = organization;
         return fragment;
     }
 
@@ -34,7 +34,7 @@ public class ContactsFragment extends PositionTabFragment {
     }
 
     private void fillContacts(View view) {
-        Collection<Contact> contacts = position.getOrganization().getContacts();
+        Collection<Contact> contacts = organization.getContacts();
         Iterator<Contact> iterator = contacts.iterator();
         TextView text;
 

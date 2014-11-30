@@ -40,7 +40,7 @@ public class YandexMapFragment extends Fragment {
                 showPlaces();
                 return v;
             }
-            v = inflater.inflate(R.layout.position_map_fragment, null, false);
+            v = inflater.inflate(R.layout.organization_map_fragment, null, false);
             mapView = (MapView)v.findViewById(R.id.map);
             mMapController = mapView.getMapController();
             mOverlayManager = mMapController.getOverlayManager();

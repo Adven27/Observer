@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.test.R;
-import com.tools.ViewServer;
 import com.urban.activity.dashboard.DashboardActivity;
 import com.urban.activity.registration.RegistrationActivity;
 import com.urban.activity.task.SignInTask;
@@ -41,8 +40,6 @@ public class LoginActivity extends FragmentActivity {
 
         //TODO: Stub
         setDummy();
-
-        ViewServer.get(this).addWindow(this);
     }
 
    @Override
@@ -60,13 +57,6 @@ public class LoginActivity extends FragmentActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        ViewServer.get(this).removeWindow(this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        ViewServer.get(this).setFocusedWindow(this);
     }
 
     public void logIn(User user) {

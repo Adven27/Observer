@@ -3,7 +3,7 @@ package com.urban.service.urban.impl.http;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.urban.data.News;
-import com.urban.data.Position;
+import com.urban.data.Organization;
 import com.urban.data.ResponseError;
 import com.urban.data.User;
 import com.urban.service.urban.UrbanService;
@@ -62,13 +62,13 @@ public class UrbanServiceHttpImpl implements UrbanService {
     }
 
     @Override
-    public void subscribe(User user, Position position) throws UrbanServiceException {
+    public void subscribe(User user, Organization organization) throws UrbanServiceException {
         String request = JsonHelper.toJSON(user);
         send(request, "subscribe");
     }
 
     @Override
-    public void unsubscribe(User user, Position position) throws UrbanServiceException {
+    public void unsubscribe(User user, Organization organization) throws UrbanServiceException {
         String request = JsonHelper.toJSON(user);
         send(request, "unsubscribe");
     }

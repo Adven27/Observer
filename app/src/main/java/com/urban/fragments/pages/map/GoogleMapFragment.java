@@ -1,8 +1,6 @@
 package com.urban.fragments.pages.map;
 
 
-import java.util.Collection;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,6 +17,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.urban.data.Place;
 
+import java.util.Collection;
+
 public class GoogleMapFragment extends Fragment {
 
     private GoogleMap map;
@@ -28,7 +28,7 @@ public class GoogleMapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.position_google_map_fragment, container, false);
+        View v = inflater.inflate(R.layout.organization_google_map_fragment, container, false);
         SupportMapFragment mapFragment = (SupportMapFragment)getActivity().getSupportFragmentManager().findFragmentById(R.id.google_map_fragment);
         map = mapFragment.getMap();
         if (map != null){

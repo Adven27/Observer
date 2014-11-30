@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import com.example.test.R;
 import com.tools.LogHelper;
 import com.tools.PrototypeView;
-import com.tools.ViewServer;
 import com.urban.activity.dashboard.DashboardActivity;
 import com.urban.data.Category;
 import com.urban.data.dao.DAO;
@@ -24,8 +23,6 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         PrototypeView.createInstance(this, R.id.fragment_container);
         addSlidingMenuFragment();
-
-        ViewServer.get(this).addWindow(this);
     }
 
     private void addSlidingMenuFragment() {
@@ -65,20 +62,8 @@ public class MainActivity extends FragmentActivity {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        ViewServer.get(this).removeWindow(this);
-    }
-
-    @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         return super.onMenuItemSelected(featureId, item);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        ViewServer.get(this).setFocusedWindow(this);
     }
 
     @Override

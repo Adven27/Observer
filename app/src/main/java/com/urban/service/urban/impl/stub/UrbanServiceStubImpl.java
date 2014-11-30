@@ -1,7 +1,7 @@
 package com.urban.service.urban.impl.stub;
 
 import com.urban.data.News;
-import com.urban.data.Position;
+import com.urban.data.Organization;
 import com.urban.data.User;
 import com.urban.service.urban.UrbanService;
 import com.urban.service.urban.exception.UrbanServiceException;
@@ -33,12 +33,12 @@ public class UrbanServiceStubImpl implements UrbanService {
     }
 
     @Override
-    public void subscribe(User user, Position position) {
+    public void subscribe(User user, Organization organization) {
 
     }
 
     @Override
-    public void unsubscribe(User user, Position position) {
+    public void unsubscribe(User user, Organization organization) {
 
     }
 
@@ -57,7 +57,6 @@ public class UrbanServiceStubImpl implements UrbanService {
         user.setIsBlocked(0);
 
         PersonPojo person = new PersonPojo();
-        person.setAge(25);
         person.setBirthday(new Date());
         person.setFirstName("x");
         person.setSurname("x");

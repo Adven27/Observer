@@ -13,10 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.test.R;
-import com.urban.activity.task.SubscribePositionTask;
-import com.urban.activity.task.UnsubscribePositionTask;
+import com.urban.activity.task.SubscribeOrganizationTask;
+import com.urban.activity.task.UnsubscribeOrganizationTask;
 import com.urban.appl.Settings;
-import com.urban.data.Position;
+import com.urban.data.Organization;
 import com.urban.data.User;
 import com.urban.data.dao.DAO;
 
@@ -27,11 +27,11 @@ import java.util.Set;
 
 import src.com.urban.data.sqlite.pojo.UserPojo;
 
-public class PositionAdapter extends ArrayAdapter<Position> {
+public class OrganizationAdapter extends ArrayAdapter<Organization> {
     private final Context context;
-    private ArrayList<Position> values;
+    private ArrayList<Organization> values;
 
-    public PositionAdapter(Context context, Collection<Position> values) {
+    public OrganizationAdapter(Context context, Collection<Organization> values) {
         super(context, R.layout.category_item, new ArrayList<>(values));
         this.context = context;
         this.values = new ArrayList<>(values);
@@ -58,23 +58,23 @@ public class PositionAdapter extends ArrayAdapter<Position> {
             holder = (ViewHolder)convertView.getTag();
         }
 
-        final Position positionItem = values.get(position);
+        final Organization positionItem = values.get(position);
         holder.text.setText(positionItem.getName());
 
         //TODO: Change strategy of marking.
         User loggedUser = Settings.getLoggedUser();
         if (loggedUser != null) {
-            Set<Position> subscribes = loggedUser.getSubscribes();
+            Set<Organization> subscribes = loggedUser.getSubscribes();
             holder.likeBtn.setActivated(subscribes != null && subscribes.contains(positionItem));
 
-            // Saving of position in view to get if when click will appear.
+            // Saving of organization in view to get if when click will appear.
             holder.likeBtn.setId(position);
             holder.likeBtn.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (!v.isActivated()) {
-                        SubscribePositionTask task = new SubscribePositionTask(
-                                PositionAdapter.this, Settings.getLoggedUser(), holder.likeBtn, positionItem);
+                        SubscribeOrganizationTask task = new SubscribeOrganizationTask(
+                                OrganizationAdapter.this, Settings.getLoggedUser(), holder.likeBtn, positionItem);
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -82,8 +82,8 @@ public class PositionAdapter extends ArrayAdapter<Position> {
                             task.execute();
                         }
                     } else {
-                        UnsubscribePositionTask task = new UnsubscribePositionTask(
-                                PositionAdapter.this, Settings.getLoggedUser(), holder.likeBtn, positionItem);
+                        UnsubscribeOrganizationTask task = new UnsubscribeOrganizationTask(
+                                OrganizationAdapter.this, Settings.getLoggedUser(), holder.likeBtn, positionItem);
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -102,13 +102,13 @@ public class PositionAdapter extends ArrayAdapter<Position> {
     public void subscribe(View view) {
         UserPojo user = (UserPojo)Settings.getLoggedUser();
 
-        Set<Position> subscribes = user.getSubscribes();
+        Set<Organization> subscribes = user.getSubscribes();
         subscribes.add(values.get(view.getId()));
         user.setSubscribes(subscribes);
         try {
             DAO.save(user);
             view.setActivated(true);
-            Toast.makeText(context, "You were subscribed on this position!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "You were subscribed on this organization!", Toast.LENGTH_SHORT).show();
         } catch (SQLException e) {
             //TODO: log this!
             Toast.makeText(context, "You were not subscribed!", Toast.LENGTH_SHORT).show();
@@ -118,13 +118,13 @@ public class PositionAdapter extends ArrayAdapter<Position> {
     public void unsubscribe(View view) {
         UserPojo user = (UserPojo)Settings.getLoggedUser();
 
-        Set<Position> subscribes = user.getSubscribes();
+        Set<Organization> subscribes = user.getSubscribes();
         subscribes.remove(values.get(view.getId()));
         user.setSubscribes(subscribes);
         try {
             DAO.save(user);
             view.setActivated(false);
-            Toast.makeText(context, "You were unsubscribed from this position!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "You were unsubscribed from this organization!", Toast.LENGTH_SHORT).show();
         } catch (SQLException e) {
             //TODO: log this!
             Toast.makeText(context, "You were not unsubscribed!", Toast.LENGTH_SHORT).show();

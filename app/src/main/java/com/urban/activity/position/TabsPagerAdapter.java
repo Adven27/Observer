@@ -4,25 +4,25 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.test.R;
-import com.urban.data.Position;
+import com.urban.data.Organization;
 import com.urban.fragments.pages.ActionsFragment;
 import com.urban.fragments.pages.ContactsFragment;
 import com.urban.fragments.pages.InfoFragment;
+import com.urban.fragments.pages.OrganizationTabFragment;
 import com.urban.fragments.pages.PhotoFragment;
-import com.urban.fragments.pages.PositionTabFragment;
-import com.urban.fragments.pages.map.PositionMapFragment;
+import com.urban.fragments.pages.map.OrganizationMapFragment;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter {
-    private final Position categoryPosition;
-    private final static int[] ICONS = {R.drawable.position_tab_desc,
-            R.drawable.position_tab_contacts,
-            R.drawable.position_tab_photo,
-            R.drawable.position_tab_actions,
-            R.drawable.position_tab_actions};
+    private final Organization categoryOrganization;
+    private final static int[] ICONS = {R.drawable.organization_tab_desc,
+            R.drawable.organization_tab_contacts,
+            R.drawable.organization_tab_photo,
+            R.drawable.organization_tab_actions,
+            R.drawable.organization_tab_actions};
 
-    public TabsPagerAdapter(FragmentManager fragmentManager, Position position) {
+    public TabsPagerAdapter(FragmentManager fragmentManager, Organization organization) {
         super(fragmentManager);
-        categoryPosition = position;
+        categoryOrganization = organization;
     }
 
     @Override
@@ -32,18 +32,18 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 
     // Returns the fragment to display for that page
     @Override
-    public PositionTabFragment getItem(int position) {
+    public OrganizationTabFragment getItem(int position) {
         switch (position) {
             case 0:
-                return InfoFragment.newInstance(categoryPosition);
+                return InfoFragment.newInstance(categoryOrganization);
             case 1:
-                return ContactsFragment.newInstance(categoryPosition);
+                return ContactsFragment.newInstance(categoryOrganization);
             case 2:
-                return PhotoFragment.newInstance(categoryPosition);
+                return PhotoFragment.newInstance(categoryOrganization);
             case 3:
-                return ActionsFragment.newInstance(categoryPosition);
+                return ActionsFragment.newInstance(categoryOrganization);
             case 4:
-                return PositionMapFragment.newInstance(categoryPosition);
+                return OrganizationMapFragment.newInstance(categoryOrganization);
             default:
                 return null;
         }

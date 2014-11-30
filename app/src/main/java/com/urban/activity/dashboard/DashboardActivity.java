@@ -22,7 +22,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.tools.LogHelper;
-import com.tools.ViewServer;
 import com.urban.activity.main.MainActivity;
 import com.urban.activity.task.UpdateUserTask;
 import com.urban.appl.Settings;
@@ -93,19 +92,6 @@ public class DashboardActivity extends FragmentActivity {
                 redirectToCategory(categories.get(position));
             }
         });
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        ViewServer.get(this).removeWindow(this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        checkPlayServices();
-        ViewServer.get(this).setFocusedWindow(this);
     }
 
     private List<Category> getCategories() {

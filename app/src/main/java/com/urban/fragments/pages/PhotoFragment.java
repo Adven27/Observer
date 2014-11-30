@@ -7,15 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.test.R;
-import com.urban.data.Position;
+import com.urban.data.Organization;
 
-public class PhotoFragment extends PositionTabFragment {
+public class PhotoFragment extends OrganizationTabFragment {
 
-    private static final int LAYOUT_ID = R.layout.position_photo;
+    private static final int LAYOUT_ID = R.layout.organization_photo;
 
-    public static PhotoFragment newInstance(Position position) {
+    public static PhotoFragment newInstance(Organization organization) {
         PhotoFragment fragment = new PhotoFragment();
-        fragment.position = position;
+        fragment.organization = organization;
         return fragment;
     }
 
