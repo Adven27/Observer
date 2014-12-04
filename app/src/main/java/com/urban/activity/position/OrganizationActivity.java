@@ -2,14 +2,17 @@ package com.urban.activity.position;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
 
 import com.example.test.R;
 import com.tools.LogHelper;
 import com.tools.PrototypeView;
+import com.urban.activity.map.MapActivity;
 import com.urban.data.Organization;
 import com.urban.data.dao.DAO;
 
@@ -88,5 +91,12 @@ public class OrganizationActivity extends FragmentActivity {
             Log.e(LogHelper.TAG_DB_OPERATION, "Can't find the organization by id: " + organizationId, e);
             return null;
         }
+    }
+
+
+    public void onShowOnMap(View view) {
+        Intent intent = new Intent(this, MapActivity.class);
+        intent.putExtra(EXTRA_POSITION_ID, organization.getId());
+        startActivity(intent);
     }
 }

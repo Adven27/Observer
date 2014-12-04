@@ -8,9 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import com.urban.activity.about.fragments.AboutFragment;
 import com.urban.activity.about.fragments.EggFragment;
 import com.urban.data.Category;
-import com.urban.data.Organization;
 import com.urban.fragments.CategoryFragment;
-import com.urban.fragments.OrganizationFragment;
 import com.urban.fragments.pages.map.YandexMapFragment;
 
 public class PrototypeView {
@@ -43,20 +41,6 @@ public class PrototypeView {
             CategoryFragment category = new CategoryFragment();
             category.setCurrentCategory(this.category);
             transaction.replace(containerId, category);
-        }
-    }
-
-    public static class ShowOrganizationAction implements Action {
-        private Organization organization = null;
-
-        public ShowOrganizationAction(Organization organization) {
-            this.organization = organization;
-        }
-
-        public void make(FragmentTransaction transaction){
-            OrganizationFragment organization = new OrganizationFragment();
-            organization.setCurrentOrganization(this.organization);
-            transaction.replace(containerId, organization);
         }
     }
 

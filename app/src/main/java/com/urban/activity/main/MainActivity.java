@@ -6,8 +6,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.test.R;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.tools.LogHelper;
 import com.tools.PrototypeView;
 import com.urban.activity.dashboard.DashboardActivity;
@@ -72,4 +74,17 @@ public class MainActivity extends FragmentActivity {
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        View layout = findViewById(R.id.fragment_container);
+        SlidingMenu menu = (SlidingMenu)layout.findViewById(R.id.slidingmenulayout);
+        menu.toggle();
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        PrototypeView.switchActivity(this);
+    }
 }

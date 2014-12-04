@@ -4,9 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.test.R;
+import com.urban.data.Action;
 import com.urban.data.Organization;
+
+import java.util.Set;
 
 public class ActionsFragment extends OrganizationTabFragment {
 
@@ -24,6 +29,14 @@ public class ActionsFragment extends OrganizationTabFragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(LAYOUT_ID, container, false);
+        Set<Action> actions = organization.getActions();
+        LinearLayout actionLayout = (LinearLayout)view.findViewById(R.id.action_layout);
+        for (Action action : actions) {
+            TextView text = new TextView(getActivity().getApplicationContext());
+            text.setText(action.getSubject());
+            actionLayout.addView(text);
+        }
+
         return view;
     }
 }

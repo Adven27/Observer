@@ -17,5 +17,8 @@
     <string name="usr_phone" translatable="false">Телефон:</string>
     <string name="icon">DASH CELL DESC</string>
     <string name="category_name">Category Name</string>
+    <string name="contacts">Контакты</string>
+    <string name="actions">Акции</string>
+    <string name="show_on_map">показать на карте</string>
 
 </resources>

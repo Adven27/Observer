@@ -18,70 +18,78 @@ import ru.yandex.yandexmapkit.MapView;
 import ru.yandex.yandexmapkit.OverlayManager;
 import ru.yandex.yandexmapkit.overlay.Overlay;
 import ru.yandex.yandexmapkit.overlay.OverlayItem;
+import ru.yandex.yandexmapkit.overlay.balloon.BalloonItem;
 import ru.yandex.yandexmapkit.utils.GeoPoint;
 
 public class YandexMapFragment extends Fragment {
 
-       private static final YandexMapFragment mapFragment = new YandexMapFragment();
+    private static YandexMapFragment mapFragment = new YandexMapFragment();
 
-        private MapController mMapController;
-        private OverlayManager mOverlayManager;
-        private Overlay overlay;
+    private MapController mMapController;
+    private OverlayManager mOverlayManager;
+    private Overlay overlay;
 
-        private  View v;
-        private  MapView mapView;
-        private Collection<Place> places;
+    private  View v;
+    private  MapView mapView;
+    private Collection<Place> places;
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                    Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                Bundle savedInstanceState) {
 
-            if (v != null) {
-                showPlaces();
-                return v;
-            }
-            v = inflater.inflate(R.layout.organization_map_fragment, null, false);
-            mapView = (MapView)v.findViewById(R.id.map);
-            mMapController = mapView.getMapController();
-            mOverlayManager = mMapController.getOverlayManager();
-            mOverlayManager.getMyLocation().setEnabled(false);
-            overlay = new Overlay(mMapController);
-
+        if (v != null) {
             showPlaces();
-
             return v;
+        }
+        v = inflater.inflate(R.layout.organization_map_fragment, null, false);
+        mapView = (MapView)v.findViewById(R.id.map);
+        mMapController = mapView.getMapController();
+        mOverlayManager = mMapController.getOverlayManager();
+        mOverlayManager.getMyLocation().setEnabled(false);
+        overlay = new Overlay(mMapController);
 
+        showPlaces();
+
+        return v;
+
+    }
+
+
+    public void initPlaces(Collection<Place> places) {
+        this.places = places;
+    }
+
+    public void showPlaces() {
+
+        // Load required resources
+        Resources res = PrototypeView.getActivity().getResources();
+        // Create a layer of objects for the map
+        overlay.clearOverlayItems();
+        mMapController.setZoomCurrent(16);
+
+        GeoPoint point = null;
+        for (Place place : places) {
+            point = new GeoPoint(place.getAlt(), place.getLat());
+            OverlayItem item = new OverlayItem(point, res.getDrawable(R.drawable.shop));
+            overlay.addOverlayItem(item);
+            BalloonItem balloon = new BalloonItem(this.getActivity(), point);
+            balloon.setText("place.getAddress().iterator().next().toString()");
+            item.setBalloonItem(balloon);
         }
 
-
-        public void initPlaces(Collection<Place> places) {
-            this.places = places;
+        if (point != null) {
+            mMapController.setPositionNoAnimationTo(point);
         }
 
-        public void showPlaces() {
+        mOverlayManager.addOverlay(overlay);
+    }
 
-            // Load required resources
-            Resources res = PrototypeView.getActivity().getResources();
-            // Create a layer of objects for the map
-            overlay.clearOverlayItems();
-            mMapController.setZoomCurrent(16);
+    public static YandexMapFragment getInstance() {
+        return mapFragment;
+    }
 
-            GeoPoint point = null;
-            for (Place place : places) {
-                point = new GeoPoint(place.getAlt(), place.getLat());
-                OverlayItem item = new OverlayItem(point, res.getDrawable(R.drawable.shop));
-                overlay.addOverlayItem(item);
-            }
-
-            if (point != null) {
-                mMapController.setPositionNoAnimationTo(point);
-            }
-
-            mOverlayManager.addOverlay(overlay);
-        }
-
-        public static YandexMapFragment getInstance() {
-            return mapFragment;
-        }
+    public static void setInstance(YandexMapFragment f) {
+        mapFragment = f;
+    }
 
 }

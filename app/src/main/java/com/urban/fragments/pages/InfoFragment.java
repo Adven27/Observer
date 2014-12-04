@@ -4,10 +4,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.test.R;
+import com.urban.data.Contact;
 import com.urban.data.Organization;
+
+import java.util.Collection;
+import java.util.Iterator;
 
 public class InfoFragment extends OrganizationTabFragment {
 
@@ -24,6 +29,7 @@ public class InfoFragment extends OrganizationTabFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(LAYOUT_ID, container, false);
         fillPositionInfo(view);
+        fillContacts(view);
         return view;
     }
 
@@ -33,4 +39,18 @@ public class InfoFragment extends OrganizationTabFragment {
         text = (TextView) view.findViewById(R.id.info_text);
         text.setText(organization.getDescription());
     }
+
+    private void fillContacts(View view) {
+        Collection<Contact> contacts = organization.getContacts();
+        Iterator<Contact> iterator = contacts.iterator();
+
+        LinearLayout contactsLayout = (LinearLayout) view.findViewById(R.id.contacts_layout);
+
+        while (iterator.hasNext()) {
+            TextView text = new TextView(getActivity().getApplicationContext());
+            text.setText(iterator.next().getContact());
+            contactsLayout.addView(text);
+        }
+    }
+
 }

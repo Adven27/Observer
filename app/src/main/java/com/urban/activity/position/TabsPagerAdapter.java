@@ -6,19 +6,17 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.example.test.R;
 import com.urban.data.Organization;
 import com.urban.fragments.pages.ActionsFragment;
-import com.urban.fragments.pages.ContactsFragment;
 import com.urban.fragments.pages.InfoFragment;
 import com.urban.fragments.pages.OrganizationTabFragment;
 import com.urban.fragments.pages.PhotoFragment;
-import com.urban.fragments.pages.map.OrganizationMapFragment;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter {
     private final Organization categoryOrganization;
-    private final static int[] ICONS = {R.drawable.organization_tab_desc,
-            R.drawable.organization_tab_contacts,
+    private final static int[] ICONS = {
+            R.drawable.organization_tab_desc,
             R.drawable.organization_tab_photo,
-            R.drawable.organization_tab_actions,
-            R.drawable.organization_tab_actions};
+            R.drawable.organization_tab_actions
+    };
 
     public TabsPagerAdapter(FragmentManager fragmentManager, Organization organization) {
         super(fragmentManager);
@@ -37,13 +35,9 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return InfoFragment.newInstance(categoryOrganization);
             case 1:
-                return ContactsFragment.newInstance(categoryOrganization);
-            case 2:
                 return PhotoFragment.newInstance(categoryOrganization);
-            case 3:
+            case 2:
                 return ActionsFragment.newInstance(categoryOrganization);
-            case 4:
-                return OrganizationMapFragment.newInstance(categoryOrganization);
             default:
                 return null;
         }

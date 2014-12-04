@@ -30,6 +30,7 @@ public class OrganizationMapFragment extends OrganizationTabFragment {
         View view = inflater.inflate(LAYOUT_ID, container, false);
 
         Collection<Place> places = organization.getPlaces();
+        YandexMapFragment.setInstance(new YandexMapFragment());
         YandexMapFragment.getInstance().initPlaces(places);
 
         PrototypeView.setCurrentContainerId(R.id.map_container);
