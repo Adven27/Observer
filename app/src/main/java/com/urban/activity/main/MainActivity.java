@@ -1,12 +1,15 @@
 package com.urban.activity.main;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 
 import com.example.test.R;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -15,9 +18,23 @@ import com.tools.PrototypeView;
 import com.urban.activity.dashboard.DashboardActivity;
 import com.urban.data.Category;
 import com.urban.data.dao.DAO;
+import com.urban.fragments.CategoryFragment;
 import com.urban.fragments.SlidingContentFragment;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements SearchView.OnQueryTextListener{
+
+    private SearchView searchView;
+
+
+    public boolean onQueryTextChange(String newText) {
+        Fragment categoryFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        ((CategoryFragment) categoryFragment).filter(newText);
+        return true;
+    }
+
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,15 +87,28 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add("Menu").setIcon(R.drawable.side_menu_button).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+
+        setUpSearchView(menu);
         return true;
+    }
+
+    private void setUpSearchView(Menu menu) {
+        searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setOnQueryTextListener(this);
+        searchView.setIconifiedByDefault(true);
+        searchView.setSubmitButtonEnabled(false);
+        searchView.setQueryHint("Search Here");
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        View layout = findViewById(R.id.fragment_container);
-        SlidingMenu menu = (SlidingMenu)layout.findViewById(R.id.slidingmenulayout);
-        menu.toggle();
+        if (item.getItemId() == R.id.ab_menu_side_menu_toggle) {
+            View layout = findViewById(R.id.fragment_container);
+            SlidingMenu menu = (SlidingMenu) layout.findViewById(R.id.slidingmenulayout);
+            menu.toggle();
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -87,4 +117,5 @@ public class MainActivity extends FragmentActivity {
         super.onResume();
         PrototypeView.switchActivity(this);
     }
+
 }

@@ -20,7 +20,7 @@
         android:id="@+id/banner_container"
         android:layout_width="match_parent"
         android:layout_height="60dp" />
-
+    
     <ListView
         android:id="@+id/organization_list"
         android:layout_width="match_parent"

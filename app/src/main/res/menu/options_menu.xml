@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/search"
+        android:title="@string/search_title"
+        android:icon="@android:drawable/ic_search_category_default"
+        android:showAsAction="collapseActionView|ifRoom"
+        android:actionViewClass="android.widget.SearchView" />
+
+    <item android:id="@+id/ab_menu_side_menu_toggle"
+        android:title="@string/side_menu_title"
+        android:icon="@drawable/side_menu_button"
+        android:showAsAction="collapseActionView|always"/>
+</menu>

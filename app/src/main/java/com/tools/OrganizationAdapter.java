@@ -9,6 +9,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,18 +25,35 @@ import com.urban.data.dao.DAO;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import src.com.urban.data.sqlite.pojo.UserPojo;
 
-public class OrganizationAdapter extends ArrayAdapter<Organization> {
+public class OrganizationAdapter extends ArrayAdapter<Organization> implements Filterable {
     private final Context context;
-    private ArrayList<Organization> values;
+    //private ArrayList<Organization> values;
+    private List<Organization>originalData = null;
+    private List<Organization>filteredData = null;
+    private OrganizationFilter mFilter = new OrganizationFilter();
 
     public OrganizationAdapter(Context context, Collection<Organization> values) {
         super(context, R.layout.category_item, new ArrayList<>(values));
         this.context = context;
-        this.values = new ArrayList<>(values);
+        this.originalData = new ArrayList<>(values);
+        this.filteredData = new ArrayList<>(values);
+    }
+
+    public Filter getFilter() {
+        return mFilter;
+    }
+
+    public int getCount() {
+        return filteredData.size();
+    }
+
+    public Organization getItem(int position) {
+        return filteredData.get(position);
     }
 
     @Override
@@ -58,7 +77,7 @@ public class OrganizationAdapter extends ArrayAdapter<Organization> {
             holder = (ViewHolder)convertView.getTag();
         }
 
-        final Organization positionItem = values.get(position);
+        final Organization positionItem = filteredData.get(position);
         holder.text.setText(positionItem.getName());
 
         //TODO: Change strategy of marking.
@@ -103,7 +122,7 @@ public class OrganizationAdapter extends ArrayAdapter<Organization> {
         UserPojo user = (UserPojo)Settings.getLoggedUser();
 
         Set<Organization> subscribes = user.getSubscribes();
-        subscribes.add(values.get(view.getId()));
+        subscribes.add(filteredData.get(view.getId()));
         user.setSubscribes(subscribes);
         try {
             DAO.save(user);
@@ -119,7 +138,7 @@ public class OrganizationAdapter extends ArrayAdapter<Organization> {
         UserPojo user = (UserPojo)Settings.getLoggedUser();
 
         Set<Organization> subscribes = user.getSubscribes();
-        subscribes.remove(values.get(view.getId()));
+        subscribes.remove(filteredData.get(view.getId()));
         user.setSubscribes(subscribes);
         try {
             DAO.save(user);
@@ -136,5 +155,41 @@ public class OrganizationAdapter extends ArrayAdapter<Organization> {
         TextView text;
         Button mapBtn;
         Button likeBtn;
+    }
+
+    private class OrganizationFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            Filter.FilterResults result = new FilterResults();
+            final List<Organization> allOrganizations = originalData;
+
+
+            if(constraint == null || constraint.length() == 0){
+
+                result.values = allOrganizations;
+                result.count = allOrganizations.size();
+            }else{
+                ArrayList<Organization> filteredList = new ArrayList();
+                for(Organization org: allOrganizations){
+                    if(org.getName().toLowerCase().contains(constraint.toString().toLowerCase()))
+                        filteredList.add(org);
+                }
+                result.values = filteredList;
+                result.count = filteredList.size();
+            }
+
+            return result;
+        }
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            if (results.count == 0) {
+                notifyDataSetInvalidated();
+            } else {
+                filteredData = (ArrayList<Organization>) results.values;
+                notifyDataSetChanged();
+            }
+        }
+
     }
 }

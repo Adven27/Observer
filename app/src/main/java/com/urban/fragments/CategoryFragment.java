@@ -29,6 +29,8 @@ import java.util.Set;
 public class CategoryFragment extends Fragment {
 
     private Category currentCategory = null;
+    private ListView positionList;
+    private OrganizationAdapter organizationAdapter;
 
     public void setCurrentCategory(Category category) {
         this.currentCategory = category;
@@ -53,10 +55,12 @@ public class CategoryFragment extends Fragment {
 
     private void setUpOrganizationListView(View categoryLayout) {
         Collection<Organization> positions = getCategoryOrganizations();
-        ListView positionList = (ListView) categoryLayout.findViewById(R.id.organization_list);
+        positionList = (ListView) categoryLayout.findViewById(R.id.organization_list);
 
-        positionList.setAdapter(new OrganizationAdapter(getActivity(), positions));
+        organizationAdapter = new OrganizationAdapter(getActivity(), positions);
+        positionList.setAdapter(organizationAdapter);
         positionList.setOnItemClickListener(new OnOrganizationClickListener());
+        positionList.setTextFilterEnabled(true);
     }
 
     private void setUpBannerFragment() {
@@ -75,6 +79,10 @@ public class CategoryFragment extends Fragment {
         }
     }
 
+    public void filter(String newText) {
+        organizationAdapter.getFilter().filter(newText.toString());
+    }
+
     private class OnOrganizationClickListener implements OnItemClickListener {
         public OnOrganizationClickListener() {
             super();
@@ -90,8 +98,7 @@ public class CategoryFragment extends Fragment {
         }
 
         private Organization getSelectedOrganization(AdapterView<?> adapter, int position) {
-            OrganizationAdapter posAdapter = (OrganizationAdapter) adapter.getAdapter();
-            return posAdapter.getItem(position);
+            return organizationAdapter.getItem(position);
         }
     }
 }
