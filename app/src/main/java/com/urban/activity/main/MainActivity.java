@@ -2,7 +2,6 @@ package com.urban.activity.main;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
@@ -15,13 +14,14 @@ import com.example.test.R;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.tools.LogHelper;
 import com.tools.PrototypeView;
+import com.urban.activity.UrbanActivity;
 import com.urban.activity.dashboard.DashboardActivity;
 import com.urban.data.Category;
 import com.urban.data.dao.DAO;
 import com.urban.fragments.CategoryFragment;
 import com.urban.fragments.SlidingContentFragment;
 
-public class MainActivity extends FragmentActivity implements SearchView.OnQueryTextListener{
+public class MainActivity extends UrbanActivity implements SearchView.OnQueryTextListener {
 
     private SearchView searchView;
 
@@ -111,11 +111,4 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         }
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        PrototypeView.switchActivity(this);
-    }
-
 }

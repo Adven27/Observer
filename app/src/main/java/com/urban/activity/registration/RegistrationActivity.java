@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.test.R;
+import com.urban.activity.UrbanActivity;
 import com.urban.activity.dashboard.DashboardActivity;
 import com.urban.activity.task.RegistrationTask;
 import com.urban.appl.Settings;
@@ -24,7 +24,7 @@ import java.util.Date;
 import src.com.urban.data.sqlite.pojo.PersonPojo;
 import src.com.urban.data.sqlite.pojo.UserPojo;
 
-public class RegistrationActivity extends FragmentActivity {
+public class RegistrationActivity extends UrbanActivity {
 
     private EditText login;
     private EditText password;

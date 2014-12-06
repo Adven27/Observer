@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.test.R;
+import com.tools.PhoneView;
 import com.urban.data.Contact;
 import com.urban.data.Organization;
 
@@ -47,9 +48,9 @@ public class InfoFragment extends OrganizationTabFragment {
         LinearLayout contactsLayout = (LinearLayout) view.findViewById(R.id.contacts_layout);
 
         while (iterator.hasNext()) {
-            TextView text = new TextView(getActivity().getApplicationContext());
-            text.setText(iterator.next().getContact());
-            contactsLayout.addView(text);
+            PhoneView phone = new PhoneView(getActivity().getApplicationContext());
+            phone.setText(iterator.next().getContact());
+            contactsLayout.addView(phone);
         }
     }
 

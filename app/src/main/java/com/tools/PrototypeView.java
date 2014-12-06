@@ -113,4 +113,26 @@ public class PrototypeView {
     }
 
 
+    public static class ShowDialogAction implements Action {
+
+        CustomDialogFragment.DialogListener listener;
+        String title;
+        String text;
+
+        public ShowDialogAction(CustomDialogFragment.DialogListener listener, String title, String text) {
+            this.listener = listener;
+            this.title = title;
+            this.text = text;
+        }
+
+        public void make(FragmentTransaction transaction){
+            CustomDialogFragment dialog = CustomDialogFragment.getInstance(listener, title, text);
+            dialog.show(activity.getFragmentManager(), null);
+        }
+    }
+
+    public static void showDialog(CustomDialogFragment.DialogListener listener, String title, String text) {
+        doInTransaction(new ShowDialogAction(listener, title, text));
+    }
+
 }

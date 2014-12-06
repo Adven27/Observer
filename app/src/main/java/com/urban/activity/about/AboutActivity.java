@@ -1,21 +1,19 @@
 package com.urban.activity.about;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.test.R;
 import com.tools.PrototypeView;
+import com.urban.activity.UrbanActivity;
 
-public class AboutActivity extends FragmentActivity {
+public class AboutActivity extends UrbanActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about_frame);
-
-        PrototypeView.switchActivity(this);
 
         PrototypeView.setCurrentContainerId(R.id.about_frame);
         PrototypeView.doInTransaction(new PrototypeView.ShowAboutAction());

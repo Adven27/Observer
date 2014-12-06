@@ -20,6 +20,9 @@
     <string name="contacts">Контакты</string>
     <string name="actions">Акции</string>
     <string name="show_on_map">показать на карте</string>
+    <string name="dialog_accept">ОК</string>
+    <string name="dialog_cancel">Отмена</string>
+    <string name="dialog_header">Вызов внешнего номера</string>
     <string name="search_title">Искать</string>
     <string name="side_menu_title">Side menu</string>
 

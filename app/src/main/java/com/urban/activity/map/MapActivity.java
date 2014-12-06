@@ -1,12 +1,12 @@
 package com.urban.activity.map;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.example.test.R;
 import com.tools.LogHelper;
 import com.tools.PrototypeView;
+import com.urban.activity.UrbanActivity;
 import com.urban.activity.position.OrganizationActivity;
 import com.urban.data.Organization;
 import com.urban.data.Place;
@@ -15,7 +15,7 @@ import com.urban.fragments.pages.map.YandexMapFragment;
 
 import java.util.Collection;
 
-public class MapActivity extends FragmentActivity {
+public class MapActivity extends UrbanActivity {
 
 
     private Organization organization;
@@ -30,15 +30,8 @@ public class MapActivity extends FragmentActivity {
         YandexMapFragment.setInstance(new YandexMapFragment());
         YandexMapFragment.getInstance().initPlaces(places);
 
-        PrototypeView.switchActivity(this);
         PrototypeView.setCurrentContainerId(R.id.map_container);
         PrototypeView.doInTransaction(new PrototypeView.ShowMapAction());
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        PrototypeView.switchActivity(this);
     }
 
     private void initOrganization() {

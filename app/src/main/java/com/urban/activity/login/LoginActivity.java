@@ -6,13 +6,13 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.test.R;
+import com.urban.activity.UrbanActivity;
 import com.urban.activity.dashboard.DashboardActivity;
 import com.urban.activity.registration.RegistrationActivity;
 import com.urban.activity.task.SignInTask;
@@ -20,7 +20,7 @@ import com.urban.appl.Settings;
 import com.urban.data.User;
 import com.urban.validation.ValidationHelper;
 
-public class LoginActivity extends FragmentActivity {
+public class LoginActivity extends UrbanActivity {
 
     private EditText login;
     private EditText password;

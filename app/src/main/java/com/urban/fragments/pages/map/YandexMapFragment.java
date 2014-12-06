@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.example.test.R;
 import com.tools.PrototypeView;
+import com.urban.data.Address;
 import com.urban.data.Place;
 
 import java.util.Collection;
@@ -73,7 +74,7 @@ public class YandexMapFragment extends Fragment {
             OverlayItem item = new OverlayItem(point, res.getDrawable(R.drawable.shop));
             overlay.addOverlayItem(item);
             BalloonItem balloon = new BalloonItem(this.getActivity(), point);
-            balloon.setText("place.getAddress().iterator().next().toString()");
+            balloon.setText(getAddressStr(place.getAddress().iterator().next()));
             item.setBalloonItem(balloon);
         }
 
@@ -90,6 +91,17 @@ public class YandexMapFragment extends Fragment {
 
     public static void setInstance(YandexMapFragment f) {
         mapFragment = f;
+    }
+
+    private String getAddressStr(Address address) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("ул. ")
+                .append(address.getStreet()).append(",")
+                .append(" д. ").append(address.getHouse())
+                .append(address.getLetter() != null ? address.getLetter() : "").append(",")
+                .append(" кв. ")
+                .append(address.getFlat());
+        return  sb.toString();
     }
 
 }

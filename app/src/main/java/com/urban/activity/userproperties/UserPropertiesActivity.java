@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -14,12 +13,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.test.R;
+import com.urban.activity.UrbanActivity;
 import com.urban.activity.dashboard.DashboardActivity;
 import com.urban.activity.task.UpdateUserTask;
 import com.urban.appl.Settings;
 import com.urban.data.User;
 
-public class UserPropertiesActivity extends FragmentActivity {
+public class UserPropertiesActivity extends UrbanActivity {
 
     private EditText login;
     private EditText password;

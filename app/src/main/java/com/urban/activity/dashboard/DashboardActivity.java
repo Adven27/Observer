@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -22,6 +21,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.tools.LogHelper;
+import com.urban.activity.UrbanActivity;
 import com.urban.activity.main.MainActivity;
 import com.urban.activity.task.UpdateUserTask;
 import com.urban.appl.Settings;
@@ -36,7 +36,7 @@ import java.util.List;
 
 import src.com.urban.data.sqlite.pojo.UserPojo;
 
-public class DashboardActivity extends FragmentActivity {
+public class DashboardActivity extends UrbanActivity {
     public static final String CATEGORY_ID_ARGUMENT = "category_id";
     public static final String PROPERTY_REG_ID = "registration_id";
 
