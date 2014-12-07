@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -17,8 +18,11 @@ import com.urban.activity.dashboard.DashboardActivity;
 import com.urban.activity.registration.RegistrationActivity;
 import com.urban.activity.task.SignInTask;
 import com.urban.appl.Settings;
+import com.urban.dao.DBInitializer;
 import com.urban.data.User;
 import com.urban.validation.ValidationHelper;
+
+import java.io.IOException;
 
 public class LoginActivity extends UrbanActivity {
 
@@ -79,6 +83,19 @@ public class LoginActivity extends UrbanActivity {
     public void onRegister(View button) {
         Intent intent = new Intent(this, RegistrationActivity.class);
         startActivity(intent);
+    }
+
+    /**
+     * Register button click
+     * @param button
+     */
+    public void onRecreate(View button) {
+        try {
+            DBInitializer.copyDataBase(context, Settings.getDBName());
+        } catch (IOException e) {
+            Toast.makeText(context, "Не удалось пересоздать базу", Toast.LENGTH_LONG).show();
+            Log.e("LoginActivity", "Не удалось пересоздать базу");
+        }
     }
 
     /**
