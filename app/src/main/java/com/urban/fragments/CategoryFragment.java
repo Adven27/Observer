@@ -1,6 +1,8 @@
 package com.urban.fragments;
 
+import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,14 +13,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.test.R;
+import com.tools.ImageHelper;
 import com.tools.LogHelper;
 import com.tools.OrganizationAdapter;
 import com.tools.PrototypeView;
 import com.urban.activity.position.OrganizationActivity;
 import com.urban.data.Category;
+import com.urban.data.Image;
 import com.urban.data.Organization;
 
 import java.util.Collection;
@@ -41,16 +44,11 @@ public class CategoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         View categoryLayout = inflater.inflate(R.layout.category, container, false);
 
-        setUpCategoryHeader(categoryLayout);
         setUpOrganizationListView(categoryLayout);
         setUpBannerFragment();
+        setUpCategoryTitle();
 
         return categoryLayout;
-    }
-
-    private void setUpCategoryHeader(View categoryLayout) {
-        TextView categoryHeader = (TextView) categoryLayout.findViewById(R.id.category_header);
-        categoryHeader.setText(currentCategory.getName());
     }
 
     private void setUpOrganizationListView(View categoryLayout) {
@@ -68,6 +66,19 @@ public class CategoryFragment extends Fragment {
         int bannerContainerID = R.id.banner_container;
 
         PrototypeView.setUpContainer(fragmentManager, new BannerFragment(), bannerContainerID);
+    }
+
+    private void setUpCategoryTitle() {
+        ActionBar actionBar = getActivity().getActionBar();
+        if (currentCategory != null) {
+            actionBar.setTitle(currentCategory.getName());
+            Image icon = currentCategory.getIcon();
+            if (icon != null) {
+                Drawable drawable = ImageHelper.getDrawableFromImage(icon);
+                actionBar.setIcon(drawable);
+            }
+        }
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     private Set<Organization> getCategoryOrganizations() {

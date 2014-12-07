@@ -109,6 +109,11 @@ public class MainActivity extends UrbanActivity implements SearchView.OnQueryTex
             SlidingMenu menu = (SlidingMenu) layout.findViewById(R.id.slidingmenulayout);
             menu.toggle();
         }
+        if (item.getItemId() == android.R.id.home) {
+            //TODO: Navigate back. NavUtils.navigateUpFromSameTask(this);
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 }

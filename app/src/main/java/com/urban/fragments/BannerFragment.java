@@ -13,13 +13,12 @@ import android.widget.ImageSwitcher;
 import android.widget.ViewSwitcher.ViewFactory;
 
 import com.example.test.R;
+import com.tools.ImageHelper;
 import com.tools.LogHelper;
 import com.urban.data.Advertising;
 import com.urban.data.Image;
 import com.urban.data.dao.DAO;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -129,34 +128,11 @@ public class BannerFragment extends Fragment {
         private Drawable getAdvertDrawable() {
             int i = calcNextAdvertImgIndexForShow();
             Image img = advertisements.get(i).getImage();
-            return getDrawableFromImage(img);
+            return ImageHelper.getDrawableFromImage(img);
         }
 
         private int calcNextAdvertImgIndexForShow() {
             return advertImgIndexForShow++ % advertisements.size();
-        }
-
-        private Drawable getDrawableFromImage(Image image) {
-            if (image == null) {
-                return null;
-            }
-            InputStream is = image.getAsStream();
-
-            return getDrawableFromStream(is);
-        }
-
-        private Drawable getDrawableFromStream(InputStream is) {
-            try {
-                return Drawable.createFromStream(is, "name");
-            } finally {
-                if (is != null) {
-                    try {
-                        is.close();
-                    } catch (IOException e) {
-                        Log.e("BannerFragment", "An error during close() operation on InputStream");
-                    }
-                }
-            }
         }
 
         protected void onPostExecute(Drawable drawable) {
