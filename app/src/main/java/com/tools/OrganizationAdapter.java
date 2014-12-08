@@ -18,6 +18,7 @@ import com.example.test.R;
 import com.urban.activity.task.SubscribeOrganizationTask;
 import com.urban.activity.task.UnsubscribeOrganizationTask;
 import com.urban.appl.Settings;
+import com.urban.data.Category;
 import com.urban.data.Organization;
 import com.urban.data.User;
 import com.urban.data.dao.DAO;
@@ -124,7 +125,14 @@ public class OrganizationAdapter extends ArrayAdapter<Organization> implements F
         Set<Organization> subscribes = user.getSubscribes();
         subscribes.add(filteredData.get(view.getId()));
         user.setSubscribes(subscribes);
+
+        Category favorites = getFavorites();
+        Set<Organization> organizations = favorites.getOrganizations();
+        organizations.add(filteredData.get(view.getId()));
+        favorites.setOrganizations(organizations);
+
         try {
+            DAO.save(favorites);
             DAO.save(user);
             view.setActivated(true);
             Toast.makeText(context, "You were subscribed on this organization!", Toast.LENGTH_SHORT).show();
@@ -140,14 +148,25 @@ public class OrganizationAdapter extends ArrayAdapter<Organization> implements F
         Set<Organization> subscribes = user.getSubscribes();
         subscribes.remove(filteredData.get(view.getId()));
         user.setSubscribes(subscribes);
+
+        Category favorites = getFavorites();
+        Set<Organization> organizations = favorites.getOrganizations();
+        organizations.remove(filteredData.get(view.getId()));
+        favorites.setOrganizations(organizations);
+
         try {
             DAO.save(user);
+            DAO.save(favorites);
             view.setActivated(false);
             Toast.makeText(context, "You were unsubscribed from this organization!", Toast.LENGTH_SHORT).show();
         } catch (SQLException e) {
             //TODO: log this!
             Toast.makeText(context, "You were not unsubscribed!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private Category getFavorites() {
+        return DAO.get(Category.class, 3);
     }
 
 

@@ -80,7 +80,7 @@ public class DashboardActivity extends UrbanActivity {
         context = getApplicationContext();
 
         if (Settings.getLoggedUser() != null) {
-            registerInPlayServices();
+            registerBackground();
         }
         categories = getCategories();
 
@@ -114,24 +114,24 @@ public class DashboardActivity extends UrbanActivity {
         return true;
     }
 
-    private void registerInPlayServices() {
-        if (checkPlayServices()) {
-            regId = getRegistrationId(context);
-            if (regId == null) {
-                if (gcm == null) {
-                    gcm = GoogleCloudMessaging.getInstance(context);
-                }
-                try {
-                    regId = gcm.register(SENDER_ID);
-                    sendRegistrationIdToBackend(regId);
-                } catch (IOException e) {
-                    //TODO: log this!
-                }
 
+    private void registerBackground() {
+        new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                String msg = "";
+                try {
+                    if (gcm == null) {
+                        gcm = GoogleCloudMessaging.getInstance(context);
+                    }
+                    regId = gcm.register(SENDER_ID);
+                    msg = "Device registered, registration id=" + regId;
+                } catch (IOException ex) {
+                    msg = "Error :" + ex.getMessage();
+                }
+                return msg;
             }
-        } else {
-            Log.i(LogHelper.TAG_PLAY_SERVICES, "No valid Google Play Services APK found.");
-        }
+        }.execute(null, null, null);
     }
 
     /**
