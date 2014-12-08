@@ -1,16 +1,18 @@
-package com.tools;
+package com.tools.contactview;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.TextView;
+
+import com.tools.CustomDialogFragment;
+import com.tools.PrototypeView;
 
 /**
  * Created by MetallFoX on 06.12.2014.
  */
-public class PhoneView extends TextView implements CustomDialogFragment.DialogListener {
+public class PhoneView extends ContactView {
 
     private final OnClickListener PHONE_CLICK_LISTENER = new OnClickListener() {
 
@@ -35,7 +37,6 @@ public class PhoneView extends TextView implements CustomDialogFragment.DialogLi
         super(context, attrs, defStyle);
         setOnClickListener(PHONE_CLICK_LISTENER);
     }
-
 
     @Override
     public void onPositive() {
