@@ -30,7 +30,7 @@ public class MenuListFragment extends ListFragment {
         }
 
         setListAdapter(new CategoryAdapter(getActivity(),
-                android.R.layout.simple_list_item_1, categories));
+                        R.layout.sliding_menu_list_item, R.id.sliding_menu_item_label, categories));
 
     }
 
