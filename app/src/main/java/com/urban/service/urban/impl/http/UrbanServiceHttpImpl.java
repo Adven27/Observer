@@ -25,6 +25,8 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import flexjson.JSONDeserializer;
+import src.com.urban.data.sqlite.pojo.NotificationSubscribePojo;
+import src.com.urban.data.sqlite.pojo.OrganizationPojo;
 import src.com.urban.data.sqlite.pojo.UserPojo;
 
 /**
@@ -63,7 +65,10 @@ public class UrbanServiceHttpImpl implements UrbanService {
 
     @Override
     public void subscribe(User user, Organization organization) throws UrbanServiceException {
-        String request = JsonHelper.toJSON(user);
+        NotificationSubscribePojo subscribe = new NotificationSubscribePojo();
+        subscribe.setUser((UserPojo)user);
+        subscribe.setOrganization((OrganizationPojo)organization);
+        String request = JsonHelper.toJSON(subscribe);
         send(request, "subscribe");
     }
 

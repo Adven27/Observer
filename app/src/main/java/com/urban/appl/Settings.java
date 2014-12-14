@@ -5,7 +5,6 @@ import com.urban.data.dao.DAO;
 import com.urban.data.dao.UrbanCriterion;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public class Settings {
 
@@ -23,6 +22,11 @@ public class Settings {
     private static User loggedUser = null;
 
     public static void setLoggedUser(User user) {
+        if (user == null) {
+            loggedUser = null;
+            return;
+        }
+
         try {
             UrbanCriterion<User> criterion = DAO.createCriterion(User.class);
             criterion.eq("login", user.getLogin());
@@ -38,12 +42,6 @@ public class Settings {
     }
 
     public static User getLoggedUser() {
-        if (loggedUser == null) {
-            List<User> users = (List<User>) DAO.getAll(User.class);
-            if (!users.isEmpty()) {
-                loggedUser = users.get(0);
-            }
-        }
         return loggedUser;
     }
 }
