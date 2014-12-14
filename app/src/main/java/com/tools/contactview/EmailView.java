@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.tools.CustomDialogFragment;
 import com.tools.PrototypeView;
+import com.tools.dialogs.SimpleDialog;
 import com.urban.appl.Settings;
 import com.urban.data.User;
 
@@ -19,8 +19,12 @@ public class EmailView extends ContactView {
 
         @Override
         public void onClick(View view) {
-            CustomDialogFragment dialog = new CustomDialogFragment();
-            PrototypeView.showDialog(EmailView.this, "Отправка электронного сообщения", "Отправить email на адрес " + getText() + "?");
+            SimpleDialog dialog = SimpleDialog.getInstance(
+                    EmailView.this,
+                    "Отправка электронного сообщения",
+                    "Отправить email на адрес " + getText() + "?");
+
+            PrototypeView.showDialog(dialog);
         }
     };
 

@@ -7,11 +7,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.test.R;
+import com.tools.dialogs.EditTextDatePicker;
 import com.urban.activity.UrbanActivity;
 import com.urban.activity.dashboard.DashboardActivity;
 import com.urban.activity.task.RegistrationTask;
@@ -32,7 +32,7 @@ public class RegistrationActivity extends UrbanActivity {
     private EditText surname;
     private EditText name;
     private EditText secondName;
-    private DatePicker birthday;
+    private EditTextDatePicker birthday;
     private EditText phone;
     private Button register;
 
@@ -51,13 +51,15 @@ public class RegistrationActivity extends UrbanActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration);
 
+        getActionBar().setTitle("Регистрация");
+
         login = (EditText)findViewById(R.id.anket_login);
         password = (EditText)findViewById(R.id.anket_password);
         email = (EditText)findViewById(R.id.anket_email);
         surname = (EditText)findViewById(R.id.anket_surname);
         name = (EditText)findViewById(R.id.anket_name);
         secondName = (EditText)findViewById(R.id.anket_second_name);
-        birthday = (DatePicker)findViewById(R.id.anket_birthday);
+        birthday = (EditTextDatePicker)findViewById(R.id.anket_birthday);
         phone = (EditText)findViewById(R.id.anket_phone);
         register = (Button)findViewById(R.id.anket_register);
 

@@ -10,8 +10,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
@@ -21,10 +22,14 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.tools.LogHelper;
+import com.tools.PrototypeView;
+import com.tools.dialogs.SignInDialog;
+import com.tools.dialogs.SimpleDialog;
 import com.urban.activity.UrbanActivity;
-import com.urban.activity.main.MainActivity;
+import com.urban.activity.main.CategoryActivity;
 import com.urban.activity.task.UpdateUserTask;
 import com.urban.appl.Settings;
+import com.urban.dao.DBInitializer;
 import com.urban.data.Category;
 import com.urban.data.User;
 import com.urban.data.dao.DAO;
@@ -36,7 +41,7 @@ import java.util.List;
 
 import src.com.urban.data.sqlite.pojo.UserPojo;
 
-public class DashboardActivity extends UrbanActivity {
+public class DashboardActivity extends UrbanActivity implements SimpleDialog.DialogListener {
     public static final String CATEGORY_ID_ARGUMENT = "category_id";
     public static final String PROPERTY_REG_ID = "registration_id";
 
@@ -74,11 +79,10 @@ public class DashboardActivity extends UrbanActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dashboard);
-
         context = getApplicationContext();
 
+        updateActionBar();
         if (Settings.getLoggedUser() != null) {
             registerBackground();
         }
@@ -104,14 +108,14 @@ public class DashboardActivity extends UrbanActivity {
     }
 
     public void redirectToCategory(Category category) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, CategoryActivity.class);
         intent.putExtra(CATEGORY_ID_ARGUMENT, category.getId());
         startActivity(intent);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return true;
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        return super.onMenuItemSelected(featureId, item);
     }
 
 
@@ -227,4 +231,63 @@ public class DashboardActivity extends UrbanActivity {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.dashboard_options_menu, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.sign_in) {
+            PrototypeView.doInTransaction(new PrototypeView.ShowDialogAction(SignInDialog.getInstance(this)));
+        } else if (item.getItemId() == R.id.recreateDB) {
+            recreateDB();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Recreate DB button click
+     */
+    public void recreateDB() {
+        try {
+            DBInitializer.copyDataBase(context, Settings.getDBName());
+            clearStoredData();
+            Toast.makeText(context, "База пересоздана!", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(context, "Не удалось пересоздать базу", Toast.LENGTH_LONG).show();
+            Log.e("DashboardActivity", "Не удалось пересоздать базу");
+        }
+    }
+
+    private void updateActionBar() {
+        User loggedUser = Settings.getLoggedUser();
+        if (loggedUser != null) {
+            //getActionBar().setIcon();
+            getActionBar().setTitle(loggedUser.getLogin());
+        } else {
+            getActionBar().setTitle("Выполните вход");
+        }
+    }
+
+    private void clearStoredData() {
+        Settings.setLoggedUser(null);
+        DAO.deleteAll(User.class);
+        updateActionBar();
+    }
+
+    @Override
+    public void onPositive() {
+        updateActionBar();
+    }
+
+    @Override
+    public void onNegative() {
+        // Nothing to do.
+    }
 }

@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.test.R;
 import com.urban.data.Organization;
@@ -20,10 +19,10 @@ public class EventsFragment extends Fragment {
             Bundle savedInstanceState) {
 
         View view = inflater.inflate(LAYOUT_ID, container, false);
-        TextView text = (TextView)view.findViewById(R.id.info_name);
+        /*TextView text = (TextView)view.findViewById(R.id.info_name);
         text.setText(organization.getName());
         text = (TextView)view.findViewById(R.id.info_text);
-        text.setText(organization.getDescription());
+        text.setText(organization.getDescription());*/
         return view;
     }
 

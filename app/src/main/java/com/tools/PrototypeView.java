@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import com.tools.dialogs.SimpleDialog;
 import com.urban.activity.about.fragments.AboutFragment;
 import com.urban.activity.about.fragments.EggFragment;
 import com.urban.data.Category;
@@ -115,24 +116,19 @@ public class PrototypeView {
 
     public static class ShowDialogAction implements Action {
 
-        CustomDialogFragment.DialogListener listener;
-        String title;
-        String text;
+        SimpleDialog dialog;
 
-        public ShowDialogAction(CustomDialogFragment.DialogListener listener, String title, String text) {
-            this.listener = listener;
-            this.title = title;
-            this.text = text;
+        public ShowDialogAction(SimpleDialog dialog) {
+            this.dialog = dialog;
         }
 
         public void make(FragmentTransaction transaction){
-            CustomDialogFragment dialog = CustomDialogFragment.getInstance(listener, title, text);
             dialog.show(activity.getFragmentManager(), null);
         }
     }
 
-    public static void showDialog(CustomDialogFragment.DialogListener listener, String title, String text) {
-        doInTransaction(new ShowDialogAction(listener, title, text));
+    public static void showDialog(SimpleDialog dialog) {
+        doInTransaction(new ShowDialogAction(dialog));
     }
 
 }

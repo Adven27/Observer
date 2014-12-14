@@ -6,8 +6,8 @@ import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.tools.CustomDialogFragment;
 import com.tools.PrototypeView;
+import com.tools.dialogs.SimpleDialog;
 
 /**
  * Created by MetallFoX on 06.12.2014.
@@ -18,10 +18,12 @@ public class WebsiteView extends ContactView {
 
         @Override
         public void onClick(View view) {
-            CustomDialogFragment dialog = new CustomDialogFragment();
-            PrototypeView.showDialog(
+            SimpleDialog dialog = SimpleDialog.getInstance(
                     WebsiteView.this,
-                    "Открытие веб-сай", "Открыть в браузере страницу " + getText() + "?");
+                    "Открытие веб-сай",
+                    "Открыть в браузере страницу " + getText() + "?");
+
+            PrototypeView.showDialog(dialog);
         }
     };
 

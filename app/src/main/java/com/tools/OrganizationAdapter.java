@@ -78,14 +78,14 @@ public class OrganizationAdapter extends ArrayAdapter<Organization> implements F
             holder = (ViewHolder)convertView.getTag();
         }
 
-        final Organization positionItem = filteredData.get(position);
-        holder.text.setText(positionItem.getName());
+        final Organization organization = filteredData.get(position);
+        holder.text.setText(organization.getName());
 
         //TODO: Change strategy of marking.
         User loggedUser = Settings.getLoggedUser();
         if (loggedUser != null) {
             Set<Organization> subscribes = loggedUser.getSubscribes();
-            holder.likeBtn.setActivated(subscribes != null && subscribes.contains(positionItem));
+            holder.likeBtn.setActivated(subscribes != null && subscribes.contains(organization));
 
             // Saving of organization in view to get if when click will appear.
             holder.likeBtn.setId(position);
@@ -94,7 +94,7 @@ public class OrganizationAdapter extends ArrayAdapter<Organization> implements F
                 public void onClick(View v) {
                     if (!v.isActivated()) {
                         SubscribeOrganizationTask task = new SubscribeOrganizationTask(
-                                OrganizationAdapter.this, Settings.getLoggedUser(), holder.likeBtn, positionItem);
+                                OrganizationAdapter.this, Settings.getLoggedUser(), holder.likeBtn, organization);
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -103,7 +103,7 @@ public class OrganizationAdapter extends ArrayAdapter<Organization> implements F
                         }
                     } else {
                         UnsubscribeOrganizationTask task = new UnsubscribeOrganizationTask(
-                                OrganizationAdapter.this, Settings.getLoggedUser(), holder.likeBtn, positionItem);
+                                OrganizationAdapter.this, Settings.getLoggedUser(), holder.likeBtn, organization);
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

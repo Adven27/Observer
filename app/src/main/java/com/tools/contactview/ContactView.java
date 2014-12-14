@@ -4,13 +4,13 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import com.tools.CustomDialogFragment;
+import com.tools.dialogs.SimpleDialog;
 import com.urban.data.Contact;
 
 /**
  * Created by MetallFoX on 08.12.2014.
  */
-public abstract class ContactView extends TextView implements CustomDialogFragment.DialogListener {
+public abstract class ContactView extends TextView implements SimpleDialog.DialogListener {
     public ContactView(Context context) {
         super(context);
     }
@@ -35,6 +35,18 @@ public abstract class ContactView extends TextView implements CustomDialogFragme
             case WEB :
                 contactView = new WebsiteView(context);
                 break;
+            case VK :
+                contactView = new WebsiteView(context);
+                break;
+            case FACEBOOK :
+                contactView = new WebsiteView(context);
+                break;
+            case OK :
+                contactView = new WebsiteView(context);
+                break;
+            case SKYPE :
+                contactView = new WebsiteView(context);
+                break;
             default :
                 break;
         }
@@ -43,11 +55,5 @@ public abstract class ContactView extends TextView implements CustomDialogFragme
         }
         return contactView;
     }
-
-    /*private static  <T extends ContactView> T createInstance(Class<T> clazz, Contact contact) {
-        T contactView =
-        contactView.setText(contact.getContact());
-        return contactView;
-    }*/
 
 }

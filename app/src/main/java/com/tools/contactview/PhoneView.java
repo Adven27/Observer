@@ -6,8 +6,8 @@ import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.tools.CustomDialogFragment;
 import com.tools.PrototypeView;
+import com.tools.dialogs.SimpleDialog;
 
 /**
  * Created by MetallFoX on 06.12.2014.
@@ -18,8 +18,12 @@ public class PhoneView extends ContactView {
 
         @Override
         public void onClick(View view) {
-            CustomDialogFragment dialog = new CustomDialogFragment();
-            PrototypeView.showDialog(PhoneView.this, "Совершение вызова", "Совершить вызов номера " + getText() + "?");
+            SimpleDialog dialog = SimpleDialog.getInstance(
+                    PhoneView.this,
+                    "Совершение вызова",
+                    "Совершить вызов номера " + getText() + "?");
+
+            PrototypeView.showDialog(dialog);
         }
     };
 

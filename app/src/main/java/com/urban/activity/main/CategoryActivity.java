@@ -21,7 +21,7 @@ import com.urban.data.dao.DAO;
 import com.urban.fragments.CategoryFragment;
 import com.urban.fragments.SlidingContentFragment;
 
-public class MainActivity extends UrbanActivity implements SearchView.OnQueryTextListener {
+public class CategoryActivity extends UrbanActivity implements SearchView.OnQueryTextListener {
 
     private SearchView searchView;
 
@@ -110,8 +110,7 @@ public class MainActivity extends UrbanActivity implements SearchView.OnQueryTex
             menu.toggle();
         }
         if (item.getItemId() == android.R.id.home) {
-            //TODO: Navigate back. NavUtils.navigateUpFromSameTask(this);
-            return true;
+            onBackPressed();
         }
 
         return super.onOptionsItemSelected(item);

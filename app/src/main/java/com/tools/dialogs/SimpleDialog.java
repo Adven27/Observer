@@ -1,4 +1,4 @@
-package com.tools;
+package com.tools.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -14,14 +14,14 @@ import com.example.test.R;
 /**
  * Created by MetallFoX on 06.12.2014.
  */
-public class CustomDialogFragment extends DialogFragment {
+public class SimpleDialog extends DialogFragment {
 
     public interface DialogListener {
         public void onPositive();
         public void onNegative();
     }
 
-    private DialogListener listener;
+    protected DialogListener listener;
     private String title;
     private String text;
 
@@ -43,18 +43,22 @@ public class CustomDialogFragment extends DialogFragment {
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         listener.onNegative();
-                        CustomDialogFragment.this.getDialog().cancel();
+                        SimpleDialog.this.getDialog().cancel();
                     }
                 })
                 .setTitle(title);
         return builder.create();
     }
 
-    public static CustomDialogFragment getInstance(DialogListener listener, String title, String text) {
-        CustomDialogFragment instance = new CustomDialogFragment();
+    public static SimpleDialog getInstance(DialogListener listener, String title, String text) {
+        SimpleDialog instance = new SimpleDialog();
         instance.listener = listener;
         instance.title = title;
         instance.text = text;
         return instance;
+    }
+
+    public void setListener(DialogListener listener) {
+        this.listener = listener;
     }
 }

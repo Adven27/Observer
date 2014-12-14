@@ -25,5 +25,6 @@
     <string name="dialog_header">Вызов внешнего номера</string>
     <string name="search_title">Искать</string>
     <string name="side_menu_title">Side menu</string>
+    <string name="dialog_enter">Войти</string>
 
 </resources>

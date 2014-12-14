@@ -17,26 +17,29 @@ import java.util.ArrayList;
 
 public class MenuListFragment extends ListFragment {
 
-    ArrayList<Category> categories = new ArrayList<>();
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        try {
-            categories = (ArrayList<Category>)DAO.getAll(Category.class);
-        } catch (Exception e) {
-            Log.e("", "Error during db access", e);
-        }
-
-        setListAdapter(new CategoryAdapter(getActivity(),
-                        R.layout.sliding_menu_list_item, R.id.sliding_menu_item_label, categories));
-
+        setListAdapter(new CategoryAdapter(
+                getActivity(),
+                R.layout.sliding_menu_list_item,
+                R.id.sliding_menu_item_label,
+                getCategoriesFromDB()));
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         PrototypeView.setCurrentContainerId(R.id.main_container);
-        PrototypeView.doInTransaction(new ShowCategoryAction(categories.get(position)));
+        PrototypeView.doInTransaction(new ShowCategoryAction(getCategoriesFromDB().get(position)));
+    }
+
+    private ArrayList<Category> getCategoriesFromDB() {
+        try {
+            return (ArrayList<Category>)DAO.getAll(Category.class);
+        } catch (Exception e) {
+            Log.e("", "Error during db access", e);
+            return null;
+        }
     }
 }

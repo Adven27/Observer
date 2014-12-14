@@ -35,9 +35,7 @@ public class InfoFragment extends OrganizationTabFragment {
     }
 
     private void fillPositionInfo(View view) {
-        TextView text = (TextView) view.findViewById(R.id.info_name);
-        text.setText(organization.getName());
-        text = (TextView) view.findViewById(R.id.info_text);
+        TextView text = (TextView) view.findViewById(R.id.info_text);
         text.setText(organization.getDescription());
     }
 

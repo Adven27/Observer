@@ -26,6 +26,7 @@ public class OrganizationActivity extends UrbanActivity {
         setContentView(R.layout.organization);
 
         initCategoryOrganization();
+        getActionBar().setTitle(organization.getName());
         initTabs();
     }
 

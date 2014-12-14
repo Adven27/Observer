@@ -17,13 +17,6 @@
             />
 
         <TextView
-            android:id="@+id/regLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/regTitle" />
-
-        <TextView
             android:id="@+id/loginLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,7 +28,6 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             />
-
         <TextView
             android:id="@+id/passwordLabel"
             android:layout_width="match_parent"
@@ -48,7 +40,6 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             />
-
         <TextView
             android:id="@+id/emailLabel"
             android:layout_width="match_parent"
@@ -87,7 +78,6 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             />
-
         <TextView
             android:id="@+id/secondNameLabel"
             android:layout_width="match_parent"
@@ -106,10 +96,10 @@
             android:layout_height="wrap_content"
             android:text="@string/usr_birthday"
             />
-        <DatePicker
+        <com.tools.dialogs.EditTextDatePicker
             android:id="@+id/anket_birthday"
             android:layout_width="match_parent"
-            android:layout_height="100dip"
+            android:layout_height="wrap_content"
             />
 
         <TextView

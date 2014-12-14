@@ -1,5 +1,6 @@
 package com.urban.fragments;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,13 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageSwitcher;
+import android.widget.Toast;
 import android.widget.ViewSwitcher.ViewFactory;
 
 import com.example.test.R;
 import com.tools.ImageHelper;
 import com.tools.LogHelper;
+import com.tools.PrototypeView;
+import com.urban.activity.position.OrganizationActivity;
 import com.urban.data.Advertising;
 import com.urban.data.Image;
+import com.urban.data.Organization;
 import com.urban.data.dao.DAO;
 
 import java.util.ArrayList;
@@ -24,6 +29,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class BannerFragment extends Fragment {
+    public static final int DISPLAY_IMAGE_DELAY = 5000;
     private static ImageSwitcher switcher;
     private static Timer timer = new Timer();
 
@@ -37,10 +43,10 @@ public class BannerFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         initAdvertisementsFromDB();
         setUpSwitcher(inflater, container);
+
 
         return switcher;
     }
@@ -56,11 +62,28 @@ public class BannerFragment extends Fragment {
     private void setUpSwitcher(LayoutInflater inflater, ViewGroup container) {
         if (switcher != null) {
             ViewGroup parent = (ViewGroup) switcher.getParent();
-            if (parent != null)
+            if (parent != null) {
                 parent.removeView(switcher);
+            }
         }
         switcher = (ImageSwitcher) inflater.inflate(R.layout.banner_fragment, container, false);
         switcher.setFactory(new ImageSwitcherFactory());
+        switcher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: Не совсем правильно. Надо бы синхронизировать
+                Organization organization = advertisements.get(advertImgIndexForShow).getOrganization();
+                if (organization != null) {
+                    redirectToOrganization(organization);
+                } else {
+                    Toast.makeText(
+                            getActivity().getApplicationContext(),
+                            "Данная реклама не связана с организацией",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
     }
 
     @Override
@@ -98,7 +121,7 @@ public class BannerFragment extends Fragment {
                 });
             }
         };
-        timer.schedule(doAsynchronousTask, 0, 5000);
+        timer.schedule(doAsynchronousTask, 0, DISPLAY_IMAGE_DELAY);
     }
 
     private class ImageSwitcherFactory implements ViewFactory {
@@ -106,6 +129,13 @@ public class BannerFragment extends Fragment {
             return LayoutInflater.from(getActivity().getApplicationContext())
                     .inflate(R.layout.banner_img, null, false);
         }
+    }
+
+    private void redirectToOrganization(Organization organization) {
+        Intent intent = new Intent(PrototypeView.getActivity(), OrganizationActivity.class);
+        intent.putExtra(OrganizationActivity.EXTRA_POSITION_ID, organization.getId());
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PrototypeView.getActivity().startActivity(intent);
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Drawable> {
@@ -132,11 +162,12 @@ public class BannerFragment extends Fragment {
         }
 
         private int calcNextAdvertImgIndexForShow() {
-            return advertImgIndexForShow++ % advertisements.size();
+            return advertImgIndexForShow = (++advertImgIndexForShow % advertisements.size());
         }
 
         protected void onPostExecute(Drawable drawable) {
             switcher.setImageDrawable(drawable);
         }
     }
+
 }
