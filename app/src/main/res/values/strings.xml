@@ -26,5 +26,6 @@
     <string name="search_title">Искать</string>
     <string name="side_menu_title">Side menu</string>
     <string name="dialog_enter">Войти</string>
+    <string name="notification_title_action">Good news everyone!</string>
 
 </resources>

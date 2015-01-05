@@ -16,7 +16,7 @@ import com.urban.data.Organization;
 import com.urban.data.dao.DAO;
 
 public class OrganizationActivity extends UrbanActivity {
-    public static final String EXTRA_POSITION_ID = "organization_id";
+    public static final String EXTRA_ORGANIZATION_ID = "organization_id";
     private Organization organization;
     private ViewPager tabsPager;
 
@@ -31,7 +31,7 @@ public class OrganizationActivity extends UrbanActivity {
     }
 
     private void initCategoryOrganization() {
-        long organizationId = getIntent().getIntExtra(EXTRA_POSITION_ID, -1);
+        long organizationId = getIntent().getIntExtra(EXTRA_ORGANIZATION_ID, -1);
         organization = getOrganization(organizationId);
     }
 
@@ -94,7 +94,7 @@ public class OrganizationActivity extends UrbanActivity {
 
     public void onShowOnMap(View view) {
         Intent intent = new Intent(this, MapActivity.class);
-        intent.putExtra(EXTRA_POSITION_ID, organization.getId());
+        intent.putExtra(EXTRA_ORGANIZATION_ID, organization.getId());
         startActivity(intent);
     }
 }

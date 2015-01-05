@@ -1,5 +1,7 @@
 package com.urban.activity.dashboard;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,17 +30,22 @@ import com.tools.dialogs.SignInDialog;
 import com.tools.dialogs.SimpleDialog;
 import com.urban.activity.UrbanActivity;
 import com.urban.activity.main.CategoryActivity;
+import com.urban.activity.position.OrganizationActivity;
 import com.urban.activity.task.UpdateUserTask;
 import com.urban.appl.Settings;
 import com.urban.dao.DBInitializer;
+import com.urban.data.Action;
 import com.urban.data.Category;
 import com.urban.data.User;
 import com.urban.data.dao.DAO;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import src.com.urban.data.sqlite.pojo.UserPojo;
 
@@ -61,6 +69,8 @@ public class DashboardActivity extends UrbanActivity implements SimpleDialog.Dia
     private String regId;
     private GoogleCloudMessaging gcm;
 
+    private NotificationManager notificationManager;
+    private NotificationCompat.Builder builder;
 
 
     /**
@@ -247,6 +257,20 @@ public class DashboardActivity extends UrbanActivity implements SimpleDialog.Dia
             PrototypeView.doInTransaction(new PrototypeView.ShowDialogAction(SignInDialog.getInstance(this)));
         } else if (item.getItemId() == R.id.recreateDB) {
             recreateDB();
+        } else if (item.getItemId() == R.id.send_notification) {
+            Collection<Action> actions = DAO.getAll(Action.class);
+            if (!actions.isEmpty()) {
+                int randomIndex = new Random().nextInt(actions.size());
+                Iterator<Action> iterator = actions.iterator();
+                Action next = iterator.next();
+                for (int i = 1; i < randomIndex; i++) {
+                    next = iterator.next();
+                }
+                sendNotification(next);
+                Toast.makeText(this, "Notification was sent!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Notification wasn't sent!", Toast.LENGTH_SHORT).show();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -290,4 +314,33 @@ public class DashboardActivity extends UrbanActivity implements SimpleDialog.Dia
     public void onNegative() {
         // Nothing to do.
     }
+
+
+    /*
+     * Test method. Remove it after!
+     */
+    private void sendNotification(Action action) {
+        notificationManager = (NotificationManager)
+                this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        Intent intent = new Intent(this, OrganizationActivity.class);
+        intent.putExtra(OrganizationActivity.EXTRA_ORGANIZATION_ID, action.getOrganization().getId());
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        String text = action.getSubject();
+
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setContentTitle(getString(R.string.notification_title_action))
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
+                        .setContentText(text);
+
+        builder.setContentIntent(contentIntent);
+        notificationManager.notify(action.getId(), builder.build());
+    }
+
+
+
+
 }

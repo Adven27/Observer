@@ -133,7 +133,7 @@ public class BannerFragment extends Fragment {
 
     private void redirectToOrganization(Organization organization) {
         Intent intent = new Intent(PrototypeView.getActivity(), OrganizationActivity.class);
-        intent.putExtra(OrganizationActivity.EXTRA_POSITION_ID, organization.getId());
+        intent.putExtra(OrganizationActivity.EXTRA_ORGANIZATION_ID, organization.getId());
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PrototypeView.getActivity().startActivity(intent);
     }

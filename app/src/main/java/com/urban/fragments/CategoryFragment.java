@@ -104,7 +104,7 @@ public class CategoryFragment extends Fragment {
             Organization organization = getSelectedOrganization(adapter, position);
 
             Intent intent = new Intent(getActivity(), OrganizationActivity.class);
-            intent.putExtra(OrganizationActivity.EXTRA_POSITION_ID, organization.getId());
+            intent.putExtra(OrganizationActivity.EXTRA_ORGANIZATION_ID, organization.getId());
             startActivity(intent);
         }
 

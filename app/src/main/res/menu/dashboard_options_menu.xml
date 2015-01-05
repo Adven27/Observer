@@ -8,4 +8,8 @@
         android:title="Sign in"
         android:icon="@drawable/login"
         android:showAsAction="collapseActionView|always"/>
+    <item android:id="@+id/send_notification"
+        android:title="Send test notification"
+        android:icon="@drawable/goldenkey"
+        android:showAsAction="collapseActionView|always"/>
 </menu>

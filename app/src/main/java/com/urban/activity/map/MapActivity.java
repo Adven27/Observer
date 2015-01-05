@@ -35,7 +35,7 @@ public class MapActivity extends UrbanActivity {
     }
 
     private void initOrganization() {
-        long organizationId = getIntent().getIntExtra(OrganizationActivity.EXTRA_POSITION_ID, -1);
+        long organizationId = getIntent().getIntExtra(OrganizationActivity.EXTRA_ORGANIZATION_ID, -1);
         organization = getOrganization(organizationId);
     }
 
