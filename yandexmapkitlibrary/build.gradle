@@ -5,14 +5,13 @@ android {
     buildToolsVersion "19.1.0"
 
     defaultConfig {
-        applicationId "ru.yandex.yandexmapkit"
         minSdkVersion 4
         targetSdkVersion 4
     }
 
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
