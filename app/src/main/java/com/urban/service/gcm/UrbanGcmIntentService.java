@@ -1,6 +1,7 @@
 package com.urban.service.gcm;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -19,6 +20,8 @@ import com.urban.data.dao.DAO;
 import com.urban.receiver.UrbanGcmBroadcastReceiver;
 
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import src.com.urban.data.sqlite.pojo.ActionPojo;
@@ -38,7 +41,6 @@ public class UrbanGcmIntentService extends IntentService {
     public static final String EXTRA_ORGANIZATION_ID = "organization_id";
 
     private NotificationManager notificationManager;
-    private NotificationCompat.Builder builder;
 
     public UrbanGcmIntentService() {
         super("UrbanGcmIntentService");
@@ -66,18 +68,25 @@ public class UrbanGcmIntentService extends IntentService {
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
                 // If it's a regular GCM message, do some work.
                 //TODO: add an uuid field and use with unique criterion search and organization filter.
-                Action action = DAO.get(Action.class, extras.getLong(EXTRA_ID));
+                String actionUniqueId = extras.getString(EXTRA_ID);
+                Action action = DAO.get(Action.class, Long.valueOf(actionUniqueId));
                 if (action == null) {
                     action = createPromotion(extras);
                     try {
                         DAO.save(action);
-                        sendNotification(action);
-                        Log.i(TAG, "Received: " + action.getSubject());
                     } catch (SQLException e) {
                         Log.e(TAG, "Promotion wasn't saved: " + action.getSubject());
                         //TODO: handle this!
                     }
                 }
+
+                // if action were found or created, send a notification.
+                if (action != null) {
+                    Notification notification = createNotification("" + actionUniqueId, action);
+                    sendNotification(action.getId(), notification);
+                    Log.i(TAG, "Received: " + action.getSubject());
+                }
+
                 Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
             }
         }
@@ -86,35 +95,34 @@ public class UrbanGcmIntentService extends IntentService {
     }
 
     // Put the message into a notification and post it.
-    // This is just one simple example of what you might choose to do with
-    // a GCM message.
-    private void sendNotification(Action action) {
-        notificationManager = (NotificationManager)
-                this.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        Intent intent = new Intent(this, OrganizationActivity.class);
-        intent.putExtra(OrganizationActivity.EXTRA_ORGANIZATION_ID, action.getOrganization().getId());
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        String text = action.getSubject();
-
-        NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_launcher)
-                        .setContentTitle(getString(R.string.notification_title_action))
-                        .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
-                        .setContentText(text);
-
-        builder.setContentIntent(contentIntent);
-        notificationManager.notify(action.getId(), builder.build());
+    // This is just one simple example of what you might choose to do with a GCM message.
+    private void sendNotification(int id, Notification notification) {
+        notificationManager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(id, notification);
     }
 
     private Action createPromotion(Bundle data) {
         ActionPojo action = new ActionPojo();
-        Date startDate = (Date)data.getSerializable(EXTRA_START_DATE);
-        Date endDate = (Date)data.getSerializable(EXTRA_END_DATE);
-        action.setStartDate(startDate);
-        action.setEndDate(endDate);
+        try {
+            Date startDate = DATE_FORMAT.parse(data.getString(EXTRA_START_DATE));
+            action.setStartDate(startDate);
+        } catch (ParseException e) {
+            //TODO: throw own exception to handle upper.
+            Log.i(TAG, e.getMessage());
+        }
+
+        String endDateStr = data.getString(EXTRA_END_DATE);
+        // End of action may not be set.
+        if (endDateStr != null) {
+            try {
+                Date endDate = DATE_FORMAT.parse(endDateStr);
+                action.setEndDate(endDate);
+            } catch (ParseException e) {
+                //TODO: throw own exception to handle upper, 'cause date was not null in extras.
+                Log.i(TAG, e.getMessage());
+            }
+        }
+
         action.setSubject(data.getString(EXTRA_SUBJECT));
 
         Organization organization = DAO.get(Organization.class, data.getLong(EXTRA_ORGANIZATION_ID));
@@ -125,4 +133,26 @@ public class UrbanGcmIntentService extends IntentService {
         action.setOrganization((OrganizationPojo)organization);
         return action;
     }
+
+    private Notification createNotification(String uuid, Action action) {
+        Intent intent = new Intent(this, OrganizationActivity.class);
+        intent.setAction(uuid);
+        intent.putExtra(OrganizationActivity.EXTRA_ORGANIZATION_ID, action.getOrganization().getId());
+        PendingIntent contentIntent = PendingIntent.getActivity(this, action.getId(), intent, 0);
+        String text = action.getSubject();
+
+        return new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentTitle(getString(R.string.notification_title_action))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
+                .setContentText(text)
+                .setContentIntent(contentIntent)
+                .build();
+    }
+
+    /**
+     * Date format for parse dates from extras.
+     * It is not thread safe there 'cause it likely uses only in single thread.
+     */
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
 }
