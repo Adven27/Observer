@@ -14,7 +14,6 @@ import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.test.R;
 import com.urban.activity.task.SubscribeOrganizationTask;
 import com.urban.activity.task.UnsubscribeOrganizationTask;
 import com.urban.appl.Settings;
@@ -22,6 +21,7 @@ import com.urban.data.Category;
 import com.urban.data.Organization;
 import com.urban.data.User;
 import com.urban.data.dao.DAO;
+import com.urban.observer.R;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

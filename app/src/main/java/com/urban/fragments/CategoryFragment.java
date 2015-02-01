@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.example.test.R;
 import com.tools.ImageHelper;
 import com.tools.LogHelper;
 import com.tools.OrganizationAdapter;
@@ -23,6 +22,7 @@ import com.urban.activity.position.OrganizationActivity;
 import com.urban.data.Category;
 import com.urban.data.Image;
 import com.urban.data.Organization;
+import com.urban.observer.R;
 
 import java.util.Collection;
 import java.util.Collections;

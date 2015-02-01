@@ -12,8 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.test.R;
 import com.tools.PrototypeView;
+import com.urban.observer.R;
 
 import java.util.ArrayList;
 

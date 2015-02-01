@@ -1,12 +1,24 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.0.0'
+        classpath 'org.robolectric:robolectric-gradle-plugin:0.14.+'
+    }
+}
+
+
 apply plugin: 'com.android.application'
+apply plugin: 'robolectric'
 
 android {
-    compileSdkVersion 19
+    compileSdkVersion 18
     buildToolsVersion '19.1.0'
     defaultConfig {
         applicationId 'com.adven.observer'
         minSdkVersion 14
-        targetSdkVersion 20
+        targetSdkVersion 18
         versionCode 1
         versionName '1.0'
     }
@@ -24,10 +36,14 @@ android {
     }
 }
 
+robolectric {
+    include '**/*Test.class'
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:support-v4:20.0.0'
-    compile 'com.google.android.gms:play-services:6.1.+'
+    compile 'com.google.android.gms:play-services:6.1.11'
     compile files('libs/gson-2.2.4.jar')
     compile files('src/main/libs/flexjson-2.1.jar')
     compile files('src/main/libs/Data.jar')
@@ -36,4 +52,6 @@ dependencies {
     compile files('src/main/libs/ormlite-android-4.46.jar')
     compile files('src/main/libs/ormlite-core-4.46.jar')
     compile project(':yandexmapkitlibrary')
+    androidTestCompile 'junit:junit:4.12'
+    androidTestCompile 'org.robolectric:robolectric:2.+'
 }

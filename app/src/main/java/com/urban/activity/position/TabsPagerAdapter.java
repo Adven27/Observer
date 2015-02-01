@@ -3,12 +3,12 @@ package com.urban.activity.position;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.test.R;
 import com.urban.data.Organization;
 import com.urban.fragments.pages.ActionsFragment;
 import com.urban.fragments.pages.InfoFragment;
 import com.urban.fragments.pages.OrganizationTabFragment;
 import com.urban.fragments.pages.PhotoFragment;
+import com.urban.observer.R;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter {
     private final Organization categoryOrganization;

@@ -12,12 +12,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.test.R;
 import com.urban.activity.UrbanActivity;
 import com.urban.activity.dashboard.DashboardActivity;
 import com.urban.activity.task.UpdateUserTask;
 import com.urban.appl.Settings;
 import com.urban.data.User;
+import com.urban.observer.R;
 
 public class UserPropertiesActivity extends UrbanActivity {
 

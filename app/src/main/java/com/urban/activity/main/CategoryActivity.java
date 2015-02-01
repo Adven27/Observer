@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
 
-import com.example.test.R;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.tools.LogHelper;
 import com.tools.PrototypeView;
@@ -20,6 +19,7 @@ import com.urban.data.Category;
 import com.urban.data.dao.DAO;
 import com.urban.fragments.CategoryFragment;
 import com.urban.fragments.SlidingContentFragment;
+import com.urban.observer.R;
 
 public class CategoryActivity extends UrbanActivity implements SearchView.OnQueryTextListener {
 

@@ -65,6 +65,7 @@ public class DBInitializer {
     }
 
     private static String getDBPath(Context context) {
+        System.out.println(context.getApplicationInfo().dataDir + "/databases/");
         return android.os.Build.VERSION.SDK_INT >= 4.2 ?
                 context.getApplicationInfo().dataDir + "/databases/"
                 : "/data/data/" + context.getPackageName() + "/databases/";

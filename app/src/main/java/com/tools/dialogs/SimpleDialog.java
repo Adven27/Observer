@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.test.R;
+import com.urban.observer.R;
 
 /**
  * Created by MetallFoX on 06.12.2014.

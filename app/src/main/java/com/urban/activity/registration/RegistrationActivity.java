@@ -10,13 +10,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.test.R;
 import com.tools.dialogs.EditTextDatePicker;
 import com.urban.activity.UrbanActivity;
 import com.urban.activity.dashboard.DashboardActivity;
 import com.urban.activity.task.RegistrationTask;
 import com.urban.appl.Settings;
 import com.urban.data.User;
+import com.urban.observer.R;
 import com.urban.validation.ValidationHelper;
 
 import java.util.Date;

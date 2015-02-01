@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.test.R;
 import com.urban.activity.about.AboutActivity;
+import com.urban.observer.R;
 
 public class OtherActionsFragment extends Fragment {
 

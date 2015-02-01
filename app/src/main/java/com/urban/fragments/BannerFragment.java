@@ -14,7 +14,6 @@ import android.widget.ImageSwitcher;
 import android.widget.Toast;
 import android.widget.ViewSwitcher.ViewFactory;
 
-import com.example.test.R;
 import com.tools.ImageHelper;
 import com.tools.LogHelper;
 import com.tools.PrototypeView;
@@ -23,6 +22,7 @@ import com.urban.data.Advertising;
 import com.urban.data.Image;
 import com.urban.data.Organization;
 import com.urban.data.dao.DAO;
+import com.urban.observer.R;
 
 import java.util.ArrayList;
 import java.util.Timer;

@@ -56,12 +56,11 @@ public class ObserverApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        
         try {
 			DBInitializer.initDB(this);
 	        DBInitializer.initDAO(this);
             UrbanServiceSettings.setServiceType(UrbanServiceSettings.UrbanServiceType.STUB);
-		} catch (Exception e) {
+        } catch (Exception e) {
 			//if we have error here it means we can't work.
 			//TODO: show something sad to user and terminate
 			Log.e(LOG_TAG, "Error during initialization.", e);

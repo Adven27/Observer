@@ -4,9 +4,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.test.R;
 import com.tools.PrototypeView;
 import com.urban.activity.UrbanActivity;
+import com.urban.observer.R;
 
 public class AboutActivity extends UrbanActivity {
 

@@ -6,8 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.test.R;
 import com.urban.data.Organization;
+import com.urban.observer.R;
 
 public class EventsFragment extends Fragment {
 

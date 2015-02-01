@@ -3,7 +3,6 @@ package com.urban.activity.map;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.test.R;
 import com.tools.LogHelper;
 import com.tools.PrototypeView;
 import com.urban.activity.UrbanActivity;
@@ -12,6 +11,7 @@ import com.urban.data.Organization;
 import com.urban.data.Place;
 import com.urban.data.dao.DAO;
 import com.urban.fragments.pages.map.YandexMapFragment;
+import com.urban.observer.R;
 
 import java.util.Collection;
 

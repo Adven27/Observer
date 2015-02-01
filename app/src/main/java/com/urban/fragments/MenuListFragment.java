@@ -6,12 +6,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
-import com.example.test.R;
 import com.tools.CategoryAdapter;
 import com.tools.PrototypeView;
 import com.tools.PrototypeView.ShowCategoryAction;
 import com.urban.data.Category;
 import com.urban.data.dao.DAO;
+import com.urban.observer.R;
 
 import java.util.ArrayList;
 

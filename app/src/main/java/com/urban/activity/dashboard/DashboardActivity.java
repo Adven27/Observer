@@ -19,7 +19,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import com.example.test.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -35,6 +34,7 @@ import com.urban.dao.DBInitializer;
 import com.urban.data.Category;
 import com.urban.data.User;
 import com.urban.data.dao.DAO;
+import com.urban.observer.R;
 
 import java.io.IOException;
 import java.util.ArrayList;

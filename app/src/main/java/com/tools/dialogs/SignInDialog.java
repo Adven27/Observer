@@ -13,13 +13,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.test.R;
 import com.tools.PrototypeView;
 import com.urban.activity.registration.RegistrationActivity;
 import com.urban.activity.task.SignInTask;
 import com.urban.appl.Settings;
 import com.urban.data.User;
 import com.urban.data.dao.DAO;
+import com.urban.observer.R;
 import com.urban.validation.ValidationHelper;
 
 import java.sql.SQLException;

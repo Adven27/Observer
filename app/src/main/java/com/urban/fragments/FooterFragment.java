@@ -1,9 +1,5 @@
 package com.urban.fragments;
 
-import com.example.test.R;
-import com.example.test.R.id;
-import com.example.test.R.layout;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,6 +8,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.urban.observer.R;
 
 public class FooterFragment extends Fragment {
 

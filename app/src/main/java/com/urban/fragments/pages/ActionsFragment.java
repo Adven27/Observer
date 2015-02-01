@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.test.R;
 import com.urban.data.Action;
 import com.urban.data.Organization;
+import com.urban.observer.R;
 
 import java.util.Set;
 

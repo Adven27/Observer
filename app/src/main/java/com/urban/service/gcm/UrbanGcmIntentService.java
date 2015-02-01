@@ -11,12 +11,12 @@ import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.example.test.R;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.urban.activity.position.OrganizationActivity;
 import com.urban.data.Action;
 import com.urban.data.Organization;
 import com.urban.data.dao.DAO;
+import com.urban.observer.R;
 import com.urban.receiver.UrbanGcmBroadcastReceiver;
 
 import java.sql.SQLException;

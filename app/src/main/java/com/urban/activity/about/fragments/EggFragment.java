@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.test.R;
+import com.urban.observer.R;
 
 public class EggFragment extends Fragment {
 

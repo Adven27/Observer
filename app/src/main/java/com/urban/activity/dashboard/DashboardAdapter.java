@@ -8,10 +8,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.test.R;
 import com.tools.ImageHelper;
 import com.urban.data.Category;
 import com.urban.data.Image;
+import com.urban.observer.R;
 
 import java.util.ArrayList;
 import java.util.List;

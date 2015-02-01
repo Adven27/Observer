@@ -6,10 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.test.R;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.tools.PrototypeView;
 import com.urban.data.Category;
+import com.urban.observer.R;
 
 public class SlidingContentFragment extends Fragment {
 

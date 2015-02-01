@@ -8,12 +8,12 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 
-import com.example.test.R;
 import com.tools.LogHelper;
 import com.urban.activity.UrbanActivity;
 import com.urban.activity.map.MapActivity;
 import com.urban.data.Organization;
 import com.urban.data.dao.DAO;
+import com.urban.observer.R;
 
 public class OrganizationActivity extends UrbanActivity {
     public static final String EXTRA_ORGANIZATION_ID = "organization_id";
@@ -54,7 +54,7 @@ public class OrganizationActivity extends UrbanActivity {
     private void addTabsToActionBar() {
         ActionBar.TabListener tabListener = createTabListener();
         final ActionBar actionBar = getActionBar();
-
+        
         // Specify that tabs should be displayed in the action bar.
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
