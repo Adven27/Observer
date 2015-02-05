@@ -16,7 +16,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -92,14 +91,10 @@ public class DashboardActivity extends UrbanActivity implements SimpleDialog.Dia
         }
         categories = getCategories();
 
-        GridView gridview = (GridView) findViewById(R.id.dashgridview);
+        AdapterView gridview = (AdapterView) findViewById(R.id.dashgridview);
         gridview.setAdapter(new DashboardAdapter(this, categories));
 
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                redirectToCategory(categories.get(position));
-            }
-        });
+        gridview.setOnItemSelectedListener(new MyOnItemClickListener());
     }
 
     private List<Category> getCategories() {
@@ -297,4 +292,15 @@ public class DashboardActivity extends UrbanActivity implements SimpleDialog.Dia
         // Nothing to do.
     }
 
+    private class MyOnItemClickListener implements AdapterView.OnItemSelectedListener {
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+            redirectToCategory(categories.get(position));
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+
+        }
+    }
 }

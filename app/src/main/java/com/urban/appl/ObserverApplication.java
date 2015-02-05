@@ -63,7 +63,7 @@ public class ObserverApplication extends Application {
         } catch (Exception e) {
 			//if we have error here it means we can't work.
 			//TODO: show something sad to user and terminate
-			Log.e(LOG_TAG, "Error during initialization.", e);
+            Log.e(LOG_TAG, "Error during initialization.", e);
 		}
 
 

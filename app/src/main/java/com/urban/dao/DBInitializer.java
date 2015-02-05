@@ -37,7 +37,8 @@ public class DBInitializer {
         try{
             File dirForDb = new File( pathToDBDir );
             if ( !dirForDb.exists() ){
-                dirForDb.mkdir();
+                boolean mkdir = dirForDb.mkdir();
+                System.out.println(dirForDb + "  " + mkdir);
             }
             mInput = context.getAssets().open(dbName);
             String outFileName = pathToDBDir + dbName;
@@ -65,10 +66,17 @@ public class DBInitializer {
     }
 
     private static String getDBPath(Context context) {
-        System.out.println(context.getApplicationInfo().dataDir + "/databases/");
+        if (isTestMode()) {
+            return context.getDatabasePath(Settings.getDBName()).getParent()+"/";
+        }
+
         return android.os.Build.VERSION.SDK_INT >= 4.2 ?
                 context.getApplicationInfo().dataDir + "/databases/"
                 : "/data/data/" + context.getPackageName() + "/databases/";
+    }
+
+    private static boolean isTestMode() {
+        return true;
     }
 
 
