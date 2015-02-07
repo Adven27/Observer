@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -19,12 +20,18 @@ import com.urban.data.User;
 import com.urban.observer.R;
 import com.urban.validation.ValidationHelper;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import src.com.urban.data.sqlite.pojo.PersonPojo;
 import src.com.urban.data.sqlite.pojo.UserPojo;
 
 public class RegistrationActivity extends UrbanActivity {
+
+    private static final int MIN_LOGIN_LENGTH = 6;
+    private static final int MIN_PASSWORD_LENGTH = 8;
+    private static final int MAX_PASSWORD_LENGTH = 20;
+    private static final int MAX_LOGIN_LENGTH = 20;
 
     private EditText login;
     private EditText password;
@@ -35,16 +42,6 @@ public class RegistrationActivity extends UrbanActivity {
     private EditTextDatePicker birthday;
     private EditText phone;
     private Button register;
-
-    private void addMock() {
-        login.setText("admin");
-        password.setText("admin");
-        email.setText("admin@admin.com");
-        surname.setText("x");
-        name.setText("x");
-        secondName.setText("x");
-        phone.setText("921");
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +60,9 @@ public class RegistrationActivity extends UrbanActivity {
         phone = (EditText)findViewById(R.id.anket_phone);
         register = (Button)findViewById(R.id.anket_register);
 
-        addMock();//REMOVE THIS!!! JUST FOR TEST!!
-
+        password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        email.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        phone.setInputType(InputType.TYPE_TEXT_VARIATION_PHONETIC);
     }
 
     @Override
@@ -88,10 +86,16 @@ public class RegistrationActivity extends UrbanActivity {
     }
 
     private boolean validateInput() {
-        return !(ValidationHelper.isEmpty(login) && ValidationHelper.isEmpty(password)
-                && ValidationHelper.isEmpty(surname) && ValidationHelper.isEmpty(name)
-                && ValidationHelper.isEmpty(secondName) && ValidationHelper.isEmpty(email)
-                && ValidationHelper.isEmpty(phone) && ValidationHelper.isEmpty(birthday));
+        return !validateLogin(login.getText().toString())
+                && validatePassword(password.getText().toString())
+
+                && validateSurname(surname.getText().toString())
+                && validateName(name.getText().toString())
+                && validateSecondName(secondName.getText().toString())
+
+                && validateEmail(email.getText().toString())
+                && validatePhone(phone.getText().toString())
+                && validateBirthday(birthday.getDate());
     }
 
     private User createUser(String login, String password, String email, String surname, String name, String secondName, Date birthday, String phone) {
@@ -139,6 +143,43 @@ public class RegistrationActivity extends UrbanActivity {
         } else {
             Toast.makeText(RegistrationActivity.this, "Not all fields were filled", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public static boolean validateLogin(String login) {
+        return !ValidationHelper.isEmpty(login)
+                && login.length() >= MIN_LOGIN_LENGTH && login.length() <= MAX_LOGIN_LENGTH;
+    }
+
+    public static boolean validatePassword(String password) {
+        return !ValidationHelper.isEmpty(password)
+                && password.length() >= MIN_PASSWORD_LENGTH && password.length() <= MAX_PASSWORD_LENGTH;
+    }
+
+    public static boolean validatePhone(String phone) {
+        return !ValidationHelper.isEmpty(phone) && phone.matches("^(\\+7||8)\\d{10}$");
+    }
+
+    public static boolean validateEmail(String email) {
+        return !ValidationHelper.isEmpty(email);
+    }
+
+    public static boolean validateSurname(String surname) {
+        return !ValidationHelper.isEmpty(surname);
+    }
+
+    public static boolean validateName(String name) {
+        return !ValidationHelper.isEmpty(name);
+    }
+
+    public static boolean validateSecondName(String secondName) {
+        return !ValidationHelper.isEmpty(secondName);
+    }
+
+    public static boolean validateBirthday(Date birthday) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, 1);
+        Date tomorrow = calendar.getTime();
+        return !ValidationHelper.isEmpty(birthday) && birthday.before(tomorrow);
     }
 
 }

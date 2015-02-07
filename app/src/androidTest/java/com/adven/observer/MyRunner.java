@@ -22,8 +22,7 @@ public class MyRunner extends RobolectricTestRunner{
         if (manifestProperty != null) {
             String resProperty = System.getProperty("android.resources");
             String assetsProperty = System.getProperty("android.assets");
-            System.out.println(resProperty);
-            System.out.println(assetsProperty);
+
             AndroidManifest androidManifest = new AndroidManifest(
                     Fs.fileFromPath(manifestProperty),
                     Fs.fileFromPath(resProperty),

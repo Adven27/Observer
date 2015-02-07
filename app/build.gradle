@@ -53,5 +53,5 @@ dependencies {
     compile files('src/main/libs/ormlite-core-4.46.jar')
     compile project(':yandexmapkitlibrary')
     androidTestCompile 'junit:junit:4.12'
-    androidTestCompile 'org.robolectric:robolectric:2.+'
+    androidTestCompile 'org.robolectric:robolectric:2.4'
 }

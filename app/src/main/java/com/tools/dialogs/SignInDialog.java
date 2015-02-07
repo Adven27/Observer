@@ -137,7 +137,8 @@ public class SignInDialog extends SimpleDialog {
     }
 
     private boolean validateInput() {
-        return !(ValidationHelper.isEmpty(login) || ValidationHelper.isEmpty(password));
+        return !(ValidationHelper.isEmpty(login.getText().toString())
+                || ValidationHelper.isEmpty(password.getText().toString()));
     }
 
     public void notify(String msg) {
