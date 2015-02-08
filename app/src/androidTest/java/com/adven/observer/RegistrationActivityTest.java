@@ -1,14 +1,13 @@
 package com.adven.observer;
 
-import android.app.Activity;
-
+import com.googlecode.zohhak.api.TestWith;
+import com.googlecode.zohhak.api.runners.ZohhakRunner;
 import com.urban.activity.registration.RegistrationActivity;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -16,13 +15,14 @@ import java.util.Date;
 /**
  * Created by MetallFoX on 2/2/15.
  */
-@RunWith(MyRunner.class)
+@RunWith(ZohhakRunner.class)
 public class RegistrationActivityTest {
 
-    @Test
-    public void shouldBeATest() throws Exception {
+    /*@BeforeClass
+    //TODO: похоже не нужно... да и падает с ним... =)
+    public static void setUp() throws Exception {
         Activity activity = Robolectric.buildActivity(RegistrationActivity.class).create().get();
-    }
+    }*/
 
     @Test
     public void loginShouldBeNotNull() throws Exception {
@@ -44,15 +44,9 @@ public class RegistrationActivityTest {
         Assert.assertFalse(RegistrationActivity.validateLogin("123456789012345678901"));
     }
 
-    @Test
-    public void validLoginExamples() throws Exception {
-        StringBuilder login = new StringBuilder("12345");
-        int i = 6;
-        while (login.length() < 20) {
-            login.append(i);
-            i = ++i % 10;
-            Assert.assertTrue(RegistrationActivity.validateLogin(login.toString()));
-        }
+    @TestWith({"123456", "123457", "123458"})
+    public void validLoginExamples(String login) throws Exception {
+        Assert.assertTrue(RegistrationActivity.validateLogin(login));
     }
 
     @Test
@@ -75,15 +69,9 @@ public class RegistrationActivityTest {
         Assert.assertFalse(RegistrationActivity.validatePassword("123456789012345678901"));
     }
 
-    @Test
-    public void validPasswordExamples() throws Exception {
-        StringBuilder password = new StringBuilder("1234567");
-        int i = 8;
-        while (password.length() < 20) {
-            password.append(i);
-            i = ++i % 10;
-            Assert.assertTrue(RegistrationActivity.validatePassword(password.toString()));
-        }
+    @TestWith({"12345678","123456789"})
+    public void validPasswordExamples(String pass) throws Exception {
+        Assert.assertTrue(RegistrationActivity.validatePassword(pass.toString()));
     }
 
 
@@ -97,11 +85,9 @@ public class RegistrationActivityTest {
         Assert.assertFalse(RegistrationActivity.validateName(""));
     }
 
-    @Test
-    public void validNameExamples() throws Exception {
-        Assert.assertTrue(RegistrationActivity.validateName("123"));
-        Assert.assertTrue(RegistrationActivity.validateName("Aaa123"));
-        Assert.assertTrue(RegistrationActivity.validateName("Aaa123Aaa"));
+    @TestWith({"123", "Aaa123", "Aaa123Aaa"})
+    public void validNameExamples(String name) throws Exception {
+        Assert.assertTrue(RegistrationActivity.validateName(name));
     }
 
 
@@ -115,11 +101,9 @@ public class RegistrationActivityTest {
         Assert.assertFalse(RegistrationActivity.validateSurname(""));
     }
 
-    @Test
-    public void validSurnameExamples() throws Exception {
-        Assert.assertTrue(RegistrationActivity.validateSurname("123"));
-        Assert.assertTrue(RegistrationActivity.validateSurname("Aaa123"));
-        Assert.assertTrue(RegistrationActivity.validateSurname("Aaa123Aaa"));
+    @TestWith({"123", "Aaa123", "Aaa123Aaa"})
+    public void validSurnameExamples(String name) throws Exception {
+        Assert.assertTrue(RegistrationActivity.validateSurname(name));
     }
 
     @Test
@@ -132,11 +116,9 @@ public class RegistrationActivityTest {
         Assert.assertFalse(RegistrationActivity.validateSecondName(""));
     }
 
-    @Test
-    public void validSecondNameExamples() throws Exception {
-        Assert.assertTrue(RegistrationActivity.validateSecondName("123"));
-        Assert.assertTrue(RegistrationActivity.validateSecondName("Aaa123"));
-        Assert.assertTrue(RegistrationActivity.validateSecondName("Aaa123Aaa"));
+    @TestWith({"123", "Aaa123", "Aaa123Aaa"})
+    public void validSecondNameExamples(String name) throws Exception {
+        Assert.assertTrue(RegistrationActivity.validateSecondName(name));
     }
 
     @Test
@@ -149,25 +131,20 @@ public class RegistrationActivityTest {
         Assert.assertFalse(RegistrationActivity.validatePhone(""));
     }
 
-    @Test
-    public void phoneShouldStartFromDigitOrPlus() throws Exception {
-        Assert.assertFalse(RegistrationActivity.validatePhone("z1234567890"));
-        Assert.assertFalse(RegistrationActivity.validatePhone("-1234567890"));
-        Assert.assertFalse(RegistrationActivity.validatePhone(" 1234567890"));
+    @TestWith(value = {"z1234567890", "-1234567890",
+            "' 1234567890'"}, stringBoundary="'") //apostrophes are needed in order to keep leading white space
+    public void phoneShouldStartFromDigitOrPlus(String phone) throws Exception {
+        Assert.assertFalse(RegistrationActivity.validatePhone(phone));
     }
 
-    @Test
-    public void phoneShouldContainOnlyNumbersExceptFirstChar() throws Exception {
-        Assert.assertFalse(RegistrationActivity.validatePhone("8z234567890"));
-        Assert.assertFalse(RegistrationActivity.validatePhone("+7z234567890"));
-        Assert.assertFalse(RegistrationActivity.validatePhone("8@234567890"));
-        Assert.assertFalse(RegistrationActivity.validatePhone("+7-234567890"));
+    @TestWith({"8z234567890", "+7z234567890", "8@234567890", "+7-234567890"})
+    public void phoneShouldContainOnlyNumbersExceptFirstChar(String phone) throws Exception {
+        Assert.assertFalse(RegistrationActivity.validatePhone(phone));
     }
 
-    @Test
-    public void validPhoneExamples() throws Exception {
-        Assert.assertTrue(RegistrationActivity.validatePhone("+71234567890"));
-        Assert.assertTrue(RegistrationActivity.validatePhone("81234567890"));
+    @TestWith({"+71234567890", "81234567890"})
+    public void validPhoneExamples(String phone) throws Exception {
+        Assert.assertTrue(RegistrationActivity.validatePhone(phone));
     }
 
     @Test
@@ -176,7 +153,7 @@ public class RegistrationActivityTest {
     }
 
     @Test
-    public void birthdayShouldBeNotAfterToday() throws Exception {
+    public void birthdayShouldNotBeInFuture() throws Exception {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, 1);
         Date tomorrow = calendar.getTime();
@@ -184,7 +161,7 @@ public class RegistrationActivityTest {
     }
 
     @Test
-    public void validDateExamples() throws Exception {
+    public void shouldNotBeInFuture() throws Exception {
         Assert.assertTrue(RegistrationActivity.validateBirthday(new Date()));
     }
 
