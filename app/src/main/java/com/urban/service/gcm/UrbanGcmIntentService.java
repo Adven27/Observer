@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import src.com.urban.data.sqlite.pojo.ActionPojo;
 import src.com.urban.data.sqlite.pojo.OrganizationPojo;
@@ -53,7 +54,7 @@ public class UrbanGcmIntentService extends IntentService {
         // The getMessageType() intent parameter must be the intent you received
         // in your BroadcastReceiver.
         String messageType = gcm.getMessageType(intent);
-
+        List<Action> actions = getActionsByIds(new int[]{});
         if (!extras.isEmpty()) {  // has effect of unparcelling Bundle
             /*
              * Filter messages based on message type. Since it is likely that GCM
@@ -81,8 +82,8 @@ public class UrbanGcmIntentService extends IntentService {
                 }
 
                 // if action were found or created, send a notification.
-                if (action != null) {
-                    Notification notification = createNotification("" + actionUniqueId, action);
+                if (actions != null && !actions.isEmpty()) {
+                    Notification notification = createNotification("" + actionUniqueId, actions);
                     sendNotification(action.getId(), notification);
                     Log.i(TAG, "Received: " + action.getSubject());
                 }
@@ -96,7 +97,7 @@ public class UrbanGcmIntentService extends IntentService {
 
     // Put the message into a notification and post it.
     // This is just one simple example of what you might choose to do with a GCM message.
-    private void sendNotification(int id, Notification notification) {
+    public void sendNotification(int id, Notification notification) {
         notificationManager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(id, notification);
     }
@@ -134,20 +135,34 @@ public class UrbanGcmIntentService extends IntentService {
         return action;
     }
 
-    private Notification createNotification(String uuid, Action action) {
+    public Notification createNotification(String uuid, List<Action> actions) {
         Intent intent = new Intent(this, OrganizationActivity.class);
         intent.setAction(uuid);
-        intent.putExtra(OrganizationActivity.EXTRA_ORGANIZATION_ID, action.getOrganization().getId());
-        PendingIntent contentIntent = PendingIntent.getActivity(this, action.getId(), intent, 0);
-        String text = action.getSubject();
+
+        int uniqueId = 0;
+
+        PendingIntent contentIntent = PendingIntent.getActivity(this, uniqueId, intent, 0);
+        StringBuilder textBuilder = new StringBuilder("New promotions: ");
+        int[] actionIds = new int[actions.size()];
+        int i = 0;
+        for (Action action : actions) {
+            actionIds[i] = action.getId();
+            textBuilder.append(action.getSubject()).append(" ");
+            i++;
+        }
+        intent.putExtra("action_ids", actionIds);
 
         return new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle(getString(R.string.notification_title_action))
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
-                .setContentText(text)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(textBuilder.toString()))
+                .setContentText(textBuilder.toString())
                 .setContentIntent(contentIntent)
                 .build();
+    }
+
+    public List<Action> getActionsByIds(int[] ids) {
+        return null;
     }
 
     /**
@@ -155,4 +170,5 @@ public class UrbanGcmIntentService extends IntentService {
      * It is not thread safe there 'cause it likely uses only in single thread.
      */
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+
 }

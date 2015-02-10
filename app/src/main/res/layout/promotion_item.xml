@@ -1,0 +1,67 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    style="@style/CategoryListView">
+
+    <TextView
+        android:id="@+id/promo_item_title"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:textColor="#000"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:textAlignment="gravity"
+        style="@style/CategoryItem"
+        android:focusable="false"
+        android:focusableInTouchMode="false"/>
+
+    <TextView
+        android:id="@+id/promo_item_organization_name"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:textColor="#000"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:textAlignment="gravity"
+        style="@style/CategoryItem"
+        android:focusable="false"
+        android:focusableInTouchMode="false"/>
+
+    <TextView
+        android:id="@+id/promo_item_start_date"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:textColor="#000"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:textAlignment="gravity"
+        style="@style/CategoryItem"
+        android:focusable="false"
+        android:focusableInTouchMode="false"/>
+
+    <TextView
+        android:id="@+id/promo_item_end_date"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:textColor="#000"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:textAlignment="gravity"
+        style="@style/CategoryItem"
+        android:focusable="false"
+        android:focusableInTouchMode="false"/>
+
+    <Button
+        android:id="@+id/promo_expand_btn"
+        android:layout_gravity="center_vertical"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/shop"
+        android:focusable="false"
+        android:focusableInTouchMode="false"/>
+
+
+</LinearLayout>

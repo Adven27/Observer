@@ -18,9 +18,8 @@ import com.urban.activity.task.RegistrationTask;
 import com.urban.appl.Settings;
 import com.urban.data.User;
 import com.urban.observer.R;
-import com.urban.validation.ValidationHelper;
+import com.urban.validation.RegistrationPolicy;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import src.com.urban.data.sqlite.pojo.PersonPojo;
@@ -86,16 +85,15 @@ public class RegistrationActivity extends UrbanActivity {
     }
 
     private boolean validateInput() {
-        return !validateLogin(login.getText().toString())
-                && validatePassword(password.getText().toString())
-
-                && validateSurname(surname.getText().toString())
-                && validateName(name.getText().toString())
-                && validateSecondName(secondName.getText().toString())
-
-                && validateEmail(email.getText().toString())
-                && validatePhone(phone.getText().toString())
-                && validateBirthday(birthday.getDate());
+        RegistrationPolicy regPolicyChecker =
+                new RegistrationPolicy(MIN_LOGIN_LENGTH, MAX_LOGIN_LENGTH,
+                                       MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH);
+        return regPolicyChecker.validateInput(
+                login.getText().toString(), password.getText().toString(),
+                surname.getText().toString(), name.getText().toString(),
+                secondName.getText().toString(),
+                email.getText().toString(), phone.getText().toString(),
+                birthday.getDate());
     }
 
     private User createUser(String login, String password, String email, String surname, String name, String secondName, Date birthday, String phone) {
@@ -144,42 +142,4 @@ public class RegistrationActivity extends UrbanActivity {
             Toast.makeText(RegistrationActivity.this, "Not all fields were filled", Toast.LENGTH_LONG).show();
         }
     }
-
-    public static boolean validateLogin(String login) {
-        return !ValidationHelper.isEmpty(login)
-                && login.length() >= MIN_LOGIN_LENGTH && login.length() <= MAX_LOGIN_LENGTH;
-    }
-
-    public static boolean validatePassword(String password) {
-        return !ValidationHelper.isEmpty(password)
-                && password.length() >= MIN_PASSWORD_LENGTH && password.length() <= MAX_PASSWORD_LENGTH;
-    }
-
-    public static boolean validatePhone(String phone) {
-        return !ValidationHelper.isEmpty(phone) && phone.matches("^(\\+7||8)\\d{10}$");
-    }
-
-    public static boolean validateEmail(String email) {
-        return !ValidationHelper.isEmpty(email);
-    }
-
-    public static boolean validateSurname(String surname) {
-        return !ValidationHelper.isEmpty(surname);
-    }
-
-    public static boolean validateName(String name) {
-        return !ValidationHelper.isEmpty(name);
-    }
-
-    public static boolean validateSecondName(String secondName) {
-        return !ValidationHelper.isEmpty(secondName);
-    }
-
-    public static boolean validateBirthday(Date birthday) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE, 1);
-        Date tomorrow = calendar.getTime();
-        return !ValidationHelper.isEmpty(birthday) && birthday.before(tomorrow);
-    }
-
 }
